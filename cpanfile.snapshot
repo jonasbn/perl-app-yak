@@ -1,0 +1,157 @@
+# carton snapshot format: version 1.0
+DISTRIBUTIONS
+  CryptX-0.057
+    pathname: M/MI/MIK/CryptX-0.057.tar.gz
+    provides:
+      Crypt::AuthEnc 0.057
+      Crypt::AuthEnc::CCM 0.057
+      Crypt::AuthEnc::ChaCha20Poly1305 0.057
+      Crypt::AuthEnc::EAX 0.057
+      Crypt::AuthEnc::GCM 0.057
+      Crypt::AuthEnc::OCB 0.057
+      Crypt::Checksum 0.057
+      Crypt::Checksum::Adler32 0.057
+      Crypt::Checksum::CRC32 0.057
+      Crypt::Cipher 0.057
+      Crypt::Cipher::AES 0.057
+      Crypt::Cipher::Anubis 0.057
+      Crypt::Cipher::Blowfish 0.057
+      Crypt::Cipher::CAST5 0.057
+      Crypt::Cipher::Camellia 0.057
+      Crypt::Cipher::DES 0.057
+      Crypt::Cipher::DES_EDE 0.057
+      Crypt::Cipher::IDEA 0.057
+      Crypt::Cipher::KASUMI 0.057
+      Crypt::Cipher::Khazad 0.057
+      Crypt::Cipher::MULTI2 0.057
+      Crypt::Cipher::Noekeon 0.057
+      Crypt::Cipher::RC2 0.057
+      Crypt::Cipher::RC5 0.057
+      Crypt::Cipher::RC6 0.057
+      Crypt::Cipher::SAFERP 0.057
+      Crypt::Cipher::SAFER_K128 0.057
+      Crypt::Cipher::SAFER_K64 0.057
+      Crypt::Cipher::SAFER_SK128 0.057
+      Crypt::Cipher::SAFER_SK64 0.057
+      Crypt::Cipher::SEED 0.057
+      Crypt::Cipher::Serpent 0.057
+      Crypt::Cipher::Skipjack 0.057
+      Crypt::Cipher::Twofish 0.057
+      Crypt::Cipher::XTEA 0.057
+      Crypt::Digest 0.057
+      Crypt::Digest::BLAKE2b_160 0.057
+      Crypt::Digest::BLAKE2b_256 0.057
+      Crypt::Digest::BLAKE2b_384 0.057
+      Crypt::Digest::BLAKE2b_512 0.057
+      Crypt::Digest::BLAKE2s_128 0.057
+      Crypt::Digest::BLAKE2s_160 0.057
+      Crypt::Digest::BLAKE2s_224 0.057
+      Crypt::Digest::BLAKE2s_256 0.057
+      Crypt::Digest::CHAES 0.057
+      Crypt::Digest::MD2 0.057
+      Crypt::Digest::MD4 0.057
+      Crypt::Digest::MD5 0.057
+      Crypt::Digest::RIPEMD128 0.057
+      Crypt::Digest::RIPEMD160 0.057
+      Crypt::Digest::RIPEMD256 0.057
+      Crypt::Digest::RIPEMD320 0.057
+      Crypt::Digest::SHA1 0.057
+      Crypt::Digest::SHA224 0.057
+      Crypt::Digest::SHA256 0.057
+      Crypt::Digest::SHA384 0.057
+      Crypt::Digest::SHA3_224 0.057
+      Crypt::Digest::SHA3_256 0.057
+      Crypt::Digest::SHA3_384 0.057
+      Crypt::Digest::SHA3_512 0.057
+      Crypt::Digest::SHA512 0.057
+      Crypt::Digest::SHA512_224 0.057
+      Crypt::Digest::SHA512_256 0.057
+      Crypt::Digest::SHAKE 0.057
+      Crypt::Digest::Tiger192 0.057
+      Crypt::Digest::Whirlpool 0.057
+      Crypt::KeyDerivation 0.057
+      Crypt::Mac 0.057
+      Crypt::Mac::BLAKE2b 0.057
+      Crypt::Mac::BLAKE2s 0.057
+      Crypt::Mac::F9 0.057
+      Crypt::Mac::HMAC 0.057
+      Crypt::Mac::OMAC 0.057
+      Crypt::Mac::PMAC 0.057
+      Crypt::Mac::Pelican 0.057
+      Crypt::Mac::Poly1305 0.057
+      Crypt::Mac::XCBC 0.057
+      Crypt::Misc 0.057
+      Crypt::Mode 0.057
+      Crypt::Mode::CBC 0.057
+      Crypt::Mode::CFB 0.057
+      Crypt::Mode::CTR 0.057
+      Crypt::Mode::ECB 0.057
+      Crypt::Mode::OFB 0.057
+      Crypt::PK 0.057
+      Crypt::PK::DH 0.057
+      Crypt::PK::DSA 0.057
+      Crypt::PK::ECC 0.057
+      Crypt::PK::RSA 0.057
+      Crypt::PRNG 0.057
+      Crypt::PRNG::ChaCha20 0.057
+      Crypt::PRNG::Fortuna 0.057
+      Crypt::PRNG::RC4 0.057
+      Crypt::PRNG::Sober128 0.057
+      Crypt::PRNG::Yarrow 0.057
+      Crypt::Stream::ChaCha 0.057
+      Crypt::Stream::RC4 0.057
+      Crypt::Stream::Rabbit 0.057
+      Crypt::Stream::Salsa20 0.057
+      Crypt::Stream::Sober128 0.057
+      Crypt::Stream::Sosemanuk 0.057
+      CryptX 0.057
+      Math::BigInt::LTM 0.057
+    requirements:
+      ExtUtils::MakeMaker 0
+      perl 5.006
+  Exporter-Tiny-1.000000
+    pathname: T/TO/TOBYINK/Exporter-Tiny-1.000000.tar.gz
+    provides:
+      Exporter::Shiny 1.000000
+      Exporter::Tiny 1.000000
+    requirements:
+      ExtUtils::MakeMaker 6.17
+      perl 5.006001
+  JSON-2.97001
+    pathname: I/IS/ISHIGAKI/JSON-2.97001.tar.gz
+    provides:
+      JSON 2.97001
+      JSON::Backend::PP 2.97001
+    requirements:
+      ExtUtils::MakeMaker 0
+      Test::More 0
+  List-MoreUtils-0.428
+    pathname: R/RE/REHSACK/List-MoreUtils-0.428.tar.gz
+    provides:
+      List::MoreUtils 0.428
+      List::MoreUtils::PP 0.428
+    requirements:
+      Exporter::Tiny 0.038
+      ExtUtils::MakeMaker 0
+      List::MoreUtils::XS 0.426
+  List-MoreUtils-XS-0.428
+    pathname: R/RE/REHSACK/List-MoreUtils-XS-0.428.tar.gz
+    provides:
+      List::MoreUtils::XS 0.428
+    requirements:
+      Carp 0
+      ExtUtils::MakeMaker 0
+      File::Basename 0
+      File::Copy 0
+      File::Path 0
+      File::Spec 0
+      IPC::Cmd 0
+      XSLoader 0.22
+      base 0
+  XSLoader-0.24
+    pathname: S/SA/SAPER/XSLoader-0.24.tar.gz
+    provides:
+      XSLoader 0.24
+    requirements:
+      ExtUtils::MakeMaker 0
+      Test::More 0.47
