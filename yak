@@ -49,3 +49,41 @@ sub wanted {
 }
 
 exit 0;
+
+__END__
+
+=pod
+
+=head1 yak
+
+yak - script to help with yak shaving for GitHub projects
+
+=head1 ISSUE REPORTING
+
+If you experience any issues with C<yak> report these via GitHub. Please read  L<the issue reporting template|https://github.com/jonasbn/yak/blob/master/.github/ISSUE_TEMPLATE.md>.
+
+=head1 AUTHOR
+
+=over
+
+=item jonasbn E<lt>jonasbn@cpan.orgE<gt>
+
+=back
+
+=head1 DEVELOPMENT
+
+If you want to contribute to C<yak> please read the L<Contribution guidelines|https://github.com/jonasbn/yak/blob/master/CONTRIBUTING.md>
+and follow L<the pull request guidelines|https://github.com/jonasbn/yak/blob/master/.github/PULL_TEMPLATE.md>.
+
+
+=head1 COPYRIGHT
+
+yak is (C) by Jonas B. Nielsen, (jonasbn) 2018
+
+Image used on the yak L<website|https://jonasbn.github.io/yak/> is under copyright by L<Shane Aldendorff|https://unsplash.com/photos/3b3O75X0Jzg>
+
+=head1 LICENSE
+
+yak is released under the MIT License
+
+=cut
