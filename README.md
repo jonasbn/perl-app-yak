@@ -1,2 +1,1 @@
-# yak
-Yet another... argh - just a yak shaving tool
+Yet Another yak shaver...
