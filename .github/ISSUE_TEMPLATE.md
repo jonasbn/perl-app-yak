@@ -13,7 +13,7 @@ Please file your issue in English, this makes in consumable by others than the a
 _Please provide some information on what version of the component used._
 
 ```
-$ perl -I lib -MTest::Timer -e 'print "$Test::Timer::VERSION\n"'
+$ grep VERSION yak
 ```
 
 ### Supply some information on the environment
