@@ -1,5 +1,5 @@
 requires 'JSON';                  # Not core
-requires 'Crypt::Digest::SHA256'; # Not core
+requires 'Crypt::Digest::SHA256'; # Not core, provides Crypt::Digest::SHA256
 requires 'Env';                   # Core since Perl 5
 requires 'Data::Dumper';          # Core since Perl 5.005
 requires 'File::Find';            # Core since Perl 5

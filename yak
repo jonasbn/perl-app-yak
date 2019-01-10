@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 use JSON; # from_json
-use Crypt::Digest::SHA256 qw(sha256_file_hex);
+use Crypt::Digest::SHA256 qw(sha256_file_hex); # Provided by CryptX
 use Env qw($HOME);
 use Data::Dumper;
 use File::Find;
