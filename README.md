@@ -31,9 +31,9 @@ The recommendation is to have the checksum in the central file, reflect the auth
 
 Alternatively to specifying a checksum, you can specify a file URL:
 
-{
-    "MANIFEST.SKIP": "file://MANIFEST.SKIP"
-}
+    {
+        "MANIFEST.SKIP": "file://MANIFEST.SKIP"
+    }
 
 The file pointed to has to be available in: `$HOME/.config/yak/files`
 
