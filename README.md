@@ -1,10 +1,8 @@
-
-
 :warning: WARNING! :warning:
 
-This this project and it's components are WIP and \*alpha\* software, everything is far from working and farther from finished
+This this project and it's components are WIP and *alpha* software, everything is far from working and farther from finished
 
-\---
+---
 
 # yak
 
@@ -80,11 +78,3 @@ Image used on the `yak` [website](https://jonasbn.github.io/yak/) is under copyr
 # LICENSE
 
 `yak` is released under the MIT License
-
-# POD ERRORS
-
-Hey! **The above document had some coding errors, which are explained below:**
-
-- Around line 84:
-
-    &#x3d;end markdown without matching =begin.  (Stack: \[empty\])
