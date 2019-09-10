@@ -132,6 +132,20 @@ DISTRIBUTIONS
     requirements:
       ExtUtils::MakeMaker 6.17
       perl 5.006001
+  File-Slurper-0.012
+    pathname: L/LE/LEONT/File-Slurper-0.012.tar.gz
+    provides:
+      File::Slurper 0.012
+    requirements:
+      Carp 0
+      Encode 2.11
+      Exporter 5.57
+      ExtUtils::MakeMaker 0
+      PerlIO::encoding 0
+      constant 0
+      perl 5.008
+      strict 0
+      warnings 0
   Importer-0.024
     pathname: E/EX/EXODIST/Importer-0.024.tar.gz
     provides:
@@ -186,6 +200,41 @@ DISTRIBUTIONS
       if 0
       perl 5.00503
       strict 0
+  Parse-Gitignore-0.04
+    pathname: B/BK/BKB/Parse-Gitignore-0.04.tar.gz
+    provides:
+      Parse::Gitignore 0.04
+    requirements:
+      ExtUtils::MakeMaker 0
+      File::Slurper 0.010
+      Path::Tiny 0.076
+      perl 5.006001
+  Path-Tiny-0.108
+    pathname: D/DA/DAGOLDEN/Path-Tiny-0.108.tar.gz
+    provides:
+      Path::Tiny 0.108
+      Path::Tiny::Error 0.108
+    requirements:
+      Carp 0
+      Cwd 0
+      Digest 1.03
+      Digest::SHA 5.45
+      Encode 0
+      Exporter 5.57
+      ExtUtils::MakeMaker 6.17
+      Fcntl 0
+      File::Copy 0
+      File::Glob 0
+      File::Path 2.07
+      File::Spec 0.86
+      File::Temp 0.19
+      File::stat 0
+      constant 0
+      overload 0
+      perl 5.008001
+      strict 0
+      warnings 0
+      warnings::register 0
   Probe-Perl-0.03
     pathname: K/KW/KWILLIAMS/Probe-Perl-0.03.tar.gz
     provides:
@@ -366,3 +415,17 @@ DISTRIBUTIONS
       overload 0
       perl 5.008001
       utf8 0
+  YAML-Tiny-1.73
+    pathname: E/ET/ETHER/YAML-Tiny-1.73.tar.gz
+    provides:
+      YAML::Tiny 1.73
+    requirements:
+      B 0
+      Carp 0
+      Exporter 0
+      ExtUtils::MakeMaker 0
+      Fcntl 0
+      Scalar::Util 0
+      perl 5.008001
+      strict 0
+      warnings 0
