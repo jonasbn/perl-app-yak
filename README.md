@@ -1,6 +1,6 @@
 :warning: WARNING! :warning:
 
-This this project and it's components are WIP and *alpha* software, everything is far from working and farther from finished
+This this project and it's components are WIP and *alpha* software, everything is far from working and even farther from finished
 
 ---
 
@@ -71,7 +71,7 @@ Used commonly for repetive and boring work, required to reach a certain goal.
 
 # COPYRIGHT
 
-`yak` is (C) by Jonas B. Nielsen, (jonasbn) 2018-2019
+`yak` is (C) by Jonas B. Nielsen, (jonasbn) 2018-2020
 
 Image used on the `yak` [website](https://jonasbn.github.io/yak/) is under copyright by [Shane Aldendorff](https://unsplash.com/photos/3b3O75X0Jzg)
 
