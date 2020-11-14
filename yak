@@ -173,15 +173,67 @@ The file pointed to has to be available in: F<$HOME/.config/yak/files>
 
 Then C<yak> can calculate the checksum dynamically, based on the reference file and can based on invocation copy the reference file to the location of the evaluated file in the case where the two differ.
 
+=head2 CHECKSUM DATA FILE EXAMPLE
+
+This JSON file should be created as C<$HOME/.config/yak/checksums.json>.
+
+    {
+        "CODE_OF_CONDUCT.md": "da9eed24b35eed80ce28e07b02725dbb356cfa56500a1552a1410ab5c73af82c",
+        "CONTRIBUTING.md": "file://CONTRIBUTING.md",
+        "PULL_REQUEST_TEMPLATE.md": "91dabee84afd46f93894d1a266a773f3d46c2c0b1ae4813f0c7dba34df1dc260",
+        "MANIFEST.SKIP": "file://MANIFEST.SKIP"
+    }
+
+=head1 INVOCATION
+
+C<yak> takes the following command line arguments:
+
+=over
+
+=item * C<--verbose>, enables more verbose output, can be configured see L</CONFIGURATION>
+
+=item * C<--silent>, disables output and you have to rely on the return value see L</RETURN_VALUES> below.
+
+=item * C<--debug>, enables debug output. can be configured see L</CONFIGURATION>
+
+=item * C<--nodebug>, disables debug output even if confgured or provided as C<--debug>, see above
+
+=back
+
+Command line arguments override the configuration.
+
+=head2 RETURN VALUES
+
+=over
+
+=item * C<0>, everything is okay
+
+=item * C<1>, a located filed did not match the designated checksum
+
+=back
+
 =head1 CONFIGURATION
+
+F<$HOME/.config/yak/config.yml>
 
 C<yak> can be configured using the following paramters:
 
 =over
 
-=item * C<gitignore>, which enables the use of a local gitignore file
+=item * C<verbose>, which enables more verbose output
+
+=item * C<debug>, which enables debug output
 
 =back
+
+Configuration can be overridden by command line arguments, see L</INVOCATION>.
+
+=head2 EXAMPLE CONFIGURATION
+
+This YAML file should be created as C<$HOME/.config/yak/config.yml>.
+
+    verbose: false
+    debug: false
 
 =head1 ISSUE REPORTING
 

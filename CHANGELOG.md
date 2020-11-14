@@ -1,6 +1,6 @@
 CHANGELOG for `yak`
 
-# 0.1.0 unreleased first candidate
+# 0.1.0 Milestone release, implementing initial features
 
 - Can be configured using file and configuration supports:
   - `verbosity` tells `yak` to emit more verbose output 

@@ -37,11 +37,50 @@ The file pointed to has to be available in: `$HOME/.config/yak/files`
 
 Then `yak` can calculate the checksum dynamically, based on the reference file and can based on invocation copy the reference file to the location of the evaluated file in the case where the two differ.
 
+## CHECKSUM DATA FILE EXAMPLE
+
+This JSON file should be created as `$HOME/.config/yak/checksums.json`.
+
+    {
+        "CODE_OF_CONDUCT.md": "da9eed24b35eed80ce28e07b02725dbb356cfa56500a1552a1410ab5c73af82c",
+        "CONTRIBUTING.md": "file://CONTRIBUTING.md",
+        "PULL_REQUEST_TEMPLATE.md": "91dabee84afd46f93894d1a266a773f3d46c2c0b1ae4813f0c7dba34df1dc260",
+        "MANIFEST.SKIP": "file://MANIFEST.SKIP"
+    }
+
+# INVOCATION
+
+`yak` takes the following command line arguments:
+
+- `--verbose`, enables more verbose output, can be configured see ["CONFIGURATION"](#configuration)
+- `--silent`, disables output and you have to rely on the return value see ["RETURN\_VALUES"](#return_values) below.
+- `--debug`, enables debug output. can be configured see ["CONFIGURATION"](#configuration)
+- `--nodebug`, disables debug output even if confgured or provided as `--debug`, see above
+
+Command line arguments override the configuration.
+
+## RETURN VALUES
+
+- `0`, everything is okay
+- `1`, a located filed did not match the designated checksum
+
 # CONFIGURATION
+
+`$HOME/.config/yak/config.yml`
 
 `yak` can be configured using the following paramters:
 
-- `gitignore`, which enables the use of a local gitignore file
+- `verbose`, which enables more verbose output
+- `debug`, which enables debug output
+
+Configuration can be overridden by command line arguments, see ["INVOCATION"](#invocation).
+
+## EXAMPLE CONFIGURATION
+
+This YAML file should be created as `$HOME/.config/yak/config.yml`.
+
+    verbose: false
+    debug: false
 
 # ISSUE REPORTING
 
