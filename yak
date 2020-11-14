@@ -13,6 +13,7 @@ use Data::Dumper;
 use File::Find;
 use List::MoreUtils qw(any);
 use Term::ANSIColor qw(:constants);
+use Parse::Gitignore;
 use English; # $PROGRAM_NAME
 use Getopt::Long; # GetOptions
 use Cwd; # getcwd
@@ -171,6 +172,16 @@ if ($help_flag) {
     exit $rv;
 }
 
+my $pg = Parse::Gitignore->new('./.gitignore');
+
+if ($debug) {
+    print STDERR Dumper $pg;
+}
+
+if ($verbose) {
+    print "$PROGRAM_NAME : $VERSION\n";
+}
+
 if (defined $ARGV[0]) {
     my $file_checksum = sha256_file_hex($ARGV[0]);
 } else {
@@ -186,6 +197,14 @@ sub _wanted {
         say STDERR "Examining: $File::Find::dir";
         say STDERR "Examining: $_";
         say STDERR "Examining: $File::Find::name";
+    }
+
+    # TODO: the path from Parse::Gitignore and File::Find are not compatible out of the box
+    if ($pg->ignored($_)) {
+        if ($debug) {
+            print STDERR "Attempting to ignore $file\n";
+        }
+        return;
     }
 
     if (-f $file and any { $file eq $_ } keys %{$checksums} ) {
