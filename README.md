@@ -56,6 +56,8 @@ This JSON file should be created as `$HOME/.config/yak/checksums.json`.
 - `--silent`, disables output and you have to rely on the return value see ["RETURN\_VALUES"](#return_values) below.
 - `--debug`, enables debug output. can be configured see ["CONFIGURATION"](#configuration)
 - `--nodebug`, disables debug output even if confgured or provided as `--debug`, see above
+- `--noconfig`, disables reading of the configuration file, (see ["CONFIGURATION"](#configuration)) and you have to rely on the command line arguments
+- `--nochecksums`, disables reading of the global checksums file (see ["DATA\_SOURCE"](#data_source))
 
 Command line arguments override the configuration.
 
@@ -81,6 +83,57 @@ This YAML file should be created as `$HOME/.config/yak/config.yml`.
 
     verbose: false
     debug: false
+
+# DATA SOURCE
+
+The default data source is described in the ["DESCRIPTION"](#description). As a an alternative a per project file can be specified in the designated repository/directory.
+
+The file should be named: `.yaksums.json`
+
+The contents follow the same format as the `$HOME/.config/yak/checksums.json`.
+
+This JSON file should look as follows:
+
+    {
+        "<filename>": "<sha256 checksum for the file specifed by the filename>"
+    }
+
+An example:
+
+    {
+        "CODE_OF_CONDUCT.md": "da9eed24b35eed80ce28e07b02725dbb356cfa56500a1552a1410ab5c73af82c",
+        "CONTRIBUTING.md": "file://CONTRIBUTING.md",
+        "PULL_REQUEST_TEMPLATE.md": "91dabee84afd46f93894d1a266a773f3d46c2c0b1ae4813f0c7dba34df1dc260",
+        "MANIFEST.SKIP": "file://MANIFEST.SKIP"
+    }
+
+# USING DOCKER
+
+An experimental Docker implementation has been included with the repository.
+
+It can be built using the following statement:
+
+    $ docker build -t jonasbn/yak .
+
+And then run as follows:
+
+    $ docker run --rm -it -v $PWD:/tmp jonasbn/yak
+
+It will consume all the command line arguments (see ["INVOCATION"](#invocation)).
+
+The Docker image has the following command line arguments embedded:
+
+- `--noconfig`
+- `--nochecksums`
+
+Since the ability to read files outside the Docker container is limited to the directory mounted.
+
+The mount point is expected to be a directory containing the files to be checked against the checksum data structure. Please see the ["LIMITATIONS"](#limitations) for details.
+
+# LIMITATIONS
+
+- Running under Docker is limited to using only checksums specified in a local <.yaksums.json> and configuration has to be specified using command line arguments not a file
+- The use of a local: `.yaksums.json` is limited to checksums and cannot calculate based on files, since files are located in an unmounted directory
 
 # ISSUE REPORTING
 

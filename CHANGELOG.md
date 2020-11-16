@@ -1,5 +1,13 @@
 CHANGELOG for `yak`
 
+# 0.2.0 Milestone release, implementing initial Docker support
+
+- `yak` can now be build as a Docker container
+- Added command line arguments are:
+  - `--noconfig` disables reading of `$HOME/.config/yak/config.yml` so invocation relies solely on command line arguments
+  - `--nochecksums` disables reading of `$HOME/.config/yak/checksums.yml` so checksum data has to be read from the directory in which `yak` is executed and it has to be names `.yaksums.json`,
+- The command line arguments: `--noconfig` and `--nochecksums` are mandatory for the Docker entrypoint
+
 # 0.1.0 Milestone release, implementing initial features
 
 - Can be configured using file and configuration supports:

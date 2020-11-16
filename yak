@@ -226,6 +226,10 @@ C<yak> takes the following command line arguments:
 
 =item * C<--nodebug>, disables debug output even if confgured or provided as C<--debug>, see above
 
+=item * C<--noconfig>, disables reading of the configuration file, (see L</CONFIGURATION>) and you have to rely on the command line arguments
+
+=item * C<--nochecksums>, disables reading of the global checksums file (see L</DATA_SOURCE>)
+
 =back
 
 Command line arguments override the configuration.
@@ -262,6 +266,67 @@ This YAML file should be created as C<$HOME/.config/yak/config.yml>.
 
     verbose: false
     debug: false
+
+=head1 DATA SOURCE
+
+The default data source is described in the L</DESCRIPTION>. As a an alternative a per project file can be specified in the designated repository/directory.
+
+The file should be named: C<.yaksums.json>
+
+The contents follow the same format as the C<$HOME/.config/yak/checksums.json>.
+
+This JSON file should look as follows:
+
+    {
+        "<filename>": "<sha256 checksum for the file specifed by the filename>"
+    }
+
+An example:
+
+    {
+        "CODE_OF_CONDUCT.md": "da9eed24b35eed80ce28e07b02725dbb356cfa56500a1552a1410ab5c73af82c",
+        "CONTRIBUTING.md": "file://CONTRIBUTING.md",
+        "PULL_REQUEST_TEMPLATE.md": "91dabee84afd46f93894d1a266a773f3d46c2c0b1ae4813f0c7dba34df1dc260",
+        "MANIFEST.SKIP": "file://MANIFEST.SKIP"
+    }
+
+=head1 USING DOCKER
+
+An experimental Docker implementation has been included with the repository.
+
+It can be built using the following statement:
+
+    $ docker build -t jonasbn/yak .
+
+And then run as follows:
+
+    $ docker run --rm -it -v $PWD:/tmp jonasbn/yak
+
+It will consume all the command line arguments (see L</INVOCATION>).
+
+The Docker image has the following command line arguments embedded:
+
+=over
+
+=item * C<--noconfig>
+
+=item * C<--nochecksums>
+
+=back
+
+Since the ability to read files outside the Docker container is limited to the directory mounted.
+
+The mount point is expected to be a directory containing the files to be checked against the checksum data structure. Please see the L</LIMITATIONS> for details.
+
+=head1 LIMITATIONS
+
+=over
+
+=item * Running under Docker is limited to using only checksums specified in a local <.yaksums.json> and configuration has to be specified using command line arguments not a file
+
+=item * The use of a local: C<.yaksums.json> is limited to checksums and cannot calculate based on files, since files are located in an unmounted directory
+
+=back
 
 =head1 ISSUE REPORTING
 
