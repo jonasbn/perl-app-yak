@@ -12,6 +12,7 @@ use List::MoreUtils qw(any);
 use Term::ANSIColor qw(:constants);
 use English; # $PROGRAM_NAME
 use Getopt::Long; # GetOptions
+use Cwd; # getcwd
 
 use constant FALSE   => 0;
 use constant TRUE    => 1;
@@ -20,26 +21,43 @@ use constant FAILURE => 1;
 
 our $VERSION = '1.0.0';
 
-my $debug_flag     = FALSE;
-my $nodebug_flag   = FALSE;
-my $verbosity_flag = FALSE;
-my $silent_flag    = FALSE;
-my $rv             = SUCCESS;
+my $debug_flag       = FALSE;
+my $nodebug_flag     = FALSE;
+my $verbosity_flag   = FALSE;
+my $silent_flag      = FALSE;
+my $noconfig_flag    = FALSE;
+my $nochecksums_flag = FALSE;
+my $rv               = SUCCESS;
+my $checksums_src    = "$HOME/.config/yak/checksums.json";
 
-GetOptions ('debug'   => \$debug_flag,
-            'nodebug' => \$nodebug_flag,
-            'verbose' => \$verbosity_flag,
-            'silent'  => \$silent_flag)
-or die "Error in command line arguments\n";
+GetOptions ('debug'       => \$debug_flag,
+            'nodebug'     => \$nodebug_flag,
+            'verbose'     => \$verbosity_flag,
+            'noconfig'    => \$noconfig_flag,
+            'silent'      => \$silent_flag,
+            'nochecksums' => \$nochecksums_flag,
+) or die "Error in command line arguments\n";
 
 # Reading the config
-my $config = YAML::Tiny->read("$HOME/.config/yak/config.yml");
+my $config;
+if ($noconfig_flag) {
+    #$config;
+} else {
+    $config = YAML::Tiny->read("$HOME/.config/yak/config.yml");
+}
+
+print Dumper $config;
 
 my $verbose = _set_verbose($verbosity_flag, $silent_flag, $config) || 0;
 my $debug = _set_debug($debug_flag, $nodebug_flag, $config) || 0;
 
 # Reading the checksum data
-open my $checksums_fh, '<', "$HOME/.config/yak/checksums.json";
+if ($nochecksums_flag) {
+    my $cwd = getcwd();
+    $checksums_src = "$cwd/.yaksums.json";
+}
+
+open (my $checksums_fh, '<', $checksums_src) or die "Unable to read checksum file: $checksums_src - $!";
 my $checksum_json = join '', <$checksums_fh>;
 close $checksums_fh;
 
@@ -73,7 +91,7 @@ sub _wanted {
 
         if ($assertion =~ m/file/i) {
             my ($filename) = $assertion =~ s{file:\/\/(.*)}{$1};
-            $checksum = sha256_file_hex("$HOME/.config/yak/files/$assertion");            
+            $checksum = sha256_file_hex("$HOME/.config/yak/files/$assertion");
         } else {
             $checksum = $assertion;
         }
@@ -113,12 +131,22 @@ sub _set_debug {
 
 sub _is_debug_config_true {
     my $config = shift;
-    return $config->[0]->{debug} eq 'true'?TRUE:FALSE;
+
+    if ($config) {
+        return $config->[0]->{debug} eq 'true'?TRUE:FALSE;
+    } else {
+        return FALSE;
+    }
 }
 
 sub _is_verbosity_config_true {
     my $config = shift;
-    return $config->[0]->{verbose} eq 'true'?TRUE:FALSE;
+
+    if ($config) {
+        return $config->[0]->{verbose} eq 'true'?TRUE:FALSE;
+    } else {
+        return FALSE;
+    }
 }
 
 __END__
@@ -198,6 +226,10 @@ C<yak> takes the following command line arguments:
 
 =item * C<--nodebug>, disables debug output even if confgured or provided as C<--debug>, see above
 
+=item * C<--noconfig>, disables reading of the configuration file, (see L</CONFIGURATION>) and you have to rely on the command line arguments
+
+=item * C<--nochecksums>, disables reading of the global checksums file (see L</DATA_SOURCE>)
+
 =back
 
 Command line arguments override the configuration.
@@ -234,6 +266,67 @@ This YAML file should be created as C<$HOME/.config/yak/config.yml>.
 
     verbose: false
     debug: false
+
+=head1 DATA SOURCE
+
+The default data source is described in the L</DESCRIPTION>. As a an alternative a per project file can be specified in the designated repository/directory.
+
+The file should be named: C<.yaksums.json>
+
+The contents follow the same format as the C<$HOME/.config/yak/checksums.json>.
+
+This JSON file should look as follows:
+
+    {
+        "<filename>": "<sha256 checksum for the file specifed by the filename>"
+    }
+
+An example:
+
+    {
+        "CODE_OF_CONDUCT.md": "da9eed24b35eed80ce28e07b02725dbb356cfa56500a1552a1410ab5c73af82c",
+        "CONTRIBUTING.md": "file://CONTRIBUTING.md",
+        "PULL_REQUEST_TEMPLATE.md": "91dabee84afd46f93894d1a266a773f3d46c2c0b1ae4813f0c7dba34df1dc260",
+        "MANIFEST.SKIP": "file://MANIFEST.SKIP"
+    }
+
+=head1 USING DOCKER
+
+An experimental Docker implementation has been included with the repository.
+
+It can be built using the following statement:
+
+    $ docker build -t jonasbn/yak .
+
+And then run as follows:
+
+    $ docker run --rm -it -v $PWD:/tmp jonasbn/yak
+
+It will consume all the command line arguments (see L</INVOCATION>).
+
+The Docker image has the following command line arguments embedded:
+
+=over
+
+=item * C<--noconfig>
+
+=item * C<--nochecksums>
+
+=back
+
+Since the ability to read files outside the Docker container is limited to the directory mounted.
+
+The mount point is expected to be a directory containing the files to be checked against the checksum data structure. Please see the L</LIMITATIONS> for details.
+
+=head1 LIMITATIONS
+
+=over
+
+=item * Running under Docker is limited to using only checksums specified in a local <.yaksums.json> and configuration has to be specified using command line arguments not a file
+
+=item * The use of a local: C<.yaksums.json> is limited to checksums and cannot calculate based on files, since files are located in an unmounted directory
+
+=back
 
 =head1 ISSUE REPORTING
 
