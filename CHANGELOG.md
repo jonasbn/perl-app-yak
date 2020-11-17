@@ -1,5 +1,14 @@
 CHANGELOG for `yak`
 
+# 0.3.0 Milestone release, implementing about command line option
+
+- Added command line arguments `--about` and it emits:
+- current version number of `yak`
+- configuration file location/path
+- data source (file) location/path
+- invocation command line arguments, including `--about`
+- invocation environment (meaning the sum of configuration and invocation), currently just the configuration file contents, not the sum
+
 # 0.2.0 Milestone release, implementing initial Docker support
 
 - `yak` can now be build as a Docker container
