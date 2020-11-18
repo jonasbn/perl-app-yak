@@ -6,7 +6,7 @@ use Env qw($CONTINUOUS_INTEGRATION);
 
 script_compiles('yak');
 
-if ($CONTINUOUS_INTEGRATION eq 'true') {}
+if ($CONTINUOUS_INTEGRATION eq 'true') {
     script_runs(['yak', '--about', '--noconfig'], '"yak --about" runs');
 } else {
     script_runs(['yak', '--about'], '"yak --about" runs');
