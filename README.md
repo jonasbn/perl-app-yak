@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/jonasbn/yak.svg?branch=master)](https://travis-ci.org/jonasbn/yak)
+
 :warning: WARNING! :warning:
 
 This this project and it's components are WIP and *alpha* software, everything is far from working and even farther from finished
