@@ -37,6 +37,7 @@ GetOptions ('debug'       => \$debug_flag,
             'nodebug'     => \$nodebug_flag,
             'verbose'     => \$verbosity_flag,
             'noconfig'    => \$noconfig_flag,
+            'config=s'    => \$config_file,
             'silent'      => \$silent_flag,
             'nochecksums' => \$nochecksums_flag,
             'about'       => \$about_flag,
@@ -78,13 +79,14 @@ if ($about_flag) {
     }
     print "Using data source located at: $checksums_src\n\n";
     print "Invoked with:\n";
-    print "--debug\n"       if $debug_flag;
-    print "--nodebug\n"     if $nodebug_flag;
-    print "--verbose\n"     if $verbosity_flag;
-    print "--noconfig\n"    if $noconfig_flag;
-    print "--silent\n"      if $silent_flag;
-    print "--nochecksums\n" if $nochecksums_flag;
-    print "--about\n"       if $about_flag;
+    print "--debug\n"               if $debug_flag;
+    print "--nodebug\n"             if $nodebug_flag;
+    print "--verbose\n"             if $verbosity_flag;
+    print "--noconfig\n"            if $noconfig_flag;
+    print "--config $config_file\n" if $config_file;
+    print "--silent\n"              if $silent_flag;
+    print "--nochecksums\n"         if $nochecksums_flag;
+    print "--about\n"               if $about_flag;
     print "\n";
 
     exit $rv;
@@ -101,6 +103,7 @@ if ($help_flag) {
     print "--nodebug: disabling debug output, if configured\n";
     print "--verbose: more verbose output\n";
     print "--noconfig: ignore \$HOME/.config/.yak/config.yml\n";
+    print "--config <file>: specify alternative to \$HOME/.config/.yak/config.yml\n";
     print "--silent: suppress all output and rely on return value\n";
     print "--nochecksums: ignore \$HOME/.config/.yak/checksums.json and use local .yaksums\n";
     print "--about: emit configuration and invocation description\n";
@@ -269,6 +272,8 @@ C<yak> takes the following command line arguments:
 =item * C<--debug>, enables debug output. can be configured see L</CONFIGURATION>
 
 =item * C<--nodebug>, disables debug output even if confgured or provided as C<--debug>, see above
+
+=item * C<--config file>, reads alternative configuration file instead of default, see L</CONFIGURATION>
 
 =item * C<--noconfig>, disables reading of the configuration file, (see L</CONFIGURATION>) and you have to rely on the command line arguments
 

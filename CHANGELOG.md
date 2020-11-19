@@ -1,9 +1,14 @@
 CHANGELOG for `yak`
 
+# 0.5.0 Milestone release, implementing config command line option
+
+- Added command line arguments `--config <configuration file>`
+  - using specified configuration file instead of the default: `$HOME/.config/yak/config.yaml`
+
 # 0.4.0 Milestone release, implementing help command line option
 
 - Added command line arguments `--help` and it emits:
-    - listing of all command line options with short description
+  - listing of all command line options with short description
 
 # 0.3.0 Milestone release, implementing abou
 
