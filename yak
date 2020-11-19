@@ -28,6 +28,7 @@ my $silent_flag      = FALSE;
 my $noconfig_flag    = FALSE;
 my $nochecksums_flag = FALSE;
 my $about_flag       = FALSE;
+my $help_flag        = FALSE;
 my $rv               = SUCCESS;
 my $checksums_src    = "$HOME/.config/yak/checksums.json";
 my $config_file      = "$HOME/.config/yak/config.yml";
@@ -39,6 +40,7 @@ GetOptions ('debug'       => \$debug_flag,
             'silent'      => \$silent_flag,
             'nochecksums' => \$nochecksums_flag,
             'about'       => \$about_flag,
+            'help'        => \$help_flag,
 ) or die "Error in command line arguments\n";
 
 # Reading the config
@@ -65,7 +67,7 @@ close $checksums_fh;
 my $checksums = from_json($checksum_json);
 
 if ($about_flag) {
-    print "$PROGRAM_NAME : $VERSION\n";
+    print "$PROGRAM_NAME version $VERSION\n";
     print "\n";
     if (not $noconfig_flag) {
         print "Using configuration located at: $config_file\n" ;
@@ -83,6 +85,25 @@ if ($about_flag) {
     print "--silent\n"      if $silent_flag;
     print "--nochecksums\n" if $nochecksums_flag;
     print "--about\n"       if $about_flag;
+    print "\n";
+
+    exit $rv;
+}
+
+if ($help_flag) {
+    print "$PROGRAM_NAME version $VERSION\n";
+    print "\n";
+    print "$PROGRAM_NAME [options]\n";
+    print "\n";
+    print "Options\n";
+    print "\n";
+    print "--debug: debug output\n";
+    print "--nodebug: disabling debug output, if configured\n";
+    print "--verbose: more verbose output\n";
+    print "--noconfig: ignore \$HOME/.config/.yak/config.yml\n";
+    print "--silent: suppress all output and rely on return value\n";
+    print "--nochecksums: ignore \$HOME/.config/.yak/checksums.json and use local .yaksums\n";
+    print "--about: emit configuration and invocation description\n";
     print "\n";
 
     exit $rv;
@@ -153,7 +174,7 @@ sub _set_debug {
 sub _is_debug_config_true {
     my $config = shift;
 
-    if ($config) {
+    if ($config and $config->[0]->{debug}) {
         return $config->[0]->{debug} eq 'true'?TRUE:FALSE;
     } else {
         return FALSE;
@@ -163,7 +184,7 @@ sub _is_debug_config_true {
 sub _is_verbosity_config_true {
     my $config = shift;
 
-    if ($config) {
+    if ($config and $config->[0]->{verbose}) {
         return $config->[0]->{verbose} eq 'true'?TRUE:FALSE;
     } else {
         return FALSE;
