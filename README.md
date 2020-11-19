@@ -60,7 +60,8 @@ This JSON file should be created as `$HOME/.config/yak/checksums.json`.
 - `--nodebug`, disables debug output even if confgured or provided as `--debug`, see above
 - `--noconfig`, disables reading of the configuration file, (see ["CONFIGURATION"](#configuration)) and you have to rely on the command line arguments
 - `--nochecksums`, disables reading of the global checksums file (see ["DATA\_SOURCE"](#data_source))
-- `--about`, emits output on configuration and invocation and terminates with success.
+- `--about`, emits output on configuration and invocation and terminates with success
+- `--help`, emits help message listing all available options
 
 Command line arguments override the configuration.
 

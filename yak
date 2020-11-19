@@ -274,7 +274,9 @@ C<yak> takes the following command line arguments:
 
 =item * C<--nochecksums>, disables reading of the global checksums file (see L</DATA_SOURCE>)
 
-=item * C<--about>, emits output on configuration and invocation and terminates with success.
+=item * C<--about>, emits output on configuration and invocation and terminates with success
+
+=item * C<--help>, emits help message listing all available options
 
 =back
 
