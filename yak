@@ -296,7 +296,9 @@ C<yak> takes the following command line arguments:
 
 =item * C<--noconfig>, disables reading of the configuration file, (see L</CONFIGURATION>) and you have to rely on the command line arguments
 
-=item * C<--nochecksums>, disables reading of the global checksums file (see L</DATA_SOURCE>)
+=item * C<--nochecksums>, disables reading of the global checksums file, see L</DATA_SOURCE>
+
+=item * C<--checksums file>, reads alternative checksums file instead of default, see L</DATA_SOURCE>
 
 =item * C<--about>, emits output on configuration and invocation and terminates with success
 
@@ -343,6 +345,18 @@ This YAML file should be created as C<$HOME/.config/yak/config.yml>.
 
 =head1 DATA SOURCE
 
+There are 3 ways to provide checksum data to C<yak>.
+
+=over
+
+=item * The default using: C<$HOME/.config/yak/checksums.json>, which can then be edited to match your needs
+
+=item * Using a project or repository specific: C<.yaksums.json> located in the root of your project or repository directory
+
+=item * Using an JSON file adhering to formatting described in this chapter, which can be located elsewhere on your file system
+
+=back
+
 The default data source is described in the L</DESCRIPTION>. As a an alternative a per project file can be specified in the designated repository/directory.
 
 The file should be named: C<.yaksums.json>
@@ -388,7 +402,7 @@ The Docker image has the following command line arguments embedded:
 
 =back
 
-Since the ability to read files outside the Docker container is limited to the directory mounted.
+Since the ability to read files outside the Docker container is limited to mounted directories.
 
 The mount point is expected to be a directory containing the files to be checked against the checksum data structure. Please see the L</LIMITATIONS> for details.
 
@@ -428,13 +442,13 @@ Used commonly for repetive and boring work, required to reach a certain goal.
 
 =over
 
-=item jonasbn E<lt>jonasbn@cpan.orgE<gt>
+=item * jonasbn, L<website|https://jonasbn.github.io/>
 
 =back
 
 =head1 COPYRIGHT
 
-C<yak> is (C) by Jonas B. Nielsen, (jonasbn) 2018-2020
+C<yak> is (C) by Jonas Brømsø, (jonasbn) 2018-2020
 
 Image used on the C<yak> L<website|https://jonasbn.github.io/yak/> is under copyright by L<Shane Aldendorff|https://unsplash.com/photos/3b3O75X0Jzg>
 
