@@ -188,7 +188,7 @@ sub _wanted {
             $rv = FAILURE;
         }
     } elsif (-f $file and $verbose) {
-        _print_skip($color, $File::Find::name) unless $silent_flag;
+        _print_skip($color, $emoji, $File::Find::name) unless $silent_flag;
     }
 }
 
@@ -227,13 +227,18 @@ sub _print_failure {
 }
 
 sub _print_skip {
-    my ($color, $filename, $silent_flag) = @_;
+    my ($color, $emoji, $filename, $silent_flag) = @_;
+
+    my $skip_emoji = '  ';
+    if (not $emoji) {
+        $skip_emoji = '';
+    }
 
     unless ($silent_flag) {
         if ($color) {
-            say FAINT, "  $filename skipped", RESET;
+            say FAINT, $skip_emoji . "$filename skipped", RESET;
         } else {
-            say "  $filename skipped";
+            say $skip_emoji, "$filename skipped";
         }
     }
 }
