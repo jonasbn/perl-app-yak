@@ -10,6 +10,7 @@ Fixes/addresses (If applicable) # (issue)
 
 Please delete options that are not relevant.
 
+- [ ] Cosmetic change, clean up code without introducing new features or bugs, solely addressing issues related to code layout and style
 - [ ] Bug fix (non-breaking change which fixes an issue)
 - [ ] New feature (non-breaking change which adds functionality)
 - [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
