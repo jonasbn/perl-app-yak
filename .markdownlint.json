@@ -1,0 +1,15 @@
+{
+    "default": true,
+    "html": false,
+    "line-length": false,
+    "fenced-code-language": false,
+    "no-hard-tabs": true,
+    "blanks-around-headings": false,
+    "ul-indent": false,
+    "commands-show-output": false,
+    "no-bare-urls": false,
+    "ol-prefix": false,
+    "no-trailing-punctuation": false,
+    "no-space-in-links": false,
+    "first-line-heading": false
+}
