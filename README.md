@@ -64,6 +64,8 @@ This JSON file should be created as `$HOME/.config/yak/checksums.json`.
 - `--checksums file`, reads alternative checksums file instead of default, see ["DATA\_SOURCE"](#data_source)
 - `--color`, enables colorized output, enabled by default or can be configured, see ["CONFIGURATION"](#configuration)
 - `--nocolor`, disables colorized output, even if confgured or provided as `--color`, see above
+- `--emoji`, enables emojis in output, enabled by default or can be configured, see ["CONFIGURATION"](#configuration)
+- `--noemoji`, disables emojis in output, even if confgured or provided as `--emoji`, see above
 - `--about`, emits output on configuration and invocation and terminates with success
 - `--help`, emits help message listing all available options
 
@@ -85,6 +87,7 @@ Note that `--about` return as success with out processing any data apart from re
 - `verbose`, enabling (`true`) or disabling (`false`) more verbose output
 - `debug`, enabling (`true`) or disabling (`false`) debug output
 - `color`, enabling (`true`) or disabling (`false`) colorized output
+- `emoji`, enabling (`true`) or disabling (`false`) colorized output
 
 Configuration can be overridden by command line arguments, see ["INVOCATION"](#invocation).
 
@@ -192,6 +195,6 @@ Image used on the `yak` [website](https://jonasbn.github.io/yak/) is under copyr
 
 Hey! **The above document had some coding errors, which are explained below:**
 
-- Around line 526:
+- Around line 575:
 
     Non-ASCII character seen before =encoding in 'Brømsø,'. Assuming UTF-8

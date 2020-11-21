@@ -1,6 +1,20 @@
 # CHANGELOG for `yak`
 
-## 0.7.0 2020-11-21 Milestone release, implementing color and nocolor control
+## 0.8.0 2020-11-21 Milestone release, implementing emoji output control
+
+- Added configuration option `emoji`
+  - can be configured in: `$HOME/.config/yak/config.yaml`
+  - can be used to override default value of enabled
+
+- Added command line argument `--emoji`
+  - can be used to override `emoji` configuration specified in: `$HOME/.config/yak/config.yaml`
+
+- Added command line argument `--noemoji`
+  - overriding default value of enabled
+  - can be used to override `emoji` configuration specified in: `$HOME/.config/yak/config.yaml`
+  - overriding `--emoji` command line argument
+
+## 0.7.0 2020-11-21 Milestone release, implementing color output control
 
 - Added configuration option `color`
   - can be configured in: `$HOME/.config/yak/config.yaml`
@@ -12,7 +26,7 @@
 - Added command line argument `--nocolor`
   - overriding default value of enabled
   - can be used to override `color` configuration specified in: `$HOME/.config/yak/config.yaml`
-  - overriding`--color` command line argument
+  - overriding `--color` command line argument
 
 ## 0.6.0 2020-11-21 Milestone release, implementing checksums command line option
 

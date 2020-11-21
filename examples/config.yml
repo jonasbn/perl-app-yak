@@ -3,3 +3,4 @@ ignore_dirs:
 - local
 verbose: false
 color: false
+emoji: false

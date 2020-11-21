@@ -2,6 +2,7 @@
 
 use strict;
 use warnings;
+
 use JSON; # from_json
 use YAML::Tiny;
 use Crypt::Digest::SHA256 qw(sha256_file_hex); # Provided by CryptX
@@ -34,6 +35,8 @@ my $about_flag       = FALSE;
 my $help_flag        = FALSE;
 my $nocolor_flag     = FALSE;
 my $color_flag       = FALSE;
+my $noemoji_flag     = FALSE;
+my $emoji_flag       = FALSE;
 my $rv               = SUCCESS;
 my $checksums_src    = '';
 my $config_file      = '';
@@ -48,6 +51,8 @@ GetOptions ('debug'       => \$debug_flag,
             'checksums=s' => \$checksums_src,
             'nocolor'     => \$nocolor_flag,
             'color'       => \$color_flag,
+            'noemoji'     => \$noemoji_flag,
+            'emoji'       => \$emoji_flag,
             'about'       => \$about_flag,
             'help'        => \$help_flag,
 ) or die "Error in command line arguments\n";
@@ -67,6 +72,7 @@ if ($noconfig_flag) {
 my $verbose = _set_verbose($verbosity_flag, $silent_flag, $config);
 my $debug = _set_debug($debug_flag, $nodebug_flag, $config);
 my $color = _set_color($color_flag, $nocolor_flag, $config);
+my $emoji = _set_emoji($emoji_flag, $noemoji_flag, $config);
 
 # Reading the checksum data
 my $checksums_file = '';
@@ -111,8 +117,9 @@ if ($about_flag) {
     print "--checksums $checksums_src\n" if $checksums_src;
     print "--nocolor\n"                  if $nocolor_flag;
     print "--color\n"                    if $color_flag;
+    print "--noemoji\n"                  if $noemoji_flag;
+    print "--emoji\n"                    if $emoji_flag;
     print "--about\n"                    if $about_flag;
-    print "\n";
 
     exit $rv;
 }
@@ -134,6 +141,8 @@ if ($help_flag) {
     print "--checksums <file>: specify alternative to \$HOME/.config/.yak/checksums.json\n";
     print "--nocolor: disable colorized output\n";
     print "--color: enable colorized output\n";
+    print "--noemoji: disable emoji output\n";
+    print "--emoji: enable emoji output\n";
     print "--about: emit configuration and invocation description\n";
     print "\n";
 
@@ -172,9 +181,9 @@ sub _wanted {
         my $file_checksum = sha256_file_hex($file);
 
         if ($file_checksum eq $checksum) {
-            _print_success($color, $File::Find::name) unless $silent_flag;
+            _print_success($color, $emoji, $File::Find::name) unless $silent_flag;
         } else {
-            _print_failure($color, $File::Find::name)  unless $silent_flag;
+            _print_failure($color, $emoji, $File::Find::name)  unless $silent_flag;
             $rv = FAILURE;
         }
     } elsif (-f $file and $verbose) {
@@ -183,25 +192,35 @@ sub _wanted {
 }
 
 sub _print_success {
-    my ($color, $filename, $silent_flag) = @_;
+    my ($color, $emoji, $filename, $silent_flag) = @_;
+
+    my $success_emoji = '👍🏻';
+    if (not $emoji) {
+        $success_emoji = '';
+    }
 
     unless ($silent_flag) {
         if ($color) {
-            print STDERR  GREEN, "👍🏻$filename\n", RESET;
+            print STDERR  GREEN, $success_emoji . $filename . "\n", RESET;
         } else {
-            print STDERR "👍🏻$File::Find::name\n";
+            print STDERR $success_emoji . $filename . "\n";
         }
     }
 }
 
 sub _print_failure {
-    my ($color, $filename, $silent_flag) = @_;
+    my ($color, $emoji, $filename, $silent_flag) = @_;
+
+    my $failure_emoji = '❗️';
+    if (not $emoji) {
+        $failure_emoji = '';
+    }
 
     unless ($silent_flag) {
         if ($color) {
-            print STDERR RED, "❗️filename\n", RESET;
+            print STDERR  RED, $failure_emoji . $filename . "\n", RESET;
         } else {
-            print STDERR "❗️filename\n";
+            print STDERR $failure_emoji . $filename . "\n";
         }
     }
 }
@@ -250,6 +269,30 @@ sub _set_color {
     }
 
     return _is_color_config_false($config)?FALSE:TRUE;
+}
+
+sub _set_emoji {
+    my ($emoji_flag, $noemoji_flag, $config) = @_;
+
+    if ($noemoji_flag) {
+        return FALSE;
+    }
+
+    if ($emoji_flag) {
+        return TRUE;
+    }
+
+    return _is_emoji_config_false($config)?FALSE:TRUE;
+}
+
+sub _is_emoji_config_false {
+    my $config = shift;
+
+    if ($config and $config->[0]->{emoji}) {
+        return $config->[0]->{emoji} eq 'false'?TRUE:FALSE;
+    } else {
+        return FALSE;
+    }
 }
 
 sub _is_color_config_false {
@@ -373,6 +416,10 @@ C<yak> takes the following command line arguments:
 
 =item * C<--nocolor>, disables colorized output, even if confgured or provided as C<--color>, see above
 
+=item * C<--emoji>, enables emojis in output, enabled by default or can be configured, see L</CONFIGURATION>
+
+=item * C<--noemoji>, disables emojis in output, even if confgured or provided as C<--emoji>, see above
+
 =item * C<--about>, emits output on configuration and invocation and terminates with success
 
 =item * C<--help>, emits help message listing all available options
@@ -406,6 +453,8 @@ C<yak> can be configured using the following paramters:
 =item * C<debug>, enabling (C<true>) or disabling (C<false>) debug output
 
 =item * C<color>, enabling (C<true>) or disabling (C<false>) colorized output
+
+=item * C<emoji>, enabling (C<true>) or disabling (C<false>) colorized output
 
 =back
 
