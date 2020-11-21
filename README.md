@@ -190,11 +190,3 @@ Image used on the `yak` [website](https://jonasbn.github.io/yak/) is under copyr
 # LICENSE
 
 `yak` is released under the MIT License
-
-# POD ERRORS
-
-Hey! **The above document had some coding errors, which are explained below:**
-
-- Around line 575:
-
-    Non-ASCII character seen before =encoding in 'Brømsø,'. Assuming UTF-8
