@@ -21,6 +21,9 @@ use constant FAILURE => 1;
 
 our $VERSION = '1.0.0';
 
+my $default_checksums_src  = "$HOME/.config/yak/checksums.json";
+my $default_config_file    = "$HOME/.config/yak/config.yml";
+
 my $debug_flag       = FALSE;
 my $nodebug_flag     = FALSE;
 my $verbosity_flag   = FALSE;
@@ -30,8 +33,8 @@ my $nochecksums_flag = FALSE;
 my $about_flag       = FALSE;
 my $help_flag        = FALSE;
 my $rv               = SUCCESS;
-my $checksums_src    = "$HOME/.config/yak/checksums.json";
-my $config_file      = "$HOME/.config/yak/config.yml";
+my $checksums_src    = '';
+my $config_file      = '';
 
 GetOptions ('debug'       => \$debug_flag,
             'nodebug'     => \$nodebug_flag,
@@ -40,6 +43,7 @@ GetOptions ('debug'       => \$debug_flag,
             'config=s'    => \$config_file,
             'silent'      => \$silent_flag,
             'nochecksums' => \$nochecksums_flag,
+            'checksums=s' => \$checksums_src,
             'about'       => \$about_flag,
             'help'        => \$help_flag,
 ) or die "Error in command line arguments\n";
@@ -49,19 +53,32 @@ my $config;
 if ($noconfig_flag) {
     #$config;
 } else {
-    $config = YAML::Tiny->read($config_file);
+    if ($config_file) {
+        $config = YAML::Tiny->read($config_file);
+    } else {
+        $config = YAML::Tiny->read($default_config_file);
+    }
 }
 
 my $verbose = _set_verbose($verbosity_flag, $silent_flag, $config) || 0;
 my $debug = _set_debug($debug_flag, $nodebug_flag, $config) || 0;
 
 # Reading the checksum data
+my $checksums_file = '';
 if ($nochecksums_flag) {
     my $cwd = getcwd();
-    $checksums_src = "$cwd/.yaksums.json";
+    $checksums_file = "$cwd/.yaksums.json";
+} else {
+
+    if ($checksums_src) {
+        $checksums_file = $checksums_src;
+    } else {
+        $checksums_file = $default_checksums_src;
+    }
+
 }
 
-open (my $checksums_fh, '<', $checksums_src) or die "Unable to read checksum file: $checksums_src - $!";
+open (my $checksums_fh, '<', $checksums_file) or die "Unable to read checksum file: $checksums_file - $!";
 my $checksum_json = join '', <$checksums_fh>;
 close $checksums_fh;
 
@@ -77,16 +94,17 @@ if ($about_flag) {
         print "- verbose: ".$config->[0]->{verbose}."\n" if $config->[0]->{verbose};
         print "\n";
     }
-    print "Using data source located at: $checksums_src\n\n";
+    print "Using data source located at: $checksums_file\n\n";
     print "Invoked with:\n";
-    print "--debug\n"               if $debug_flag;
-    print "--nodebug\n"             if $nodebug_flag;
-    print "--verbose\n"             if $verbosity_flag;
-    print "--noconfig\n"            if $noconfig_flag;
-    print "--config $config_file\n" if $config_file;
-    print "--silent\n"              if $silent_flag;
-    print "--nochecksums\n"         if $nochecksums_flag;
-    print "--about\n"               if $about_flag;
+    print "--debug\n"                    if $debug_flag;
+    print "--nodebug\n"                  if $nodebug_flag;
+    print "--verbose\n"                  if $verbosity_flag;
+    print "--noconfig\n"                 if $noconfig_flag;
+    print "--config $config_file\n"      if $config_file;
+    print "--silent\n"                   if $silent_flag;
+    print "--nochecksums\n"              if $nochecksums_flag;
+    print "--checksums $checksums_src\n" if $checksums_src;
+    print "--about\n"                    if $about_flag;
     print "\n";
 
     exit $rv;
@@ -106,6 +124,7 @@ if ($help_flag) {
     print "--config <file>: specify alternative to \$HOME/.config/.yak/config.yml\n";
     print "--silent: suppress all output and rely on return value\n";
     print "--nochecksums: ignore \$HOME/.config/.yak/checksums.json and use local .yaksums\n";
+    print "--checksums <file>: specify alternative to \$HOME/.config/.yak/checksums.json\n";
     print "--about: emit configuration and invocation description\n";
     print "\n";
 
