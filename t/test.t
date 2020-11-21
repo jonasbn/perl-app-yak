@@ -18,6 +18,7 @@ if ($CONTINUOUS_INTEGRATION and $CONTINUOUS_INTEGRATION eq 'true') {
     script_runs(['yak', '--config', 'examples/config.yml'], '"yak --config examples/config.yml" runs');
     script_runs(['yak', '--silent'], '"yak --silent" runs');
     script_runs(['yak', '--nochecksums'], '"yak --nochecksums" runs');
+    script_runs(['yak', '--checksums', 'examples/checksums.json'], '"yak --checksums examples/checksums.json" runs');
 }
 
 done_testing;
