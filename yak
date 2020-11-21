@@ -2,6 +2,7 @@
 
 use strict;
 use warnings;
+use v5.10; # say
 
 use JSON; # from_json
 use YAML::Tiny;
@@ -95,56 +96,56 @@ close $checksums_fh;
 my $checksums = from_json($checksum_json);
 
 if ($about_flag) {
-    print "$PROGRAM_NAME version $VERSION\n";
-    print "\n";
+    say "$PROGRAM_NAME version $VERSION";
+    say '';
     if (not $noconfig_flag) {
-        print "Using configuration located at: $config_file\n" ;
-        print "Configured with:\n";
-        print "- debug: ".$config->[0]->{debug}."\n" if $config->[0]->{debug};
-        print "- verbose: ".$config->[0]->{verbose}."\n" if $config->[0]->{verbose};
-        print "- color: ".$config->[0]->{color}."\n" if $config->[0]->{color};
-        print "\n";
+        say "Using configuration located at: $config_file" ;
+        say 'Configured with:';
+        say '- debug: '.$config->[0]->{debug} if $config->[0]->{debug};
+        say '- verbose: '.$config->[0]->{verbose} if $config->[0]->{verbose};
+        say '- color: '.$config->[0]->{color} if $config->[0]->{color};
+        say '';
     }
-    print "Using data source located at: $checksums_file\n\n";
-    print "Invoked with:\n";
-    print "--debug\n"                    if $debug_flag;
-    print "--nodebug\n"                  if $nodebug_flag;
-    print "--verbose\n"                  if $verbosity_flag;
-    print "--noconfig\n"                 if $noconfig_flag;
-    print "--config $config_file\n"      if $config_file;
-    print "--silent\n"                   if $silent_flag;
-    print "--nochecksums\n"              if $nochecksums_flag;
-    print "--checksums $checksums_src\n" if $checksums_src;
-    print "--nocolor\n"                  if $nocolor_flag;
-    print "--color\n"                    if $color_flag;
-    print "--noemoji\n"                  if $noemoji_flag;
-    print "--emoji\n"                    if $emoji_flag;
-    print "--about\n"                    if $about_flag;
+    say "Using data source located at: $checksums_file";
+    say '';
+    say 'Invoked with:';
+    say '--debug'                    if $debug_flag;
+    say '--nodebug'                  if $nodebug_flag;
+    say '--verbose'                  if $verbosity_flag;
+    say '--noconfig'                 if $noconfig_flag;
+    say '--config $config_file'      if $config_file;
+    say '--silent'                   if $silent_flag;
+    say '--nochecksums'              if $nochecksums_flag;
+    say '--checksums $checksums_src' if $checksums_src;
+    say '--nocolor'                  if $nocolor_flag;
+    say '--color'                    if $color_flag;
+    say '--noemoji'                  if $noemoji_flag;
+    say '--emoji'                    if $emoji_flag;
+    say '--about'                    if $about_flag;
 
     exit $rv;
 }
 
 if ($help_flag) {
-    print "$PROGRAM_NAME version $VERSION\n";
-    print "\n";
-    print "$PROGRAM_NAME [options]\n";
-    print "\n";
-    print "Options\n";
-    print "\n";
-    print "--debug: debug output\n";
-    print "--nodebug: disabling debug output, if configured\n";
-    print "--verbose: more verbose output\n";
-    print "--noconfig: ignore \$HOME/.config/.yak/config.yml\n";
-    print "--config <file>: specify alternative to \$HOME/.config/.yak/config.yml\n";
-    print "--silent: suppress all output and rely on return value\n";
-    print "--nochecksums: ignore \$HOME/.config/.yak/checksums.json and use local .yaksums\n";
-    print "--checksums <file>: specify alternative to \$HOME/.config/.yak/checksums.json\n";
-    print "--nocolor: disable colorized output\n";
-    print "--color: enable colorized output\n";
-    print "--noemoji: disable emoji output\n";
-    print "--emoji: enable emoji output\n";
-    print "--about: emit configuration and invocation description\n";
-    print "\n";
+    say "$PROGRAM_NAME version $VERSION";
+    say '';
+    say "$PROGRAM_NAME [options]";
+    say '';
+    say 'Options';
+    say '';
+    say '--debug: debug output';
+    say '--nodebug: disabling debug output, if configured';
+    say '--verbose: more verbose output';
+    say '--noconfig: ignore \$HOME/.config/.yak/config.yml';
+    say '--config <file>: specify alternative to \$HOME/.config/.yak/config.yml';
+    say '--silent: suppress all output and rely on return value';
+    say '--nochecksums: ignore \$HOME/.config/.yak/checksums.json and use local .yaksums';
+    say '--checksums <file>: specify alternative to \$HOME/.config/.yak/checksums.json';
+    say '--nocolor: disable colorized output';
+    say '--color: enable colorized output';
+    say '--noemoji: disable emoji output';
+    say '--emoji: enable emoji output';
+    say '--about: emit configuration and invocation description';
 
     exit $rv;
 }
@@ -161,9 +162,9 @@ sub _wanted {
     my $file = $_;
 
     if ($debug) {
-        print STDERR "Examining: $File::Find::dir\n";
-        print STDERR "Examining: $_\n";
-        print STDERR "Examining: $File::Find::name\n\n";
+        say STDERR "Examining: $File::Find::dir";
+        say STDERR "Examining: $_";
+        say STDERR "Examining: $File::Find::name";
     }
 
     if (-f $file and any { $file eq $_ } keys %{$checksums} ) {
@@ -201,9 +202,9 @@ sub _print_success {
 
     unless ($silent_flag) {
         if ($color) {
-            print STDERR  GREEN, $success_emoji . $filename . "\n", RESET;
+            say GREEN, $success_emoji . $filename . RESET;
         } else {
-            print STDERR $success_emoji . $filename . "\n";
+            say $success_emoji . $filename;
         }
     }
 }
@@ -218,9 +219,9 @@ sub _print_failure {
 
     unless ($silent_flag) {
         if ($color) {
-            print STDERR  RED, $failure_emoji . $filename . "\n", RESET;
+            say  RED, $failure_emoji . $filename . RESET;
         } else {
-            print STDERR $failure_emoji . $filename . "\n";
+            say $failure_emoji . $filename;
         }
     }
 }
@@ -230,9 +231,9 @@ sub _print_skip {
 
     unless ($silent_flag) {
         if ($color) {
-            print STDERR FAINT, "  $filename skipped\n", RESET;
+            say FAINT, "  $filename skipped", RESET;
         } else {
-            print STDERR "  $filename skipped\n";
+            say "  $filename skipped";
         }
     }
 }
