@@ -2,3 +2,4 @@ ignore_dirs:
 - .git
 - local
 verbose: false
+color: false

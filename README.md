@@ -60,7 +60,10 @@ This JSON file should be created as `$HOME/.config/yak/checksums.json`.
 - `--nodebug`, disables debug output even if confgured or provided as `--debug`, see above
 - `--config file`, reads alternative configuration file instead of default, see ["CONFIGURATION"](#configuration)
 - `--noconfig`, disables reading of the configuration file, (see ["CONFIGURATION"](#configuration)) and you have to rely on the command line arguments
-- `--nochecksums`, disables reading of the global checksums file (see ["DATA\_SOURCE"](#data_source))
+- `--nochecksums`, disables reading of the global checksums file, see ["DATA\_SOURCE"](#data_source)
+- `--checksums file`, reads alternative checksums file instead of default, see ["DATA\_SOURCE"](#data_source)
+- `--color`, enables colorized output, enabled by default or can be configured, see ["CONFIGURATION"](#configuration)
+- `--nocolor`, disables colorized output, even if confgured or provided as `--color`, see above
 - `--about`, emits output on configuration and invocation and terminates with success
 - `--help`, emits help message listing all available options
 
@@ -79,8 +82,9 @@ Note that `--about` return as success with out processing any data apart from re
 
 `yak` can be configured using the following paramters:
 
-- `verbose`, which enables more verbose output
-- `debug`, which enables debug output
+- `verbose`, enabling (`true`) or disabling (`false`) more verbose output
+- `debug`, enabling (`true`) or disabling (`false`) debug output
+- `color`, enabling (`true`) or disabling (`false`) colorized output
 
 Configuration can be overridden by command line arguments, see ["INVOCATION"](#invocation).
 
@@ -92,6 +96,12 @@ This YAML file should be created as `$HOME/.config/yak/config.yml`.
     debug: false
 
 # DATA SOURCE
+
+There are 3 ways to provide checksum data to `yak`.
+
+- The default using: `$HOME/.config/yak/checksums.json`, which can then be edited to match your needs
+- Using a project or repository specific: `.yaksums.json` located in the root of your project or repository directory
+- Using an JSON file adhering to formatting described in this chapter, which can be located elsewhere on your file system
 
 The default data source is described in the ["DESCRIPTION"](#description). As a an alternative a per project file can be specified in the designated repository/directory.
 
@@ -133,7 +143,7 @@ The Docker image has the following command line arguments embedded:
 - `--noconfig`
 - `--nochecksums`
 
-Since the ability to read files outside the Docker container is limited to the directory mounted.
+Since the ability to read files outside the Docker container is limited to mounted directories.
 
 The mount point is expected to be a directory containing the files to be checked against the checksum data structure. Please see the ["LIMITATIONS"](#limitations) for details.
 
@@ -166,14 +176,22 @@ Used commonly for repetive and boring work, required to reach a certain goal.
 
 # AUTHOR
 
-- jonasbn <jonasbn@cpan.org>
+- jonasbn, [website](https://jonasbn.github.io/)
 
 # COPYRIGHT
 
-`yak` is (C) by Jonas B. Nielsen, (jonasbn) 2018-2020
+`yak` is (C) by Jonas Brømsø, (jonasbn) 2018-2020
 
 Image used on the `yak` [website](https://jonasbn.github.io/yak/) is under copyright by [Shane Aldendorff](https://unsplash.com/photos/3b3O75X0Jzg)
 
 # LICENSE
 
 `yak` is released under the MIT License
+
+# POD ERRORS
+
+Hey! **The above document had some coding errors, which are explained below:**
+
+- Around line 526:
+
+    Non-ASCII character seen before =encoding in 'Brømsø,'. Assuming UTF-8

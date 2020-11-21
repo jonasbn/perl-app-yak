@@ -1,5 +1,19 @@
 # CHANGELOG for `yak`
 
+## 0.7.0 2020-11-21 Milestone release, implementing color and nocolor control
+
+- Added configuration option `color`
+  - can be configured in: `$HOME/.config/yak/config.yaml`
+  - can be used to override default value of enabled
+
+- Added command line argument `--color`
+  - can be used to override `color` configuration specified in: `$HOME/.config/yak/config.yaml`
+
+- Added command line argument `--nocolor`
+  - overriding default value of enabled
+  - can be used to override `color` configuration specified in: `$HOME/.config/yak/config.yaml`
+  - overriding`--color` command line argument
+
 ## 0.6.0 2020-11-21 Milestone release, implementing checksums command line option
 
 - Added command line argument `--config <data source file>`

@@ -32,6 +32,8 @@ my $noconfig_flag    = FALSE;
 my $nochecksums_flag = FALSE;
 my $about_flag       = FALSE;
 my $help_flag        = FALSE;
+my $nocolor_flag     = FALSE;
+my $color_flag       = FALSE;
 my $rv               = SUCCESS;
 my $checksums_src    = '';
 my $config_file      = '';
@@ -44,6 +46,8 @@ GetOptions ('debug'       => \$debug_flag,
             'silent'      => \$silent_flag,
             'nochecksums' => \$nochecksums_flag,
             'checksums=s' => \$checksums_src,
+            'nocolor'     => \$nocolor_flag,
+            'color'       => \$color_flag,
             'about'       => \$about_flag,
             'help'        => \$help_flag,
 ) or die "Error in command line arguments\n";
@@ -60,8 +64,9 @@ if ($noconfig_flag) {
     }
 }
 
-my $verbose = _set_verbose($verbosity_flag, $silent_flag, $config) || 0;
-my $debug = _set_debug($debug_flag, $nodebug_flag, $config) || 0;
+my $verbose = _set_verbose($verbosity_flag, $silent_flag, $config);
+my $debug = _set_debug($debug_flag, $nodebug_flag, $config);
+my $color = _set_color($color_flag, $nocolor_flag, $config);
 
 # Reading the checksum data
 my $checksums_file = '';
@@ -75,7 +80,6 @@ if ($nochecksums_flag) {
     } else {
         $checksums_file = $default_checksums_src;
     }
-
 }
 
 open (my $checksums_fh, '<', $checksums_file) or die "Unable to read checksum file: $checksums_file - $!";
@@ -92,6 +96,7 @@ if ($about_flag) {
         print "Configured with:\n";
         print "- debug: ".$config->[0]->{debug}."\n" if $config->[0]->{debug};
         print "- verbose: ".$config->[0]->{verbose}."\n" if $config->[0]->{verbose};
+        print "- color: ".$config->[0]->{color}."\n" if $config->[0]->{color};
         print "\n";
     }
     print "Using data source located at: $checksums_file\n\n";
@@ -104,6 +109,8 @@ if ($about_flag) {
     print "--silent\n"                   if $silent_flag;
     print "--nochecksums\n"              if $nochecksums_flag;
     print "--checksums $checksums_src\n" if $checksums_src;
+    print "--nocolor\n"                  if $nocolor_flag;
+    print "--color\n"                    if $color_flag;
     print "--about\n"                    if $about_flag;
     print "\n";
 
@@ -125,6 +132,8 @@ if ($help_flag) {
     print "--silent: suppress all output and rely on return value\n";
     print "--nochecksums: ignore \$HOME/.config/.yak/checksums.json and use local .yaksums\n";
     print "--checksums <file>: specify alternative to \$HOME/.config/.yak/checksums.json\n";
+    print "--nocolor: disable colorized output\n";
+    print "--color: enable colorized output\n";
     print "--about: emit configuration and invocation description\n";
     print "\n";
 
@@ -163,13 +172,49 @@ sub _wanted {
         my $file_checksum = sha256_file_hex($file);
 
         if ($file_checksum eq $checksum) {
-            print STDERR  GREEN, "👍🏻$File::Find::name\n", RESET unless $silent_flag;
+            _print_success($color, $File::Find::name) unless $silent_flag;
         } else {
-            print STDERR RED, "❗️$File::Find::name\n", RESET  unless $silent_flag;
+            _print_failure($color, $File::Find::name)  unless $silent_flag;
             $rv = FAILURE;
         }
     } elsif (-f $file and $verbose) {
-        print STDERR FAINT, "  $File::Find::name skipped\n", RESET  unless $silent_flag;
+        _print_skip($color, $File::Find::name) unless $silent_flag;
+    }
+}
+
+sub _print_success {
+    my ($color, $filename, $silent_flag) = @_;
+
+    unless ($silent_flag) {
+        if ($color) {
+            print STDERR  GREEN, "👍🏻$filename\n", RESET;
+        } else {
+            print STDERR "👍🏻$File::Find::name\n";
+        }
+    }
+}
+
+sub _print_failure {
+    my ($color, $filename, $silent_flag) = @_;
+
+    unless ($silent_flag) {
+        if ($color) {
+            print STDERR RED, "❗️filename\n", RESET;
+        } else {
+            print STDERR "❗️filename\n";
+        }
+    }
+}
+
+sub _print_skip {
+    my ($color, $filename, $silent_flag) = @_;
+
+    unless ($silent_flag) {
+        if ($color) {
+            print STDERR FAINT, "  $filename skipped\n", RESET;
+        } else {
+            print STDERR "  $filename skipped\n";
+        }
     }
 }
 
@@ -191,6 +236,30 @@ sub _set_debug {
     }
 
     return $debug_flag || _is_debug_config_true($config) || FALSE;
+}
+
+sub _set_color {
+    my ($color_flag, $nocolor_flag, $config) = @_;
+
+    if ($nocolor_flag) {
+        return FALSE;
+    }
+
+    if ($color_flag) {
+        return TRUE;
+    }
+
+    return _is_color_config_false($config)?FALSE:TRUE;
+}
+
+sub _is_color_config_false {
+    my $config = shift;
+
+    if ($config and $config->[0]->{color}) {
+        return $config->[0]->{color} eq 'false'?TRUE:FALSE;
+    } else {
+        return FALSE;
+    }
 }
 
 sub _is_debug_config_true {
@@ -300,6 +369,10 @@ C<yak> takes the following command line arguments:
 
 =item * C<--checksums file>, reads alternative checksums file instead of default, see L</DATA_SOURCE>
 
+=item * C<--color>, enables colorized output, enabled by default or can be configured, see L</CONFIGURATION>
+
+=item * C<--nocolor>, disables colorized output, even if confgured or provided as C<--color>, see above
+
 =item * C<--about>, emits output on configuration and invocation and terminates with success
 
 =item * C<--help>, emits help message listing all available options
@@ -328,9 +401,11 @@ C<yak> can be configured using the following paramters:
 
 =over
 
-=item * C<verbose>, which enables more verbose output
+=item * C<verbose>, enabling (C<true>) or disabling (C<false>) more verbose output
 
-=item * C<debug>, which enables debug output
+=item * C<debug>, enabling (C<true>) or disabling (C<false>) debug output
+
+=item * C<color>, enabling (C<true>) or disabling (C<false>) colorized output
 
 =back
 

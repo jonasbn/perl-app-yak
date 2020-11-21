@@ -19,6 +19,8 @@ if ($CONTINUOUS_INTEGRATION and $CONTINUOUS_INTEGRATION eq 'true') {
     script_runs(['yak', '--silent'], '"yak --silent" runs');
     script_runs(['yak', '--nochecksums'], '"yak --nochecksums" runs');
     script_runs(['yak', '--checksums', 'examples/checksums.json'], '"yak --checksums examples/checksums.json" runs');
+    script_runs(['yak', '--color'], '"yak --color" runs');
+    script_runs(['yak', '--nocolor'], '"yak --nocolor" runs');
 }
 
 done_testing;
