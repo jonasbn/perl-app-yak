@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use v5.10; # say
 
+use utf8;
 use JSON; # from_json
 use YAML::Tiny;
 use Crypt::Digest::SHA256 qw(sha256_file_hex); # Provided by CryptX
@@ -16,6 +17,9 @@ use English; # $PROGRAM_NAME
 use Getopt::Long; # GetOptions
 use Cwd; # getcwd
 
+binmode STDOUT, ":utf8";
+binmode STDERR, ":utf8";
+
 use constant FALSE   => 0;
 use constant TRUE    => 1;
 use constant SUCCESS => 0;
@@ -23,8 +27,11 @@ use constant FAILURE => 1;
 
 our $VERSION = '1.0.0';
 
-my $default_checksums_src  = "$HOME/.config/yak/checksums.json";
-my $default_config_file    = "$HOME/.config/yak/config.yml";
+my $default_checksums_src = "$HOME/.config/yak/checksums.json";
+my $default_config_file   = "$HOME/.config/yak/config.yml";
+my $success_emoji         = '👍🏻';
+my $failure_emoji         = '❗️';
+my $skip_emoji            = '  ';
 
 my $debug_flag       = FALSE;
 my $nodebug_flag     = FALSE;
@@ -74,6 +81,16 @@ my $verbose = _set_verbose($verbosity_flag, $silent_flag, $config);
 my $debug = _set_debug($debug_flag, $nodebug_flag, $config);
 my $color = _set_color($color_flag, $nocolor_flag, $config);
 my $emoji = _set_emoji($emoji_flag, $noemoji_flag, $config);
+
+if (not $emoji) {
+    $success_emoji = '';
+    $failure_emoji = '';
+    $skip_emoji    = '';
+} else {
+    $success_emoji = _set_success_emoji($success_emoji, $config);
+    $failure_emoji = _set_failure_emoji($failure_emoji, $config);
+    $skip_emoji    = _set_skip_emoji($skip_emoji, $config);
+}
 
 # Reading the checksum data
 my $checksums_file = '';
@@ -182,29 +199,42 @@ sub _wanted {
         my $file_checksum = sha256_file_hex($file);
 
         if ($file_checksum eq $checksum) {
-            _print_success($color, $emoji, $File::Find::name) unless $silent_flag;
+            _print_success($color, $success_emoji, $File::Find::name) unless $silent_flag;
         } else {
-            _print_failure($color, $emoji, $File::Find::name)  unless $silent_flag;
+            _print_failure($color, $failure_emoji, $File::Find::name)  unless $silent_flag;
             $rv = FAILURE;
         }
     } elsif (-f $file and $verbose) {
-        _print_skip($color, $emoji, $File::Find::name) unless $silent_flag;
+        _print_skip($color, $skip_emoji, $File::Find::name) unless $silent_flag;
     }
+}
+
+sub _set_success_emoji {
+    my ($success_emoji, $config) = @_;
+    
+    return $config->[0]->{success_emoji} || $success_emoji;
+}
+
+sub _set_failure_emoji {
+    my ($failure_emoji, $config) = @_;
+    
+    return $config->[0]->{failure_emoji} || $failure_emoji;
+}
+
+sub _set_skip_emoji {
+    my ($skip_emoji, $config) = @_;
+    
+    return $config->[0]->{skip_emoji} || $skip_emoji;
 }
 
 sub _print_success {
     my ($color, $emoji, $filename, $silent_flag) = @_;
 
-    my $success_emoji = '👍🏻';
-    if (not $emoji) {
-        $success_emoji = '';
-    }
-
     unless ($silent_flag) {
         if ($color) {
-            say GREEN, $success_emoji . $filename . RESET;
+            say GREEN, $emoji . $filename . RESET;
         } else {
-            say $success_emoji . $filename;
+            say $emoji . $filename;
         }
     }
 }
@@ -212,16 +242,11 @@ sub _print_success {
 sub _print_failure {
     my ($color, $emoji, $filename, $silent_flag) = @_;
 
-    my $failure_emoji = '❗️';
-    if (not $emoji) {
-        $failure_emoji = '';
-    }
-
     unless ($silent_flag) {
         if ($color) {
-            say  RED, $failure_emoji . $filename . RESET;
+            say RED, $emoji . $filename . RESET;
         } else {
-            say $failure_emoji . $filename;
+            say $emoji . $filename;
         }
     }
 }
@@ -229,16 +254,11 @@ sub _print_failure {
 sub _print_skip {
     my ($color, $emoji, $filename, $silent_flag) = @_;
 
-    my $skip_emoji = '  ';
-    if (not $emoji) {
-        $skip_emoji = '';
-    }
-
     unless ($silent_flag) {
         if ($color) {
-            say FAINT, $skip_emoji . "$filename skipped", RESET;
+            say FAINT, $emoji . "$filename skipped", RESET;
         } else {
-            say $skip_emoji, "$filename skipped";
+            say $emoji, "$filename skipped";
         }
     }
 }
