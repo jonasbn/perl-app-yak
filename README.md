@@ -55,13 +55,13 @@ This JSON file should be created as `$HOME/.config/yak/checksums.json`.
 `yak` takes the following command line arguments:
 
 - `--verbose`, enables more verbose output, can be configured see ["CONFIGURATION"](#configuration)
-- `--silent`, disables output and you have to rely on the return value see ["RETURN\_VALUES"](#return_values) below.
+- `--silent`, disables output and you have to rely on the return value see ["RETURN VALUES"](#return-values) below.
 - `--debug`, enables debug output. can be configured see ["CONFIGURATION"](#configuration)
 - `--nodebug`, disables debug output even if confgured or provided as `--debug`, see above
 - `--config file`, reads alternative configuration file instead of default, see ["CONFIGURATION"](#configuration)
 - `--noconfig`, disables reading of the configuration file, (see ["CONFIGURATION"](#configuration)) and you have to rely on the command line arguments
-- `--nochecksums`, disables reading of the global checksums file, see ["DATA\_SOURCE"](#data_source)
-- `--checksums file`, reads alternative checksums file instead of default, see ["DATA\_SOURCE"](#data_source)
+- `--nochecksums`, disables reading of the global checksums file, see ["DATA SOURCE"](#data-source)
+- `--checksums file`, reads alternative checksums file instead of default, see ["DATA SOURCE"](#data-source)
 - `--color`, enables colorized output, enabled by default or can be configured, see ["CONFIGURATION"](#configuration)
 - `--nocolor`, disables colorized output, even if confgured or provided as `--color`, see above
 - `--emoji`, enables emojis in output, enabled by default or can be configured, see ["CONFIGURATION"](#configuration)
@@ -88,6 +88,9 @@ Note that `--about` return as success with out processing any data apart from re
 - `debug`, enabling (`true`) or disabling (`false`) debug output
 - `color`, enabling (`true`) or disabling (`false`) colorized output
 - `emoji`, enabling (`true`) or disabling (`false`) colorized output
+- `success_emoji`
+- `failure_emoji`
+- `skip_emoji`
 
 Configuration can be overridden by command line arguments, see ["INVOCATION"](#invocation).
 
@@ -97,6 +100,9 @@ This YAML file should be created as `$HOME/.config/yak/config.yml`.
 
     verbose: false
     debug: false
+    skip_emoji: ✖️
+    failure_emoji: ❌
+    success_emoji: ✅
 
 # DATA SOURCE
 
