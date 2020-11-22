@@ -1,5 +1,19 @@
 # CHANGELOG for `yak`
 
+## 0.9.0 2020-11-22 Milestone release, implementing support for custom emojis
+
+- Added configuration option `success_emoji`
+  - can be configured in: `$HOME/.config/yak/config.yaml`
+  - can be used to override default emoji for successful checks
+
+- Added configuration option `failure_emoji`
+  - can be configured in: `$HOME/.config/yak/config.yaml`
+  - can be used to override default emoji for failing checks
+
+- Added configuration option `skip_emoji`
+  - can be configured in: `$HOME/.config/yak/config.yaml`
+  - can be used to override default emoji for skipped checks
+
 ## 0.8.0 2020-11-21 Milestone release, implementing emoji output control
 
 - Added configuration option `emoji`

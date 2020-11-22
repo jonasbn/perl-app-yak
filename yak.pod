@@ -71,7 +71,7 @@ C<yak> takes the following command line arguments:
 
 =item * C<--verbose>, enables more verbose output, can be configured see L</CONFIGURATION>
 
-=item * C<--silent>, disables output and you have to rely on the return value see L</RETURN_VALUES> below.
+=item * C<--silent>, disables output and you have to rely on the return value see L</RETURN VALUES> below.
 
 =item * C<--debug>, enables debug output. can be configured see L</CONFIGURATION>
 
@@ -81,9 +81,9 @@ C<yak> takes the following command line arguments:
 
 =item * C<--noconfig>, disables reading of the configuration file, (see L</CONFIGURATION>) and you have to rely on the command line arguments
 
-=item * C<--nochecksums>, disables reading of the global checksums file, see L</DATA_SOURCE>
+=item * C<--nochecksums>, disables reading of the global checksums file, see L</DATA SOURCE>
 
-=item * C<--checksums file>, reads alternative checksums file instead of default, see L</DATA_SOURCE>
+=item * C<--checksums file>, reads alternative checksums file instead of default, see L</DATA SOURCE>
 
 =item * C<--color>, enables colorized output, enabled by default or can be configured, see L</CONFIGURATION>
 
@@ -129,6 +129,12 @@ C<yak> can be configured using the following paramters:
 
 =item * C<emoji>, enabling (C<true>) or disabling (C<false>) colorized output
 
+=item * C<success_emoji>
+
+=item * C<failure_emoji>
+
+=item * C<skip_emoji>
+
 =back
 
 Configuration can be overridden by command line arguments, see L</INVOCATION>.
@@ -139,6 +145,9 @@ This YAML file should be created as C<$HOME/.config/yak/config.yml>.
 
     verbose: false
     debug: false
+    skip_emoji: ✖️
+    failure_emoji: ❌
+    success_emoji: ✅
 
 =head1 DATA SOURCE
 
