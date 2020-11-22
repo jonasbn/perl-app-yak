@@ -129,6 +129,12 @@ C<yak> can be configured using the following paramters:
 
 =item * C<emoji>, enabling (C<true>) or disabling (C<false>) colorized output
 
+=item * C<success_emoji>
+
+=item * C<failure_emoji>
+
+=item * C<skip_emoji>
+
 =back
 
 Configuration can be overridden by command line arguments, see L</INVOCATION>.
