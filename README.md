@@ -1,4 +1,6 @@
 [![Build Status](https://travis-ci.org/jonasbn/yak.svg?branch=master)](https://travis-ci.org/jonasbn/yak)
+![Spellcheck Action](https://github.com/jonasbn/yak/workflows/Spellcheck%20Action/badge.svg)
+![Markdownlint Action](https://github.com/jonasbn/yak/workflows/Markdownlint%20Action/badge.svg)
 
 The yak command line utility is still WIP and to be regarded as *alpha* software, most features are working but it not ready for first official release
 
