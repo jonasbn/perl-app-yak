@@ -1,8 +1,6 @@
 [![Build Status](https://travis-ci.org/jonasbn/yak.svg?branch=master)](https://travis-ci.org/jonasbn/yak)
 
-:warning: WARNING! :warning:
-
-This this project and it's components are WIP and *alpha* software, everything is far from working and even farther from finished
+The yak command line utility is still WIP and to be regarded as *alpha* software, most features are working but it not ready for first official release
 
 ---
 
