@@ -78,6 +78,22 @@ Command line arguments override the configuration.
 
 Note that `--about` return as success with out processing any data apart from reading configuration and parsing command line arguments.
 
+# ENVIRONMENT
+
+`yak` supports the following environmet variables:
+
+- `$CLICOLOR}`, if set to false (`0`) it attempts to disable colorized output, if set to true (`1`), it attempts to enable colorized output
+- `$CLICOLOR_FORCE`, if set to true (`1`) it enables colorized output, if set to false (`1`), it disables colorized output
+
+The order of precedence is as follows:
+
+- 1. Environment (this section), `$CLICOLOR_FORCE`
+- 2. Command line arguments, `--nocolor` and `--color` in that order, see ["INVOCATION"](#invocation)
+- 3. Environment (this section), `$CLICOLOR`
+- 4. Configuration, see ["CONFIGURATION"](#configuration), `color` configuration option
+
+This aims to follow the proposed standard described in [this article](https://bixense.com/clicolors/).
+
 # CONFIGURATION
 
 `$HOME/.config/yak/config.yml`
@@ -196,3 +212,8 @@ Image used on the `yak` [website](https://jonasbn.github.io/yak/) is under copyr
 # LICENSE
 
 `yak` is released under the MIT License
+
+# REFERENCES
+
+- 1. MetaCPAN: [TERM-ANSICOLOR](https://metacpan.org/pod/Term%3A%3AANSIColor)
+- 2. Bixsense: ["Standard for ANSI Colors in Terminals"](https://bixense.com/clicolors/)

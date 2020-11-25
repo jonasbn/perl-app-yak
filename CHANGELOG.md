@@ -1,5 +1,12 @@
 # CHANGELOG for `yak`
 
+## 0.10.0 2020-11-25 Milestone release, implementing support for controlling colorized output using environment
+
+- Added support for environment variable `$CLICOLOR`
+  - overrides config can be overridden by command line flags
+- Added support for environment variable `$CLICOLOR_FORCE`
+  - overrides config, `$CLICOLOR` and command line flags
+
 ## 0.9.0 2020-11-22 Milestone release, implementing support for custom emojis
 
 - Added configuration option `success_emoji`
