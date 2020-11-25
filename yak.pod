@@ -115,7 +115,7 @@ Note that C<--about> return as success with out processing any data apart from r
 
 =head1 ENVIRONMENT
 
-C<yak> supports the following environmet variables:
+C<yak> supports the following environment variables:
 
 =over
 

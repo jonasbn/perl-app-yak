@@ -80,7 +80,7 @@ Note that `--about` return as success with out processing any data apart from re
 
 # ENVIRONMENT
 
-`yak` supports the following environmet variables:
+`yak` supports the following environment variables:
 
 - `$CLICOLOR}`, if set to false (`0`) it attempts to disable colorized output, if set to true (`1`), it attempts to enable colorized output
 - `$CLICOLOR_FORCE`, if set to true (`1`) it enables colorized output, if set to false (`1`), it disables colorized output
