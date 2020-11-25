@@ -23,3 +23,6 @@ repetive
 sexualized
 todo
 yaksums
+ANSICOLOR
+MetaCPAN
+Bixsense

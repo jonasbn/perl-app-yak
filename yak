@@ -211,19 +211,19 @@ sub _wanted {
 
 sub _set_success_emoji {
     my ($success_emoji, $config) = @_;
-    
+
     return $config->[0]->{success_emoji} || $success_emoji;
 }
 
 sub _set_failure_emoji {
     my ($failure_emoji, $config) = @_;
-    
+
     return $config->[0]->{failure_emoji} || $failure_emoji;
 }
 
 sub _set_skip_emoji {
     my ($skip_emoji, $config) = @_;
-    
+
     return $config->[0]->{skip_emoji} || $skip_emoji;
 }
 
@@ -286,11 +286,23 @@ sub _set_debug {
 sub _set_color {
     my ($color_flag, $nocolor_flag, $config) = @_;
 
+    if (exists($ENV{CLICOLOR_FORCE}) && $ENV{CLICOLOR_FORCE} == FALSE) {
+        return FALSE;
+    } elsif (exists($ENV{CLICOLOR_FORCE}) && $ENV{CLICOLOR_FORCE} != FALSE) {
+        return TRUE;
+    }
+
     if ($nocolor_flag) {
         return FALSE;
     }
 
     if ($color_flag) {
+        return TRUE;
+    }
+
+    if (exists($ENV{CLICOLOR}) && $ENV{CLICOLOR} == FALSE) {
+        return FALSE;
+    } elsif (exists($ENV{CLICOLOR}) && $ENV{CLICOLOR} != TRUE) {
         return TRUE;
     }
 

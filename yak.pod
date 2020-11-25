@@ -113,6 +113,34 @@ Command line arguments override the configuration.
 
 Note that C<--about> return as success with out processing any data apart from reading configuration and parsing command line arguments.
 
+=head1 ENVIRONMENT
+
+C<yak> supports the following environment variables:
+
+=over
+
+=item * C<$CLICOLOR}>, if set to false (C<0>) it attempts to disable colorized output, if set to true (C<1>), it attempts to enable colorized output
+
+=item * C<$CLICOLOR_FORCE>, if set to true (C<1>) it enables colorized output, if set to false (C<1>), it disables colorized output
+
+=back
+
+The order of precedence is as follows:
+
+=over
+
+=item 1. Environment (this section), C<$CLICOLOR_FORCE>
+
+=item 2. Command line arguments, C<--nocolor> and C<--color> in that order, see L</INVOCATION>
+
+=item 3. Environment (this section), C<$CLICOLOR>
+
+=item 4. Configuration, see L</CONFIGURATION>, C<color> configuration option
+
+=back
+
+This aims to follow the proposed standard described in L<this article|https://bixense.com/clicolors/>.
+
 =head1 CONFIGURATION
 
 F<$HOME/.config/yak/config.yml>
@@ -261,5 +289,15 @@ Image used on the C<yak> L<website|https://jonasbn.github.io/yak/> is under copy
 =head1 LICENSE
 
 C<yak> is released under the MIT License
+
+=head1 REFERENCES
+
+=over
+
+=item 1. MetaCPAN: L<TERM-ANSICOLOR|https://metacpan.org/pod/Term%3A%3AANSIColor>
+
+=item 2. Bixsense: L<"Standard for ANSI Colors in Terminals"|https://bixense.com/clicolors/>
+
+=back
 
 =cut
