@@ -115,8 +115,12 @@ my $checksums = from_json($checksum_json);
 if ($about_flag) {
     say "$PROGRAM_NAME version $VERSION";
     say '';
+    say 'With environment';
+    say "\$CLICOLOR = $ENV{CLICOLOR}"             if exists $ENV{CLICOLOR};
+    say "\$CLICOLOR_FORCE = $ENV{CLICOLOR_FORCE}" if exists $ENV{CLICOLOR_FORCE};
+    say '';
     if (not $noconfig_flag) {
-        say "Using configuration located at: $config_file" ;
+        say "Using configuration located at: $config_file";
         say 'Configured with:';
         say '- debug: '.$config->[0]->{debug} if $config->[0]->{debug};
         say '- verbose: '.$config->[0]->{verbose} if $config->[0]->{verbose};
@@ -130,10 +134,10 @@ if ($about_flag) {
     say '--nodebug'                  if $nodebug_flag;
     say '--verbose'                  if $verbosity_flag;
     say '--noconfig'                 if $noconfig_flag;
-    say '--config $config_file'      if $config_file;
+    say "--config $config_file"      if $config_file;
     say '--silent'                   if $silent_flag;
     say '--nochecksums'              if $nochecksums_flag;
-    say '--checksums $checksums_src' if $checksums_src;
+    say "--checksums $checksums_src" if $checksums_src;
     say '--nocolor'                  if $nocolor_flag;
     say '--color'                    if $color_flag;
     say '--noemoji'                  if $noemoji_flag;

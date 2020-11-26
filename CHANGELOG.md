@@ -1,5 +1,11 @@
 # CHANGELOG for `yak`
 
+## 0.11.0 2020-11-26 Milestone release, implementing environment output in `--about`
+
+- `--about` now outputs the values of relevant environment variables
+  - outputs value of `$CLICOLOR` if defined
+  - outputs value of `$CLICOLOR_FORCE` if defined
+
 ## 0.10.0 2020-11-25 Milestone release, implementing support for controlling colorized output using environment
 
 - Added support for environment variable `$CLICOLOR`
