@@ -172,6 +172,10 @@ Since the ability to read files outside the Docker container is limited to mount
 
 The mount point is expected to be a directory containing the files to be checked against the checksum data structure. Please see the ["LIMITATIONS"](#limitations) for details.
 
+If you want to utilize the supported environment variables (see ["ENVIRONMENT"](#environment)) you have to do something along the lines of:
+
+    $ docker run --rm -it -v $PWD:/tmp --env CLICOLOR=$CLICOLOR jonasbn/yak
+
 # LIMITATIONS
 
 - Running under Docker is limited to using only checksums specified in a local <.yaksums.json> and configuration has to be specified using command line arguments not a file

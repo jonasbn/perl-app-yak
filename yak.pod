@@ -240,6 +240,10 @@ Since the ability to read files outside the Docker container is limited to mount
 
 The mount point is expected to be a directory containing the files to be checked against the checksum data structure. Please see the L</LIMITATIONS> for details.
 
+If you want to utilize the supported environment variables (see L</ENVIRONMENT>) you have to do something along the lines of:
+
+    $ docker run --rm -it -v $PWD:/tmp --env CLICOLOR=$CLICOLOR jonasbn/yak
+
 =head1 LIMITATIONS
 
 =over
