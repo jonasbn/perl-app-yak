@@ -207,14 +207,6 @@ sub _wanted {
         return;
     }
 
-    # TODO: the path from Parse::Gitignore and File::Find are not compatible out of the box
-    if ($pg->ignored($_)) {
-        if ($debug) {
-            print STDERR "Attempting to ignore $file\n";
-        }
-        return;
-    }
-
     if (-f $file and any { $file eq $_ } keys %{$checksums} ) {
 
         my $checksum;
