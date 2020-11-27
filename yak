@@ -94,7 +94,7 @@ if (not $emoji) {
     $success_emoji = _set_success_emoji($success_emoji, $config);
     $failure_emoji = _set_failure_emoji($failure_emoji, $config);
     $skip_emoji    = _set_skip_emoji($skip_emoji, $config);
-    $ignore_emoji    = _set_ignore_emoji($ignore_emoji, $config);
+    $ignore_emoji  = _set_ignore_emoji($ignore_emoji, $config);
 }
 
 # Reading the checksum data
@@ -130,6 +130,12 @@ if ($about_flag) {
         say '- debug: '.$config->[0]->{debug} if $config->[0]->{debug};
         say '- verbose: '.$config->[0]->{verbose} if $config->[0]->{verbose};
         say '- color: '.$config->[0]->{color} if $config->[0]->{color};
+        if ($config->[0]->{yakignores}) {
+            say '- yakignores: ';
+            foreach my $yakignore (@{$config->[0]->{yakignores}}) {
+                say "  - $yakignore";
+            }
+        }
         say '';
     }
     say "Using data source located at: $checksums_file";
@@ -180,7 +186,9 @@ if ($verbose) {
     print "$PROGRAM_NAME : $VERSION\n";
 }
 
-my $matcher = build_gitignore_matcher([]);
+my $yakignores = _set_yakignores($config);
+
+my $matcher = build_gitignore_matcher($yakignores);
 
 if (defined $ARGV[0]) {
     my $file_checksum = sha256_file_hex($ARGV[0]);
@@ -192,8 +200,8 @@ exit $rv;
 
 sub _process {
     $matcher->($_)
-    && _print_ignore($color, $ignore_emoji, $File::Find::name) unless $silent_flag
-    && ($File::Find::prune = TRUE) 
+    && _print_ignore($color, $ignore_emoji, $File::Find::name)
+    && ($File::Find::prune = TRUE)
     || _subprocess($_);
 }
 
@@ -222,14 +230,17 @@ sub _subprocess {
         }
     } elsif (-f $file and $verbose) {
         _print_skip($color, $skip_emoji, $File::Find::name) unless $silent_flag;
-    }    
+    }
 }
 
 sub _preprocess {
-    
-    if (-e '.yakignore' and -f _) {
+
+    if (-e '.yakignore' and -f _ and -r _) {
         my @lines = read_lines('.yakignore');
         $matcher = build_gitignore_matcher([@lines]);
+        if ($debug_flag) {
+            say STDERR "Located .yakignore in $_";
+        }
     }
 
     return @_;
@@ -365,6 +376,19 @@ sub _set_emoji {
     }
 
     return _is_emoji_config_false($config)?FALSE:TRUE;
+}
+
+sub _set_yakignores {
+    my $config = shift;
+
+    my $yakignores = [];
+
+    if ($config and $config->[0]->{yakignores}) {
+        $yakignores = $config->[0]->{yakignores};
+    }
+    print STDERR Dumper $yakignores;
+
+    return $yakignores;
 }
 
 sub _is_emoji_config_false {
