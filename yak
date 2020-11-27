@@ -94,6 +94,7 @@ if (not $emoji) {
     $success_emoji = _set_success_emoji($success_emoji, $config);
     $failure_emoji = _set_failure_emoji($failure_emoji, $config);
     $skip_emoji    = _set_skip_emoji($skip_emoji, $config);
+    $ignore_emoji    = _set_ignore_emoji($ignore_emoji, $config);
 }
 
 # Reading the checksum data
@@ -250,6 +251,12 @@ sub _set_skip_emoji {
     my ($skip_emoji, $config) = @_;
 
     return $config->[0]->{skip_emoji} || $skip_emoji;
+}
+
+sub _set_ignore_emoji {
+    my ($ignore_emoji, $config) = @_;
+
+    return $config->[0]->{ignore_emoji} || $ignore_emoji;
 }
 
 sub _print_success {
