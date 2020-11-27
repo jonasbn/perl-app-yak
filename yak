@@ -10,13 +10,14 @@ use YAML::Tiny;
 use Crypt::Digest::SHA256 qw(sha256_file_hex); # Provided by CryptX
 use Env qw($HOME);
 use Data::Dumper;
-use File::Find;
+use File::Find; # find
 use List::MoreUtils qw(any);
 use Term::ANSIColor qw(:constants);
-use Parse::Gitignore;
+use Text::Gitignore qw(match_gitignore build_gitignore_matcher);
 use English; # $PROGRAM_NAME
 use Getopt::Long; # GetOptions
 use Cwd; # getcwd
+use File::Slurper qw(read_lines);
 
 binmode STDOUT, ":utf8";
 binmode STDERR, ":utf8";
@@ -33,6 +34,7 @@ my $default_config_file   = "$HOME/.config/yak/config.yml";
 my $success_emoji         = '👍🏻';
 my $failure_emoji         = '❗️';
 my $skip_emoji            = '  ';
+my $ignore_emoji          = '  ';
 
 my $debug_flag       = FALSE;
 my $nodebug_flag     = FALSE;
@@ -87,6 +89,7 @@ if (not $emoji) {
     $success_emoji = '';
     $failure_emoji = '';
     $skip_emoji    = '';
+    $ignore_emoji  = '';
 } else {
     $success_emoji = _set_success_emoji($success_emoji, $config);
     $failure_emoji = _set_failure_emoji($failure_emoji, $config);
@@ -172,40 +175,29 @@ if ($help_flag) {
     exit $rv;
 }
 
-my $pg = Parse::Gitignore->new('./.gitignore');
-
-if ($debug) {
-    print STDERR Dumper $pg;
-}
-
 if ($verbose) {
     print "$PROGRAM_NAME : $VERSION\n";
 }
 
+my $matcher = build_gitignore_matcher([]);
+
 if (defined $ARGV[0]) {
     my $file_checksum = sha256_file_hex($ARGV[0]);
 } else {
-    find(\&_wanted, qw(.));
+    find({ wanted => \&_process, preprocess => \&_preprocess }, qw(.));
 }
 
 exit $rv;
 
-sub _wanted {
-    my $file = $_;
+sub _process {
+    $matcher->($_)
+    && _print_ignore($color, $ignore_emoji, $File::Find::name) unless $silent_flag
+    && ($File::Find::prune = TRUE) 
+    || _subprocess($_);
+}
 
-    if ($debug) {
-        say STDERR "Examining: $File::Find::dir";
-        say STDERR "Examining: $_";
-        say STDERR "Examining: $File::Find::name";
-    }
-
-    # TODO: the path from Parse::Gitignore and File::Find are not compatible out of the box
-    if ($pg->ignored($_)) {
-        if ($debug) {
-            print STDERR "Attempting to ignore $file\n";
-        }
-        return;
-    }
+sub _subprocess {
+    my $file = shift;
 
     if (-f $file and any { $file eq $_ } keys %{$checksums} ) {
 
@@ -224,12 +216,22 @@ sub _wanted {
         if ($file_checksum eq $checksum) {
             _print_success($color, $success_emoji, $File::Find::name) unless $silent_flag;
         } else {
-            _print_failure($color, $failure_emoji, $File::Find::name)  unless $silent_flag;
+            _print_failure($color, $failure_emoji, $File::Find::name) unless $silent_flag;
             $rv = FAILURE;
         }
     } elsif (-f $file and $verbose) {
         _print_skip($color, $skip_emoji, $File::Find::name) unless $silent_flag;
+    }    
+}
+
+sub _preprocess {
+    
+    if (-e '.yakignore' and -f _) {
+        my @lines = read_lines('.yakignore');
+        $matcher = build_gitignore_matcher([@lines]);
     }
+
+    return @_;
 }
 
 sub _set_success_emoji {
@@ -282,6 +284,18 @@ sub _print_skip {
             say FAINT, $emoji . "$filename skipped", RESET;
         } else {
             say $emoji, "$filename skipped";
+        }
+    }
+}
+
+sub _print_ignore {
+    my ($color, $emoji, $filename, $silent_flag) = @_;
+
+    unless ($silent_flag) {
+        if ($color) {
+            say FAINT, $emoji . "$filename ignored", RESET;
+        } else {
+            say $emoji, "$filename ignored";
         }
     }
 }
