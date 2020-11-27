@@ -50,6 +50,31 @@ This JSON file should be created as `$HOME/.config/yak/checksums.json`.
         "MANIFEST.SKIP": "file://MANIFEST.SKIP"
     }
 
+## IGNORING CERTAIN DIRECTORIES, FILES AND FILENAME PATTERNS
+
+`yak` supports the ability to ignore:
+
+- Files
+- Directories
+- Filename patterns
+
+This is accomplished using an implementation based on `.gitignore`. To not intervene and to let `git` and `yak` work in harmony. The files used by `yak` are named `.yakignore`.
+
+The mean that you can:
+
+- Specify patterns of files and directories in your configuration file, see ["CONFIGURATION"](#configuration). This configuration will be overwritten if the next options are used.
+- You can add an `.yakignore` in the root of your repository and it will work for all files and directories in the file structure beneath it. Do note that the presence of this files, ignores and configuration in regard to using this feature. Meaning that disabling `yak` ignores for a single repository can be accomplished by placing an empty `.yakignore` file in the root of the repository.
+- a _child_ `.yakignore` can be placed in a subsequent directory, working on all files and directories beneath it, do note that directories specified to be ignored in the _parent_ `.yakignore` are ignored and are not parsed and used.
+
+## YAK IGNORE FILE EXAMPLE
+
+    .git
+    local
+
+The above example specified the `local` directory created by Perl's Carton. Another good candidate could be the `.git` folder.
+
+Since `yak` is processing a directory structure recursively, specifying directories should speed up the processing. Specifying single files by name can be used to skip a file specified in the data source file temporarily.
+
 # INVOCATION
 
 `yak` takes the following command line arguments:
@@ -107,6 +132,7 @@ This aims to follow the proposed standard described in [this article](https://bi
 - `success_emoji`
 - `failure_emoji`
 - `skip_emoji`
+- `yakignores`, specify a list of file directory names and patterns to be ignored
 
 Configuration can be overridden by command line arguments, see ["INVOCATION"](#invocation).
 
@@ -119,6 +145,9 @@ This YAML file should be created as `$HOME/.config/yak/config.yml`.
     skip_emoji: ✖️
     failure_emoji: ❌
     success_emoji: ✅
+    yakignores:
+    - .git
+    - local
 
 # DATA SOURCE
 
