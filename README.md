@@ -1,18 +1,18 @@
-[![Build Status](https://travis-ci.org/jonasbn/yak.svg?branch=master)](https://travis-ci.org/jonasbn/yak)
-![Spellcheck Action](https://github.com/jonasbn/yak/workflows/Spellcheck%20Action/badge.svg)
-![Markdownlint Action](https://github.com/jonasbn/yak/workflows/Markdownlint%20Action/badge.svg)
+[![Build Status](https://travis-ci.org/jonasbn/perl-app-yak.svg?branch=master)](https://travis-ci.org/jonasbn/yak)
+![Spellcheck Action](https://github.com/jonasbn/perl-app-yak/workflows/Spellcheck%20Action/badge.svg)
+![Markdownlint Action](https://github.com/jonasbn/perl-app-yak/workflows/Markdownlint%20Action/badge.svg)
 
-The yak command line utility is still WIP and to be regarded as *alpha* software, most features are working but it not ready for first official release
+The **yak** command line utility is still WIP and to be regarded as *alpha* software, most features are working but it not ready for first official release
 
 ---
 
 # yak
 
-yak - script to help with yak shaving for example GitHub projects
+**yak** - application to help with yak shaving for Git repositories etc.
 
 # DESCRIPTION
 
-The `yak` _shaver_ can scan a directory for files, which can be classified as yaks in need of shaving. Meaning files which are maintained else where are often copy-pasted.
+The **yak** _shaver_ can scan a directory for files, which can be classified as yaks in need of shaving. Meaning files which are maintained else where are often copy-pasted.
 
 The file names can be configured in a central configuration file, like this:
 
@@ -176,18 +176,33 @@ If you want to utilize the supported environment variables (see ["ENVIRONMENT"](
 
     $ docker run --rm -it -v $PWD:/tmp --env CLICOLOR=$CLICOLOR jonasbn/yak
 
+# REQUIREMENTS AND DEPENDENCIES
+
+- [JSON](https://metacpan.org/pod/JSON)
+- [Crypt::Digest::SHA256](https://metacpan.org/pod/CryptX)
+- [Env](https://metacpan.org/pod/Env)
+- [Data::Dumper](https://metacpan.org/pod/Data::Dumper)
+- [File::Find](https://metacpan.org/pod/File::Find)
+- [List::MoreUtils](https://metacpan.org/pod/List::MoreUtils)
+- [Term::ANSIColor](https://metacpan.org/pod/Term::ANSIColor)
+- [YAML::Tiny](https://metacpan.org/pod/YAML::Tiny)
+- [Parse::Gitignore](https://metacpan.org/pod/Parse::Gitignore)
+- [Getopt::Long](https://metacpan.org/pod/Getopt::Long)
+
 # LIMITATIONS
 
 - Running under Docker is limited to using only checksums specified in a local <.yaksums.json> and configuration has to be specified using command line arguments not a file
 - The use of a local: `.yaksums.json` is limited to checksums and cannot calculate based on files, since files are located in an unmounted directory
+- The YAML implementation is based on [YAML::Tiny](https://metacpan.org/pod/YAML::Tiny) and is therefor limited to this more simple implementation, which was however deemed sufficient for **Yak**.
+- `yak` does currently not support symbolic links when doing file system traversal. The implementation is based on [File::Find](https://metacpan.org/pod/File::Find) and support for symbolic links could be enabled, but has not been regarded as necessary for now.
 
 # ISSUE REPORTING
 
-If you experience any issues with `yak` report these via GitHub. Please read  [the issue reporting template](https://github.com/jonasbn/yak/blob/master/.github/ISSUE_TEMPLATE.md).
+If you experience any issues with **yak** report these via GitHub. Please read [the issue reporting template](https://github.com/jonasbn/perl-app-yak/blob/master/.github/ISSUE_TEMPLATE.md).
 
 # DEVELOPMENT
 
-If you want to contribute to `yak` please read the [Contribution guidelines](https://github.com/jonasbn/yak/blob/master/CONTRIBUTING.md)
+If you want to contribute to **yak** please read the [Contribution guidelines](https://github.com/jonasbn/perl-app-yak/blob/master/CONTRIBUTING.md)
 and follow [the pull request guidelines](https://github.com/jonasbn/yak/blob/master/.github/PULL_TEMPLATE.md).
 
 # MOTIVATION
@@ -211,7 +226,7 @@ Used commonly for repetive and boring work, required to reach a certain goal.
 
 `yak` is (C) by Jonas Brømsø, (jonasbn) 2018-2020
 
-Image used on the `yak` [website](https://jonasbn.github.io/yak/) is under copyright by [Shane Aldendorff](https://unsplash.com/photos/3b3O75X0Jzg)
+Image used on the **yak** [website](https://jonasbn.github.io/perl-app-yak/) is under copyright by [Shane Aldendorff](https://unsplash.com/photos/3b3O75X0Jzg)
 
 # LICENSE
 
@@ -219,5 +234,6 @@ Image used on the `yak` [website](https://jonasbn.github.io/yak/) is under copyr
 
 # REFERENCES
 
-- 1. MetaCPAN: [TERM-ANSICOLOR](https://metacpan.org/pod/Term%3A%3AANSIColor)
-- 2. Bixsense: ["Standard for ANSI Colors in Terminals"](https://bixense.com/clicolors/)
+- 1. GitHub: ["The Yak Project"](https://jonasbn.github.io/yak/)
+- 2. MetaCPAN: [TERM-ANSICOLOR](https://metacpan.org/pod/Term%3A%3AANSIColor)
+- 3. Bixsense: ["Standard for ANSI Colors in Terminals"](https://bixense.com/clicolors/)
