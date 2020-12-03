@@ -322,7 +322,7 @@ Used commonly for repetive and boring work, required to reach a certain goal.
 
 C<yak> is (C) by Jonas Brømsø, (jonasbn) 2018-2020
 
-Image used on the B<yak> L<website|https://jonasbn.github.io/perl-app-yak/> is under copyright by L<Shane Aldendorff|https://unsplash.com/photos/3b3O75X0Jzg>
+L<Image|https://unsplash.com/photos/3b3O75X0Jzg> used on the B<yak> L<website|https://jonasbn.github.io/perl-app-yak/> is under copyright by L<Shane Aldendorff|https://unsplash.com/@pluyar>.
 
 =head1 LICENSE
 
