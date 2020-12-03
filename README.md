@@ -191,6 +191,7 @@ If you want to utilize the supported environment variables (see ["ENVIRONMENT"](
 
 # LIMITATIONS
 
+- `yak` is specified to a minimum requieremet of Perl 5.10, based on analysis by [Perl::MinimumVersion](https://metacpan.org/pod/Perl%3A%3AMinimumVersion), implementation syntax requires Perl 5.8.0, so `yak` _could work_ for 5.8.0
 - Running under Docker is limited to using only checksums specified in a local <.yaksums.json> and configuration has to be specified using command line arguments not a file
 - The use of a local: `.yaksums.json` is limited to checksums and cannot calculate based on files, since files are located in an unmounted directory
 - The YAML implementation is based on [YAML::Tiny](https://metacpan.org/pod/YAML::Tiny) and is therefor limited to this more simple implementation, which was however deemed sufficient for **Yak**.

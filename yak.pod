@@ -274,6 +274,8 @@ If you want to utilize the supported environment variables (see L</ENVIRONMENT>)
 
 =over
 
+=item * C<yak> is specified to a minimum requieremet of Perl 5.10, based on analysis by L<Perl::MinimumVersion>, implementation syntax requires Perl 5.8.0, so C<yak> I<could work> for 5.8.0
+
 =item * Running under Docker is limited to using only checksums specified in a local <.yaksums.json> and configuration has to be specified using command line arguments not a file
 
 =item * The use of a local: C<.yaksums.json> is limited to checksums and cannot calculate based on files, since files are located in an unmounted directory
