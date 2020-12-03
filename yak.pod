@@ -246,6 +246,8 @@ If you want to utilize the supported environment variables (see L</ENVIRONMENT>)
 
 =head1 REQUIREMENTS AND DEPENDENCIES
 
+C<yak> is specified to a minimum requirement of Perl 5.10, based on an analysis made using L<Perl::MinimumVersion>, implementation syntax requires Perl 5.8.0, so C<yak> I<could be made to work> for 5.8.0.
+
 =over
 
 =item * L<JSON|https://metacpan.org/pod/JSON>
@@ -274,7 +276,7 @@ If you want to utilize the supported environment variables (see L</ENVIRONMENT>)
 
 =over
 
-=item * C<yak> is specified to a minimum requieremet of Perl 5.10, based on analysis by L<Perl::MinimumVersion>, implementation syntax requires Perl 5.8.0, so C<yak> I<could work> for 5.8.0
+=item * C<yak> is specified to a minimum requirement of Perl 5.10, based on an analysis made using L<Perl::MinimumVersion>, implementation syntax requires Perl 5.8.0, so C<yak> I<could be made to work> for 5.8.0.
 
 =item * Running under Docker is limited to using only checksums specified in a local <.yaksums.json> and configuration has to be specified using command line arguments not a file
 
