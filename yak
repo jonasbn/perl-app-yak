@@ -217,6 +217,8 @@ sub _process {
 sub _subprocess {
     my $file = shift;
 
+    #print STDERR Dumper $checksums;
+
     if (-f $file and any { $file eq $_ } keys %{$checksums} ) {
 
         my $checksum;
@@ -225,21 +227,32 @@ sub _subprocess {
         if ($assertion =~ m/file/i) {
             my ($filename) = $assertion =~ s{file:\/\/(.*)}{$1};
             $checksum = sha256_file_hex("$HOME/.config/yak/files/$assertion");
+        } elsif ($assertion eq $JSON::true) {
+            _print_success($color, $success_emoji, $File::Find::name) unless $silent_flag;
+        } elsif ($assertion eq $JSON::false) {
+            _print_failure($color, $failure_emoji, $File::Find::name) unless $silent_flag;
+            $rv = FAILURE;
+
         } else {
             $checksum = $assertion;
         }
 
-        my $file_checksum = sha256_file_hex($file);
+        if ($checksum) {
+            my $file_checksum = sha256_file_hex($file);
 
-        if ($file_checksum eq $checksum) {
-            _print_success($color, $success_emoji, $File::Find::name) unless $silent_flag;
-        } else {
-            _print_failure($color, $failure_emoji, $File::Find::name) unless $silent_flag;
-            $rv = FAILURE;
+            if ($file_checksum eq $checksum) {
+                _print_success($color, $success_emoji, $File::Find::name) unless $silent_flag;
+            } else {
+                _print_failure($color, $failure_emoji, $File::Find::name) unless $silent_flag;
+                $rv = FAILURE;
+            }
         }
+
     } elsif (-f $file and $verbose) {
         _print_skip($color, $skip_emoji, $File::Find::name) unless $silent_flag;
     }
+
+    return $rv;
 }
 
 sub _preprocess {

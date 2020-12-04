@@ -254,6 +254,19 @@ An example:
         "MANIFEST.SKIP": "file://MANIFEST.SKIP"
     }
 
+If you want to have B<Yak> help you checking for the presence of a file, specify the I<boolean> C<true> instead of a checksum.
+
+    {
+        "ISSUE_TEMPLATE.md": true,
+        "README.md": true
+    }
+
+Or you can issue an error if a file is present, which should not be there, again using a I<boolean>, but set to C<false>.
+
+    {
+        ".vstags": false
+    }
+
 =head1 USING DOCKER
 
 An experimental Docker implementation has been included with the repository.

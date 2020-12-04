@@ -178,6 +178,19 @@ An example:
         "MANIFEST.SKIP": "file://MANIFEST.SKIP"
     }
 
+If you want to have **Yak** help you checking for the presence of a file, specify the _boolean_ `true` instead of a checksum.
+
+    {
+        "ISSUE_TEMPLATE.md": true,
+        "README.md": true
+    }
+
+Or you can issue an error if a file is present, which should not be there, again using a _boolean_, but set to `false`.
+
+    {
+        ".vstags": false
+    }
+
 # USING DOCKER
 
 An experimental Docker implementation has been included with the repository.
