@@ -26,3 +26,12 @@ yaksums
 ANSICOLOR
 MetaCPAN
 Bixsense
+Gitignore
+MinimumVersion
+ANSIColor
+MoreUtils
+Getopt
+Slurper
+Env
+SHA
+boolean
