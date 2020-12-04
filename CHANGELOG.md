@@ -3,7 +3,7 @@
 ## 0.12.0 2020-12-04 Milestone release, implementing support for `.yakignore` and configuration of file ignores
 
 - Added support for ignoring files
-  - adding local `.yakignores` for deep directory trees 
+  - adding local `.yakignores` for deep directory trees
   - added patterns to configuration under `ignore_dirs:`
   - the `.yakignores` and `ignore_dirs` is based on an `.gitignore` implementation
 
