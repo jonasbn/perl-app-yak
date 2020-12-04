@@ -1,5 +1,12 @@
 # CHANGELOG for `yak`
 
+## 0.13.0 2020-12-04 Milestone release, implementing support for checking file presence
+
+- Added support for checking file presence
+  - in the data source (checksums file) you can now specify a _boolean_ instead of a checksum or file
+  - `true` meaning that `yak` succeeds if the file is present and fails if not
+  - `false` meaning that `yak` succeeds if the file is not present and fails if it is
+
 ## 0.12.0 2020-12-04 Milestone release, implementing support for `.yakignore` and configuration of file ignores
 
 - Added support for ignoring files
