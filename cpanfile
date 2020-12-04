@@ -7,8 +7,10 @@ requires 'File::Find';            # Core since Perl 5
 requires 'List::MoreUtils';       # Not core
 requires 'Term::ANSIColor';       # Core since 5.6.0
 requires 'YAML::Tiny';            # Not core
-requires 'Parse::Gitignore';      # Not core
+requires 'Text::Gitignore';       # Not core
 requires 'Getopt::Long';          # Core since Perl 5
+requires 'File::Slurper';         # Not core
+requires 'Data::Stack';           # Not core
 
 on 'test' => sub {
     requires 'Test2::V0';                   # Not core

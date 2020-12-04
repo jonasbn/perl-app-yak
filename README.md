@@ -50,6 +50,31 @@ This JSON file should be created as `$HOME/.config/yak/checksums.json`.
         "MANIFEST.SKIP": "file://MANIFEST.SKIP"
     }
 
+## IGNORING CERTAIN DIRECTORIES, FILES AND FILENAME PATTERNS
+
+`yak` supports the ability to ignore:
+
+- Files
+- Directories
+- Filename patterns
+
+This is accomplished using an implementation based on `.gitignore`. To not intervene and to let `git` and `yak` work in harmony. The files used by `yak` are named `.yakignore`.
+
+The mean that you can:
+
+- Specify patterns of files and directories in your configuration file, see ["CONFIGURATION"](#configuration). This configuration will be overwritten if the next options are used.
+- You can add an `.yakignore` in the root of your repository and it will work for all files and directories in the file structure beneath it. Do note that the presence of this files, ignores and configuration in regard to using this feature. Meaning that disabling `yak` ignores for a single repository can be accomplished by placing an empty `.yakignore` file in the root of the repository.
+- a _child_ `.yakignore` can be placed in a subsequent directory, working on all files and directories beneath it, do note that directories specified to be ignored in the _parent_ `.yakignore` are ignored and are not parsed and used.
+
+## YAK IGNORE FILE EXAMPLE
+
+    .git
+    local
+
+The above example specified the `local` directory created by Perl's Carton. Another good candidate could be the `.git` folder.
+
+Since `yak` is processing a directory structure recursively, specifying directories should speed up the processing. Specifying single files by name can be used to skip a file specified in the data source file temporarily.
+
 # INVOCATION
 
 `yak` takes the following command line arguments:
@@ -107,6 +132,7 @@ This aims to follow the proposed standard described in [this article](https://bi
 - `success_emoji`
 - `failure_emoji`
 - `skip_emoji`
+- `yakignores`, specify a list of file directory names and patterns to be ignored
 
 Configuration can be overridden by command line arguments, see ["INVOCATION"](#invocation).
 
@@ -119,6 +145,9 @@ This YAML file should be created as `$HOME/.config/yak/config.yml`.
     skip_emoji: ✖️
     failure_emoji: ❌
     success_emoji: ✅
+    yakignores:
+    - .git
+    - local
 
 # DATA SOURCE
 
@@ -147,6 +176,19 @@ An example:
         "CONTRIBUTING.md": "file://CONTRIBUTING.md",
         "PULL_REQUEST_TEMPLATE.md": "91dabee84afd46f93894d1a266a773f3d46c2c0b1ae4813f0c7dba34df1dc260",
         "MANIFEST.SKIP": "file://MANIFEST.SKIP"
+    }
+
+If you want to have **Yak** help you checking for the presence of a file, specify the _boolean_ `true` instead of a checksum.
+
+    {
+        "ISSUE_TEMPLATE.md": true,
+        "README.md": true
+    }
+
+Or you can issue an error if a file is present, which should not be there, again using a _boolean_, but set to `false`.
+
+    {
+        ".vstags": false
     }
 
 # USING DOCKER
@@ -180,24 +222,27 @@ If you want to utilize the supported environment variables (see ["ENVIRONMENT"](
 
 `yak` is specified to a minimum requirement of Perl 5.10, based on an analysis made using [Perl::MinimumVersion](https://metacpan.org/pod/Perl%3A%3AMinimumVersion), implementation syntax requires Perl 5.8.0, so `yak` _could be made to work_ for 5.8.0.
 
-- [JSON](https://metacpan.org/pod/JSON)
 - [Crypt::Digest::SHA256](https://metacpan.org/pod/CryptX)
-- [Env](https://metacpan.org/pod/Env)
 - [Data::Dumper](https://metacpan.org/pod/Data::Dumper)
+- [Data::Stack](https://metacpan.org/pod/Data::Stack)
+- [Env](https://metacpan.org/pod/Env)
 - [File::Find](https://metacpan.org/pod/File::Find)
+- [File::Slurper](https://metacpan.org/pod/File::Slurper)
+- [Getopt::Long](https://metacpan.org/pod/Getopt::Long)
+- [JSON](https://metacpan.org/pod/JSON)
 - [List::MoreUtils](https://metacpan.org/pod/List::MoreUtils)
 - [Term::ANSIColor](https://metacpan.org/pod/Term::ANSIColor)
+- [Text::Gitignore](https://metacpan.org/pod/Text::Gitignore)
 - [YAML::Tiny](https://metacpan.org/pod/YAML::Tiny)
-- [Parse::Gitignore](https://metacpan.org/pod/Parse::Gitignore)
-- [Getopt::Long](https://metacpan.org/pod/Getopt::Long)
 
 # LIMITATIONS
 
 - `yak` is specified to a minimum requirement of Perl 5.10, based on an analysis made using [Perl::MinimumVersion](https://metacpan.org/pod/Perl%3A%3AMinimumVersion), implementation syntax requires Perl 5.8.0, so `yak` _could be made to work_ for 5.8.0.
 - Running under Docker is limited to using only checksums specified in a local <.yaksums.json> and configuration has to be specified using command line arguments not a file
 - The use of a local: `.yaksums.json` is limited to checksums and cannot calculate based on files, since files are located in an unmounted directory
-- The YAML implementation is based on [YAML::Tiny](https://metacpan.org/pod/YAML::Tiny) and is therefor limited to this more simple implementation, which was however deemed sufficient for **Yak**.
+- The use of YAML implementation is based on [YAML::Tiny](https://metacpan.org/pod/YAML::Tiny) and is therefor limited to this more simple implementation, which was however deemed sufficient for **Yak**.
 - `yak` does currently not support symbolic links when doing file system traversal. The implementation is based on [File::Find](https://metacpan.org/pod/File::Find) and support for symbolic links could be enabled, but has not been regarded as necessary for now.
+- The parsing of `.yakignore` files is based on [Text::Gitignore](https://metacpan.org/pod/Text::Gitignore) and is limited to what this implementation supports, no known issues at this time.
 
 # ISSUE REPORTING
 
@@ -229,7 +274,7 @@ Used commonly for repetive and boring work, required to reach a certain goal.
 
 `yak` is (C) by Jonas Brømsø, (jonasbn) 2018-2020
 
-Image used on the **yak** [website](https://jonasbn.github.io/perl-app-yak/) is under copyright by [Shane Aldendorff](https://unsplash.com/photos/3b3O75X0Jzg)
+[Image](https://unsplash.com/photos/3b3O75X0Jzg) used on the **yak** [website](https://jonasbn.github.io/perl-app-yak/) is under copyright by [Shane Aldendorff](https://unsplash.com/@pluyar).
 
 # LICENSE
 
