@@ -124,6 +124,12 @@ DISTRIBUTIONS
     requirements:
       ExtUtils::MakeMaker 0
       perl 5.006
+  Data-Stack-0.01
+    pathname: G/GP/GPHAT/Data-Stack-0.01.tar.gz
+    provides:
+      Data::Stack 0.01
+    requirements:
+      ExtUtils::MakeMaker 0
   Exporter-Tiny-1.000000
     pathname: T/TO/TOBYINK/Exporter-Tiny-1.000000.tar.gz
     provides:

@@ -9,6 +9,7 @@ requires 'YAML::Tiny';            # Not core
 requires 'Text::Gitignore';       # Not core
 requires 'Getopt::Long';          # Core since Perl 5
 requires 'File::Slurper';         # Not core
+requires 'Data::Stack';           # Not core
 
 on 'test' => sub {
     requires 'Test2::V0';         # Not core
