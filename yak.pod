@@ -308,9 +308,13 @@ C<yak> is specified to a minimum requirement of Perl 5.10, based on an analysis 
 
 =item * L<YAML::Tiny|https://metacpan.org/pod/YAML::Tiny>
 
-=item * L<Parse::Gitignore|https://metacpan.org/pod/Parse::Gitignore>
+=item * L<Text::Gitignore|https://metacpan.org/pod/Text::Gitignore>
 
 =item * L<Getopt::Long|https://metacpan.org/pod/Getopt::Long>
+
+=item * L<File::Slurper|https://metacpan.org/pod/File::Slurper>
+
+=item * L<Data::Stack|https://metacpan.org/pod/Data::Stack>
 
 =back
 
@@ -324,9 +328,11 @@ C<yak> is specified to a minimum requirement of Perl 5.10, based on an analysis 
 
 =item * The use of a local: C<.yaksums.json> is limited to checksums and cannot calculate based on files, since files are located in an unmounted directory
 
-=item * The YAML implementation is based on L<YAML::Tiny|https://metacpan.org/pod/YAML::Tiny> and is therefor limited to this more simple implementation, which was however deemed sufficient for B<Yak>.
+=item * The use of YAML implementation is based on L<YAML::Tiny|https://metacpan.org/pod/YAML::Tiny> and is therefor limited to this more simple implementation, which was however deemed sufficient for B<Yak>.
 
 =item * C<yak> does currently not support symbolic links when doing file system traversal. The implementation is based on L<File::Find|https://metacpan.org/pod/File::Find> and support for symbolic links could be enabled, but has not been regarded as necessary for now.
+
+=item * The parsing of C<.yakignore> files is based on L<Text::Gitignore|https://metacpan.org/pod/Text::Gitignore> and is limited to what this implementation supports, no known issues at this time.
 
 =back
 

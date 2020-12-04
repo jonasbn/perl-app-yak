@@ -217,16 +217,19 @@ If you want to utilize the supported environment variables (see ["ENVIRONMENT"](
 - [List::MoreUtils](https://metacpan.org/pod/List::MoreUtils)
 - [Term::ANSIColor](https://metacpan.org/pod/Term::ANSIColor)
 - [YAML::Tiny](https://metacpan.org/pod/YAML::Tiny)
-- [Parse::Gitignore](https://metacpan.org/pod/Parse::Gitignore)
+- [Text::Gitignore](https://metacpan.org/pod/Text::Gitignore)
 - [Getopt::Long](https://metacpan.org/pod/Getopt::Long)
+- [File::Slurper](https://metacpan.org/pod/File::Slurper)
+- [Data::Stack](https://metacpan.org/pod/Data::Stack)
 
 # LIMITATIONS
 
 - `yak` is specified to a minimum requirement of Perl 5.10, based on an analysis made using [Perl::MinimumVersion](https://metacpan.org/pod/Perl%3A%3AMinimumVersion), implementation syntax requires Perl 5.8.0, so `yak` _could be made to work_ for 5.8.0.
 - Running under Docker is limited to using only checksums specified in a local <.yaksums.json> and configuration has to be specified using command line arguments not a file
 - The use of a local: `.yaksums.json` is limited to checksums and cannot calculate based on files, since files are located in an unmounted directory
-- The YAML implementation is based on [YAML::Tiny](https://metacpan.org/pod/YAML::Tiny) and is therefor limited to this more simple implementation, which was however deemed sufficient for **Yak**.
+- The use of YAML implementation is based on [YAML::Tiny](https://metacpan.org/pod/YAML::Tiny) and is therefor limited to this more simple implementation, which was however deemed sufficient for **Yak**.
 - `yak` does currently not support symbolic links when doing file system traversal. The implementation is based on [File::Find](https://metacpan.org/pod/File::Find) and support for symbolic links could be enabled, but has not been regarded as necessary for now.
+- The parsing of `.yakignore` files is based on [Text::Gitignore](https://metacpan.org/pod/Text::Gitignore) and is limited to what this implementation supports, no known issues at this time.
 
 # ISSUE REPORTING
 
@@ -258,7 +261,7 @@ Used commonly for repetive and boring work, required to reach a certain goal.
 
 `yak` is (C) by Jonas Brømsø, (jonasbn) 2018-2020
 
-Image used on the **yak** [website](https://jonasbn.github.io/perl-app-yak/) is under copyright by [Shane Aldendorff](https://unsplash.com/photos/3b3O75X0Jzg)
+[Image](https://unsplash.com/photos/3b3O75X0Jzg) used on the **yak** [website](https://jonasbn.github.io/perl-app-yak/) is under copyright by [Shane Aldendorff](https://unsplash.com/@pluyar).
 
 # LICENSE
 
