@@ -18,6 +18,7 @@ use English; # $PROGRAM_NAME
 use Getopt::Long; # GetOptions
 use Cwd; # getcwd
 use File::Slurper qw(read_lines);
+use Data::Stack;
 
 binmode STDOUT, ":utf8";
 binmode STDERR, ":utf8";
@@ -67,6 +68,8 @@ GetOptions ('debug'       => \$debug_flag,
             'about'       => \$about_flag,
             'help'        => \$help_flag,
 ) or die "Error in command line arguments\n";
+
+my $directory_stack = new Data::Stack();
 
 # Reading the config
 my $config;
@@ -183,17 +186,23 @@ if ($help_flag) {
 }
 
 if ($verbose) {
-    print "$PROGRAM_NAME : $VERSION\n";
+    say "$PROGRAM_NAME : $VERSION";
 }
 
 my $yakignores = _set_yakignores($config);
 
 my $matcher = build_gitignore_matcher($yakignores);
 
+my ($current_directory) = getcwd() =~ m{/([\w-]+)$};
+
+if ($matcher) {
+    $directory_stack->push({ directory => $current_directory, matcher => $matcher});
+}
+
 if (defined $ARGV[0]) {
     my $file_checksum = sha256_file_hex($ARGV[0]);
 } else {
-    find({ wanted => \&_process, preprocess => \&_preprocess }, qw(.));
+    find({ wanted => \&_process, preprocess => \&_preprocess, postprocess => \&_postprocess }, qw(.));
 }
 
 exit $rv;
@@ -237,13 +246,34 @@ sub _preprocess {
 
     if (-e '.yakignore' and -f _ and -r _) {
         my @lines = read_lines('.yakignore');
-        $matcher = build_gitignore_matcher([@lines]);
+        my $local_matcher = build_gitignore_matcher([@lines]);
+        $directory_stack->push({ directory => $File::Find::dir, matcher => $local_matcher });
+        $matcher = $local_matcher;
+
         if ($debug_flag) {
-            say STDERR "Located .yakignore in $_";
+            say STDERR "_preprocess: Located .yakignore in $File::Find::dir";
         }
     }
 
     return @_;
+}
+
+sub _postprocess {
+
+    if (-e '.yakignore' and -f _ and -r _) {
+
+        my $element = $directory_stack->peek();
+
+        if ($element->{directory} eq $File::Find::dir) {
+            $directory_stack->pop;
+            $element = $directory_stack->pop;
+            $matcher = $element->{matcher};
+        }
+
+        if ($debug_flag) {
+            say STDERR "_postprocess: Located .yakignore in $File::Find::dir";
+        }
+    }
 }
 
 sub _set_success_emoji {
@@ -386,7 +416,6 @@ sub _set_yakignores {
     if ($config and $config->[0]->{yakignores}) {
         $yakignores = $config->[0]->{yakignores};
     }
-    print STDERR Dumper $yakignores;
 
     return $yakignores;
 }
