@@ -209,18 +209,18 @@ If you want to utilize the supported environment variables (see ["ENVIRONMENT"](
 
 `yak` is specified to a minimum requirement of Perl 5.10, based on an analysis made using [Perl::MinimumVersion](https://metacpan.org/pod/Perl%3A%3AMinimumVersion), implementation syntax requires Perl 5.8.0, so `yak` _could be made to work_ for 5.8.0.
 
-- [JSON](https://metacpan.org/pod/JSON)
 - [Crypt::Digest::SHA256](https://metacpan.org/pod/CryptX)
-- [Env](https://metacpan.org/pod/Env)
 - [Data::Dumper](https://metacpan.org/pod/Data::Dumper)
+- [Data::Stack](https://metacpan.org/pod/Data::Stack)
+- [Env](https://metacpan.org/pod/Env)
 - [File::Find](https://metacpan.org/pod/File::Find)
+- [File::Slurper](https://metacpan.org/pod/File::Slurper)
+- [Getopt::Long](https://metacpan.org/pod/Getopt::Long)
+- [JSON](https://metacpan.org/pod/JSON)
 - [List::MoreUtils](https://metacpan.org/pod/List::MoreUtils)
 - [Term::ANSIColor](https://metacpan.org/pod/Term::ANSIColor)
-- [YAML::Tiny](https://metacpan.org/pod/YAML::Tiny)
 - [Text::Gitignore](https://metacpan.org/pod/Text::Gitignore)
-- [Getopt::Long](https://metacpan.org/pod/Getopt::Long)
-- [File::Slurper](https://metacpan.org/pod/File::Slurper)
-- [Data::Stack](https://metacpan.org/pod/Data::Stack)
+- [YAML::Tiny](https://metacpan.org/pod/YAML::Tiny)
 
 # LIMITATIONS
 

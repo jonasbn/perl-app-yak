@@ -292,29 +292,29 @@ C<yak> is specified to a minimum requirement of Perl 5.10, based on an analysis 
 
 =over
 
-=item * L<JSON|https://metacpan.org/pod/JSON>
-
 =item * L<Crypt::Digest::SHA256|https://metacpan.org/pod/CryptX>
-
-=item * L<Env|https://metacpan.org/pod/Env>
 
 =item * L<Data::Dumper|https://metacpan.org/pod/Data::Dumper>
 
+=item * L<Data::Stack|https://metacpan.org/pod/Data::Stack>
+
+=item * L<Env|https://metacpan.org/pod/Env>
+
 =item * L<File::Find|https://metacpan.org/pod/File::Find>
+
+=item * L<File::Slurper|https://metacpan.org/pod/File::Slurper>
+
+=item * L<Getopt::Long|https://metacpan.org/pod/Getopt::Long>
+
+=item * L<JSON|https://metacpan.org/pod/JSON>
 
 =item * L<List::MoreUtils|https://metacpan.org/pod/List::MoreUtils>
 
 =item * L<Term::ANSIColor|https://metacpan.org/pod/Term::ANSIColor>
 
-=item * L<YAML::Tiny|https://metacpan.org/pod/YAML::Tiny>
-
 =item * L<Text::Gitignore|https://metacpan.org/pod/Text::Gitignore>
 
-=item * L<Getopt::Long|https://metacpan.org/pod/Getopt::Long>
-
-=item * L<File::Slurper|https://metacpan.org/pod/File::Slurper>
-
-=item * L<Data::Stack|https://metacpan.org/pod/Data::Stack>
+=item * L<YAML::Tiny|https://metacpan.org/pod/YAML::Tiny>
 
 =back
 
