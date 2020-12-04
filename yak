@@ -33,10 +33,11 @@ our $VERSION = '1.0.0';
 
 my $default_checksums_src = "$HOME/.config/yak/checksums.json";
 my $default_config_file   = "$HOME/.config/yak/config.yml";
-my $success_emoji         = '👍🏻';
-my $failure_emoji         = '❗️';
-my $skip_emoji            = '  ';
-my $ignore_emoji          = '  ';
+
+my $success_emoji;
+my $failure_emoji;
+my $skip_emoji;
+my $ignore_emoji;
 
 my $debug_flag       = FALSE;
 my $nodebug_flag     = FALSE;
@@ -73,21 +74,21 @@ GetOptions ('debug'       => \$debug_flag,
 # Reading the config
 my ($config, $config_file) = _read_config($noconfig_flag, $config_src);
 
-my $verbose = _set_verbose($verbosity_flag, $silent_flag, $config);
-my $debug = _set_debug($debug_flag, $nodebug_flag, $config);
-my $color = _set_color($color_flag, $nocolor_flag, $config);
-my $emoji = _set_emoji($emoji_flag, $noemoji_flag, $config);
+my $verbose = _enable_verbose($verbosity_flag, $silent_flag, $config);
+my $debug = _enable_debug($debug_flag, $nodebug_flag, $config);
+my $color = _enable_color($color_flag, $nocolor_flag, $config);
+my $emoji = _enable_emoji($emoji_flag, $noemoji_flag, $config);
 
-if (not $emoji) {
+if ($emoji) {
+    $success_emoji = _set_emoji('success_emoji', $config) || '👍🏻';
+    $failure_emoji = _set_emoji('failure_emoji', $config) || '❗️';;
+    $skip_emoji    = _set_emoji('skip_emoji', $config) || '  ';
+    $ignore_emoji  = _set_emoji('ignore_emoji', $config) || '  ';
+} else {
     $success_emoji = '';
     $failure_emoji = '';
     $skip_emoji    = '';
     $ignore_emoji  = '';
-} else {
-    $success_emoji = _set_success_emoji($success_emoji, $config);
-    $failure_emoji = _set_failure_emoji($failure_emoji, $config);
-    $skip_emoji    = _set_skip_emoji($skip_emoji, $config);
-    $ignore_emoji  = _set_ignore_emoji($ignore_emoji, $config);
 }
 
 # Reading the checksum data
@@ -145,12 +146,14 @@ if ($verbose) {
 
 my $yakignores = _set_yakignores($config);
 
+# Our global matcher
 my $matcher = build_gitignore_matcher($yakignores);
 
+# Our stack of matchers to match assist our directory descend (preprocess) and ascend (postprocess)
 my $directory_stack = new Data::Stack();
 
 if ($matcher) {
-    my ($current_directory) = getcwd() =~ m{/([\w-]+)$};
+    my ($current_directory) = getcwd() =~ m{/([\w-]+)$}; # we need the last part of the complete path
     $directory_stack->push({ directory => $current_directory, matcher => $matcher });
 }
 
@@ -294,28 +297,10 @@ sub _read_checksums {
     return ($checksums, $checksums_file);
 }
 
-sub _set_success_emoji {
-    my ($success_emoji, $config) = @_;
+sub _set_emoji {
+    my ($key, $config) = @_;
 
-    return $config->[0]->{success_emoji} || $success_emoji;
-}
-
-sub _set_failure_emoji {
-    my ($failure_emoji, $config) = @_;
-
-    return $config->[0]->{failure_emoji} || $failure_emoji;
-}
-
-sub _set_skip_emoji {
-    my ($skip_emoji, $config) = @_;
-
-    return $config->[0]->{skip_emoji} || $skip_emoji;
-}
-
-sub _set_ignore_emoji {
-    my ($ignore_emoji, $config) = @_;
-
-    return $config->[0]->{ignore_emoji} || $ignore_emoji;
+    return $config->[0]->{$key} || '';
 }
 
 sub _print_success {
@@ -390,27 +375,27 @@ sub _print_help {
     return FAILURE;
 }
 
-sub _set_verbose {
+sub _enable_verbose {
     my ($verbosity_flag, $silent_flag, $config) = @_;
 
     if ($silent_flag) {
         return FALSE;
     }
 
-    return $verbosity_flag || _is_verbosity_config_true($config) || FALSE;
+    return $verbosity_flag || _is_config_true($config, 'verbose') || FALSE;
 }
 
-sub _set_debug {
+sub _enable_debug {
     my ($debug_flag, $nodebug_flag, $config) = @_;
 
     if ($nodebug_flag) {
         return FALSE;
     }
 
-    return $debug_flag || _is_debug_config_true($config) || FALSE;
+    return $debug_flag || _is_config_true($config, 'debug') || FALSE;
 }
 
-sub _set_color {
+sub _enable_color {
     my ($color_flag, $nocolor_flag, $config) = @_;
 
     if (exists($ENV{CLICOLOR_FORCE}) && $ENV{CLICOLOR_FORCE} == FALSE) {
@@ -433,10 +418,10 @@ sub _set_color {
         return TRUE;
     }
 
-    return _is_color_config_false($config)?FALSE:TRUE;
+    return _is_config_false($config, 'color')?FALSE:TRUE;
 }
 
-sub _set_emoji {
+sub _enable_emoji {
     my ($emoji_flag, $noemoji_flag, $config) = @_;
 
     if ($noemoji_flag) {
@@ -447,7 +432,7 @@ sub _set_emoji {
         return TRUE;
     }
 
-    return _is_emoji_config_false($config)?FALSE:TRUE;
+    return _is_config_false($config, 'emoji')?FALSE:TRUE;
 }
 
 sub _set_yakignores {
@@ -462,41 +447,21 @@ sub _set_yakignores {
     return $yakignores;
 }
 
-sub _is_emoji_config_false {
-    my $config = shift;
+sub _is_config_false {
+    my ($config, $key) = @_;
 
-    if ($config and $config->[0]->{emoji}) {
-        return $config->[0]->{emoji} eq 'false'?TRUE:FALSE;
+    if ($config and $config->[0]->{$key}) {
+        return $config->[0]->{$key} eq 'false'?TRUE:FALSE;
     } else {
         return FALSE;
     }
 }
 
-sub _is_color_config_false {
-    my $config = shift;
+sub _is_config_true {
+    my ($config, $key) = @_;
 
-    if ($config and $config->[0]->{color}) {
-        return $config->[0]->{color} eq 'false'?TRUE:FALSE;
-    } else {
-        return FALSE;
-    }
-}
-
-sub _is_debug_config_true {
-    my $config = shift;
-
-    if ($config and $config->[0]->{debug}) {
-        return $config->[0]->{debug} eq 'true'?TRUE:FALSE;
-    } else {
-        return FALSE;
-    }
-}
-
-sub _is_verbosity_config_true {
-    my $config = shift;
-
-    if ($config and $config->[0]->{verbose}) {
-        return $config->[0]->{verbose} eq 'true'?TRUE:FALSE;
+    if ($config and $config->[0]->{$key}) {
+        return $config->[0]->{$key} eq 'true'?TRUE:FALSE;
     } else {
         return FALSE;
     }
