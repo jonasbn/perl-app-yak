@@ -10,12 +10,15 @@ use YAML::Tiny;
 use Crypt::Digest::SHA256 qw(sha256_file_hex); # Provided by CryptX
 use Env qw($HOME);
 use Data::Dumper;
-use File::Find;
+use File::Find; # find
 use List::MoreUtils qw(any);
 use Term::ANSIColor qw(:constants);
+use Text::Gitignore qw(match_gitignore build_gitignore_matcher);
 use English; # $PROGRAM_NAME
 use Getopt::Long; # GetOptions
 use Cwd; # getcwd
+use File::Slurper qw(read_lines);
+use Data::Stack;
 
 binmode STDOUT, ":utf8";
 binmode STDERR, ":utf8";
@@ -32,6 +35,7 @@ my $default_config_file   = "$HOME/.config/yak/config.yml";
 my $success_emoji         = '👍🏻';
 my $failure_emoji         = '❗️';
 my $skip_emoji            = '  ';
+my $ignore_emoji          = '  ';
 
 my $debug_flag       = FALSE;
 my $nodebug_flag     = FALSE;
@@ -65,6 +69,8 @@ GetOptions ('debug'       => \$debug_flag,
             'help'        => \$help_flag,
 ) or die "Error in command line arguments\n";
 
+my $directory_stack = new Data::Stack();
+
 # Reading the config
 my $config;
 if ($noconfig_flag) {
@@ -86,10 +92,12 @@ if (not $emoji) {
     $success_emoji = '';
     $failure_emoji = '';
     $skip_emoji    = '';
+    $ignore_emoji  = '';
 } else {
     $success_emoji = _set_success_emoji($success_emoji, $config);
     $failure_emoji = _set_failure_emoji($failure_emoji, $config);
     $skip_emoji    = _set_skip_emoji($skip_emoji, $config);
+    $ignore_emoji  = _set_ignore_emoji($ignore_emoji, $config);
 }
 
 # Reading the checksum data
@@ -125,6 +133,12 @@ if ($about_flag) {
         say '- debug: '.$config->[0]->{debug} if $config->[0]->{debug};
         say '- verbose: '.$config->[0]->{verbose} if $config->[0]->{verbose};
         say '- color: '.$config->[0]->{color} if $config->[0]->{color};
+        if ($config->[0]->{yakignores}) {
+            say '- yakignores: ';
+            foreach my $yakignore (@{$config->[0]->{yakignores}}) {
+                say "  - $yakignore";
+            }
+        }
         say '';
     }
     say "Using data source located at: $checksums_file";
@@ -171,22 +185,37 @@ if ($help_flag) {
     exit $rv;
 }
 
+if ($verbose) {
+    say "$PROGRAM_NAME : $VERSION";
+}
+
+my $yakignores = _set_yakignores($config);
+
+my $matcher = build_gitignore_matcher($yakignores);
+
+my ($current_directory) = getcwd() =~ m{/([\w-]+)$};
+
+if ($matcher) {
+    $directory_stack->push({ directory => $current_directory, matcher => $matcher});
+}
+
 if (defined $ARGV[0]) {
     my $file_checksum = sha256_file_hex($ARGV[0]);
 } else {
-    find(\&_wanted, qw(.));
+    find({ wanted => \&_process, preprocess => \&_preprocess, postprocess => \&_postprocess }, qw(.));
 }
 
 exit $rv;
 
-sub _wanted {
-    my $file = $_;
+sub _process {
+    $matcher->($_)
+    && _print_ignore($color, $ignore_emoji, $File::Find::name)
+    && ($File::Find::prune = TRUE)
+    || _subprocess($_);
+}
 
-    if ($debug) {
-        say STDERR "Examining: $File::Find::dir";
-        say STDERR "Examining: $_";
-        say STDERR "Examining: $File::Find::name";
-    }
+sub _subprocess {
+    my $file = shift;
 
     if (-f $file and any { $file eq $_ } keys %{$checksums} ) {
 
@@ -205,11 +234,45 @@ sub _wanted {
         if ($file_checksum eq $checksum) {
             _print_success($color, $success_emoji, $File::Find::name) unless $silent_flag;
         } else {
-            _print_failure($color, $failure_emoji, $File::Find::name)  unless $silent_flag;
+            _print_failure($color, $failure_emoji, $File::Find::name) unless $silent_flag;
             $rv = FAILURE;
         }
     } elsif (-f $file and $verbose) {
         _print_skip($color, $skip_emoji, $File::Find::name) unless $silent_flag;
+    }
+}
+
+sub _preprocess {
+
+    if (-e '.yakignore' and -f _ and -r _) {
+        my @lines = read_lines('.yakignore');
+        my $local_matcher = build_gitignore_matcher([@lines]);
+        $directory_stack->push({ directory => $File::Find::dir, matcher => $local_matcher });
+        $matcher = $local_matcher;
+
+        if ($debug_flag) {
+            say STDERR "_preprocess: Located .yakignore in $File::Find::dir";
+        }
+    }
+
+    return @_;
+}
+
+sub _postprocess {
+
+    if (-e '.yakignore' and -f _ and -r _) {
+
+        my $element = $directory_stack->peek();
+
+        if ($element->{directory} eq $File::Find::dir) {
+            $directory_stack->pop;
+            $element = $directory_stack->pop;
+            $matcher = $element->{matcher};
+        }
+
+        if ($debug_flag) {
+            say STDERR "_postprocess: Located .yakignore in $File::Find::dir";
+        }
     }
 }
 
@@ -229,6 +292,12 @@ sub _set_skip_emoji {
     my ($skip_emoji, $config) = @_;
 
     return $config->[0]->{skip_emoji} || $skip_emoji;
+}
+
+sub _set_ignore_emoji {
+    my ($ignore_emoji, $config) = @_;
+
+    return $config->[0]->{ignore_emoji} || $ignore_emoji;
 }
 
 sub _print_success {
@@ -263,6 +332,18 @@ sub _print_skip {
             say FAINT, $emoji . "$filename skipped", RESET;
         } else {
             say $emoji, "$filename skipped";
+        }
+    }
+}
+
+sub _print_ignore {
+    my ($color, $emoji, $filename, $silent_flag) = @_;
+
+    unless ($silent_flag) {
+        if ($color) {
+            say FAINT, $emoji . "$filename ignored", RESET;
+        } else {
+            say $emoji, "$filename ignored";
         }
     }
 }
@@ -325,6 +406,18 @@ sub _set_emoji {
     }
 
     return _is_emoji_config_false($config)?FALSE:TRUE;
+}
+
+sub _set_yakignores {
+    my $config = shift;
+
+    my $yakignores = [];
+
+    if ($config and $config->[0]->{yakignores}) {
+        $yakignores = $config->[0]->{yakignores};
+    }
+
+    return $yakignores;
 }
 
 sub _is_emoji_config_false {
