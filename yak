@@ -3,6 +3,7 @@
 use strict;
 use warnings;
 use v5.10; # say
+           # stacked file tests, REF: https://perldoc.perl.org/functions/-X
 
 use utf8;
 use JSON; # from_json
@@ -51,13 +52,13 @@ my $noemoji_flag     = FALSE;
 my $emoji_flag       = FALSE;
 my $rv               = SUCCESS;
 my $checksums_src    = '';
-my $config_file      = '';
+my $config_src       = '';
 
 GetOptions ('debug'       => \$debug_flag,
             'nodebug'     => \$nodebug_flag,
             'verbose'     => \$verbosity_flag,
             'noconfig'    => \$noconfig_flag,
-            'config=s'    => \$config_file,
+            'config=s'    => \$config_src,
             'silent'      => \$silent_flag,
             'nochecksums' => \$nochecksums_flag,
             'checksums=s' => \$checksums_src,
@@ -69,19 +70,8 @@ GetOptions ('debug'       => \$debug_flag,
             'help'        => \$help_flag,
 ) or die "Error in command line arguments\n";
 
-my $directory_stack = new Data::Stack();
-
 # Reading the config
-my $config;
-if ($noconfig_flag) {
-    #$config;
-} else {
-    if ($config_file) {
-        $config = YAML::Tiny->read($config_file);
-    } else {
-        $config = YAML::Tiny->read($default_config_file);
-    }
-}
+my ($config, $config_file) = _read_config($noconfig_flag, $config_src);
 
 my $verbose = _set_verbose($verbosity_flag, $silent_flag, $config);
 my $debug = _set_debug($debug_flag, $nodebug_flag, $config);
@@ -101,24 +91,7 @@ if (not $emoji) {
 }
 
 # Reading the checksum data
-my $checksums_file = '';
-if ($nochecksums_flag) {
-    my $cwd = getcwd();
-    $checksums_file = "$cwd/.yaksums.json";
-} else {
-
-    if ($checksums_src) {
-        $checksums_file = $checksums_src;
-    } else {
-        $checksums_file = $default_checksums_src;
-    }
-}
-
-open (my $checksums_fh, '<', $checksums_file) or die "Unable to read checksum file: $checksums_file - $!";
-my $checksum_json = join '', <$checksums_fh>;
-close $checksums_fh;
-
-my $checksums = from_json($checksum_json);
+my ($checksums, $checksums_file) = _read_checksums($nochecksums_flag, $checksums_src);
 
 if ($about_flag) {
     say "$PROGRAM_NAME version $VERSION";
@@ -148,7 +121,7 @@ if ($about_flag) {
     say '--nodebug'                  if $nodebug_flag;
     say '--verbose'                  if $verbosity_flag;
     say '--noconfig'                 if $noconfig_flag;
-    say "--config $config_file"      if $config_file;
+    say "--config $config_src"       if $config_src;
     say '--silent'                   if $silent_flag;
     say '--nochecksums'              if $nochecksums_flag;
     say "--checksums $checksums_src" if $checksums_src;
@@ -162,26 +135,7 @@ if ($about_flag) {
 }
 
 if ($help_flag) {
-    say "$PROGRAM_NAME version $VERSION";
-    say '';
-    say "$PROGRAM_NAME [options]";
-    say '';
-    say 'Options';
-    say '';
-    say '--debug: debug output';
-    say '--nodebug: disabling debug output, if configured';
-    say '--verbose: more verbose output';
-    say '--noconfig: ignore \$HOME/.config/.yak/config.yml';
-    say '--config <file>: specify alternative to \$HOME/.config/.yak/config.yml';
-    say '--silent: suppress all output and rely on return value';
-    say '--nochecksums: ignore \$HOME/.config/.yak/checksums.json and use local .yaksums';
-    say '--checksums <file>: specify alternative to \$HOME/.config/.yak/checksums.json';
-    say '--nocolor: disable colorized output';
-    say '--color: enable colorized output';
-    say '--noemoji: disable emoji output';
-    say '--emoji: enable emoji output';
-    say '--about: emit configuration and invocation description';
-
+    _print_help();
     exit $rv;
 }
 
@@ -193,17 +147,14 @@ my $yakignores = _set_yakignores($config);
 
 my $matcher = build_gitignore_matcher($yakignores);
 
-my ($current_directory) = getcwd() =~ m{/([\w-]+)$};
+my $directory_stack = new Data::Stack();
 
 if ($matcher) {
-    $directory_stack->push({ directory => $current_directory, matcher => $matcher});
+    my ($current_directory) = getcwd() =~ m{/([\w-]+)$};
+    $directory_stack->push({ directory => $current_directory, matcher => $matcher });
 }
 
-if (defined $ARGV[0]) {
-    my $file_checksum = sha256_file_hex($ARGV[0]);
-} else {
-    find({ wanted => \&_process, preprocess => \&_preprocess, postprocess => \&_postprocess }, qw(.));
-}
+find({ wanted => \&_process, preprocess => \&_preprocess, postprocess => \&_postprocess }, qw(.));
 
 exit $rv;
 
@@ -268,6 +219,7 @@ sub _preprocess {
         }
     }
 
+    # REF: http://jonasbn.github.io/til/cpan/file-find.html
     return @_;
 }
 
@@ -287,6 +239,59 @@ sub _postprocess {
             say STDERR "_postprocess: Located .yakignore in $File::Find::dir";
         }
     }
+}
+
+sub _read_config {
+    my ($noconfig_flag, $config_file) = @_;
+
+    my $config;
+
+    if (not $noconfig_flag) {
+        if ($config_file and (not -e $config_file or not -f _ or not -r _)) {
+            die "Specified configuration file: $config_file, does not exist, is not a file or cannot be read";
+        }
+        $config_file = $config_file?$config_file:$default_config_file;
+
+        if ($config_file and not -e $config_file or not -f _ or not -r _) {
+            die "Specified configuration file: $config_file, does not exist, is not a file or cannot be read";
+        }
+
+        $config = YAML::Tiny->read($config_file);
+    }
+
+    return ($config, $config_file);
+}
+
+sub _read_checksums {
+    my ($nochecksums_flag, $checksums_src) = @_;
+
+    my $checksums_file = '';
+
+    if ($nochecksums_flag) {
+        my $cwd = getcwd();
+        $checksums_file = "$cwd/.yaksums.json";
+    } else {
+
+        if ($checksums_src) {
+            $checksums_file = $checksums_src;
+        } else {
+            $checksums_file = $default_checksums_src;
+        }
+    }
+
+    my $checksums;
+
+    if ($checksums_file and (not -e $checksums_file or not -f _ or not -r _)) {
+        die 'No checksums file available, please specify either a checksum file in the configuration directory or in the designated directory';
+    } else {
+        open (my $checksums_fh, '<', $checksums_file) or die "Unable to read checksum file: $checksums_file - $!";
+        my $checksum_json = join '', <$checksums_fh>;
+        close $checksums_fh;
+
+        $checksums = from_json($checksum_json);
+    }
+
+    return ($checksums, $checksums_file);
 }
 
 sub _set_success_emoji {
@@ -359,6 +364,30 @@ sub _print_ignore {
             say $emoji, "$filename ignored";
         }
     }
+}
+
+sub _print_help {
+    say "$PROGRAM_NAME version $VERSION";
+    say '';
+    say "$PROGRAM_NAME [options]";
+    say '';
+    say 'Options';
+    say '';
+    say '--debug: debug output';
+    say '--nodebug: disabling debug output, if configured';
+    say '--verbose: more verbose output';
+    say '--noconfig: ignore \$HOME/.config/.yak/config.yml';
+    say '--config <file>: specify alternative to \$HOME/.config/.yak/config.yml';
+    say '--silent: suppress all output and rely on return value';
+    say '--nochecksums: ignore \$HOME/.config/.yak/checksums.json and use local .yaksums';
+    say '--checksums <file>: specify alternative to \$HOME/.config/.yak/checksums.json';
+    say '--nocolor: disable colorized output';
+    say '--color: enable colorized output';
+    say '--noemoji: disable emoji output';
+    say '--emoji: enable emoji output';
+    say '--about: emit configuration and invocation description';    
+
+    return FAILURE;
 }
 
 sub _set_verbose {

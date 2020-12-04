@@ -1,5 +1,9 @@
 # CHANGELOG for `yak`
 
+## 0.14.0 2020-12-04 Milestone release, stabilizing configuration and data file handling
+
+- Improved the handling of the configuration and data file handling
+
 ## 0.13.0 2020-12-04 Milestone release, implementing support for checking file presence
 
 - Added support for checking file presence
