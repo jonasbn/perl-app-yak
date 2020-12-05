@@ -163,7 +163,7 @@ exit $rv;
 
 sub _process {
     $matcher->($_)
-    && _print_ignore($color, $ignore_emoji, $File::Find::name)
+    && _print_ignore($color, $ignore_emoji, $File::Find::name, $silent_flag)
     && ($File::Find::prune = TRUE)
     || _subprocess($_);
 }
