@@ -242,7 +242,9 @@ sub print_ignore {
 sub print_version {
     my $self = shift;
 
-    say 'yak : '.$self->version;    
+    say 'yak : '.$self->version;
+
+    return SUCCESS;
 }
 
 sub emoji {
@@ -443,7 +445,7 @@ sub print_help {
     say '--emoji: enable emoji output';
     say '--about: emit configuration and invocation description';    
 
-    return;
+    return SUCCESS;
 }
 
 sub print_about {

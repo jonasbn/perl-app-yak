@@ -40,6 +40,7 @@ GetOptions ('debug'       => sub { $yak->debug(TRUE); $flags->{debug} = TRUE; },
             'config=s'    => \&config_src,
             'about'       => sub { $flags->{about} = TRUE; },
             'help'        => sub { $flags->{help} = TRUE; },
+            'version'     => sub { $flags->{version} = TRUE; },
 ) or die "Error in command line arguments\n";
 
 # Reading the config
@@ -51,6 +52,10 @@ if (not $flags->{noconfig}) {
 
 # Reading the checksum data
 $yak->read_checksums();
+
+if ($flags->{version}) {
+    exit $yak->print_version();
+}
 
 if ($flags->{help}) {
     exit $yak->print_help();
