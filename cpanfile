@@ -1,3 +1,4 @@
+requires 'perl', '5.010';
 requires 'JSON';                  # Not core
 requires 'CryptX';                # Not core, provides Crypt::Digest::SHA256
 requires 'Env';                   # Core since Perl 5
@@ -12,6 +13,10 @@ requires 'File::Slurper';         # Not core
 requires 'Data::Stack';           # Not core
 
 on 'test' => sub {
-    requires 'Test2::V0';         # Not core
-    requires 'Test::Script';      # Not core
+    requires 'Test2::V0';                   # Not core
+    requires 'Test::Script';                # Not core
+    requires 'Test::Kwalitee', '1.21';      # From Dist::Zilla
+    requires 'Pod::Coverage::TrustPod';     # From Dist::Zilla
+    requires 'Test::Pod', '1.41';           # From Dist::Zilla
+    requires 'Test::Pod::Coverage', '1.08'; # From Dist::Zilla
 };

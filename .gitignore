@@ -24,3 +24,4 @@ Makefile.PL
 *.sublime-workspace
 local/
 dictionary.dic
+App-Yak-*
