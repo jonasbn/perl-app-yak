@@ -1,3 +1,81 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+use v5.10; # say
+           # stacked file tests, REF: https://perldoc.perl.org/functions/-X
+
+use FindBin;
+use lib "$FindBin::Bin/../lib";
+use App::Yak;
+use Getopt::Long; # GetOptions
+
+binmode STDOUT, ":utf8";
+binmode STDERR, ":utf8";
+
+use constant FALSE   => 0;
+use constant TRUE    => 1;
+use constant SUCCESS => 0;
+
+my $noconfig_flag    = FALSE;
+my $nochecksums_flag = FALSE;
+my $checksums_src    = '';
+my $config_src       = '';
+my $rv               = SUCCESS;
+
+my $yak = App::Yak->new();
+my $flags = {};
+
+GetOptions ('debug'       => sub { $yak->debug(TRUE); $flags->{debug} = TRUE; },
+            'nodebug'     => sub { $yak->nodebug(TRUE); $flags->{nodebug} = TRUE; },
+            'verbose'     => sub { $yak->verbose(TRUE); $flags->{verbose} = TRUE; },
+            'silent'      => sub { $yak->silent(TRUE); $flags->{silent} = TRUE; },
+            'nocolor'     => sub { $yak->nocolor(TRUE); $flags->{nocolor} = TRUE; },
+            'color'       => sub { $yak->color(TRUE); $flags->{color} = TRUE; },
+            'noemoji'     => sub { $yak->noemoji(TRUE); $flags->{noemoji} = TRUE; },
+            'emoji'       => sub { $yak->emoji(TRUE); $flags->{emoji} = TRUE; },
+            'nochecksums' => sub { $flags->{nochecksums} = TRUE; },
+            'noconfig'    => sub { $flags->{noconfig} = TRUE; },
+            'checksums=s' => \&checksums_src,
+            'config=s'    => \&config_src,
+            'about'       => sub { $flags->{about} = TRUE; },
+            'help'        => sub { $flags->{help} = TRUE; },
+) or die "Error in command line arguments\n";
+
+# Reading the config
+my $config;
+
+if (not $flags->{noconfig}) {
+    $config = $yak->read_config();
+}
+
+# Reading the checksum data
+$yak->read_checksums();
+
+if ($flags->{help}) {
+    exit $yak->print_help();
+}
+
+if ($flags->{about}) {
+    exit $yak->print_about($flags, $config);
+}
+
+exit $yak->process(); 
+
+sub checksums_src {
+    my ($opt_name, $opt_value) = @_;
+    $yak->checksums_src($opt_value);
+    $flags->{checksums_src} = $opt_value;
+}
+
+sub config_src {
+    my ($opt_name, $opt_value) = @_;
+    $yak->config_src($opt_value);
+    $flags->{config_src} = $opt_value;
+}
+
+__END__
+
 =pod
 
 =encoding UTF-8
