@@ -524,7 +524,7 @@ B<App::Yak> - application to help with yak shaving for Git repositories etc.
 =head1 SYNOPSIS
 
     my $yak->new();
-    my $rv = $yak->process(); 
+    my $rv = $yak->process();
 
 =head1 DESCRIPTION
 

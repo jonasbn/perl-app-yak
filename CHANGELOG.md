@@ -1,5 +1,11 @@
 # CHANGELOG for `yak`
 
+## 0.15.0 2020-12-07 Milestone release, preparing for CPAN distribution
+
+- Rolled into Dist::Zilla based release
+
+- Added `--version` command line argument
+
 ## 0.14.0 2020-12-04 Milestone release, stabilizing configuration and data file handling
 
 - Improved the handling of the configuration and data file handling

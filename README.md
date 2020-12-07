@@ -8,7 +8,12 @@ The **yak** command line utility is still WIP and to be regarded as *alpha* soft
 
 # yak
 
-**yak** - application to help with yak shaving for Git repositories etc.
+**App::Yak** - application to help with yak shaving for Git repositories etc.
+
+# SYNOPSIS
+
+    my $yak->new();
+    my $rv = $yak->process();
 
 # DESCRIPTION
 
