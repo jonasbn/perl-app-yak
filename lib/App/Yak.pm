@@ -295,7 +295,7 @@ sub noemoji {
     if ($noemoji) {
         $self->{noemoji} = $noemoji;
 
-        if (not $self->{noemoji}) {
+        if ($self->{noemoji}) {
             $self->success_emoji('');
             $self->failure_emoji('');
             $self->skip_emoji('');
@@ -308,6 +308,10 @@ sub noemoji {
 
 sub color {
     my ($self, $color) = @_;
+
+    if ($self->nocolor) {
+        return FALSE;
+    }
 
     if (exists($ENV{CLICOLOR_FORCE}) && $ENV{CLICOLOR_FORCE} == FALSE) {
         $self->{color} = FALSE;
@@ -365,6 +369,21 @@ sub read_config {
 
     $config = YAML::Tiny->read($config_file);
 
+    $self->debug(_is_config_true('debug', $config,));
+    $self->verbose(_is_config_true('verbose', $config));
+    $self->color(_is_config_false('color', $config));
+    $self->emoji(_is_config_false('emoji', $config));
+
+    my $failure_emoji = _set_emoji('failure', $config);
+    my $success_emoji = _set_emoji('success', $config);
+    my $ignore_emoji  = _set_emoji('ignore', $config);
+    my $skip_emoji    = _set_emoji('skip', $config);
+
+    $self->failure_emoji($failure_emoji) if $failure_emoji;
+    $self->success_emoji($success_emoji) if $success_emoji;
+    $self->ignore_emoji($ignore_emoji) if $ignore_emoji;
+    $self->skip_emoji($skip_emoji) if $skip_emoji;
+
     return $config;
 }
 
@@ -405,7 +424,7 @@ sub read_checksums {
 }
 
 sub _is_config_true {
-    my ($config, $key) = @_;
+    my ($key, $config) = @_;
 
     if ($config and $config->[0]->{$key}) {
         return $config->[0]->{$key} eq 'true'?TRUE:FALSE;
@@ -415,7 +434,7 @@ sub _is_config_true {
 }
 
 sub _is_config_false {
-    my ($config, $key) = @_;
+    my ($key, $config) = @_;
 
     if ($config and $config->[0]->{$key}) {
         return $config->[0]->{$key} eq 'false'?TRUE:FALSE;
@@ -517,9 +536,9 @@ The **yak** command line utility is still WIP and to be regarded as *alpha* soft
 
 =end markdown
 
-=head1 yak
+=head1 App::Yak
 
-B<App::Yak> - application to help with yak shaving for Git repositories etc.
+Application to help with yak shaving for Git repositories etc.
 
 =head1 SYNOPSIS
 
