@@ -27,6 +27,7 @@ use constant FAILURE => 1;
 
 our $VERSION = '1.0.0';
 
+# HACK: I need to address these, I do not like the scoping
 my $yak;
 my $matcher;
 my $directory_stack = new Data::Stack();
@@ -35,13 +36,13 @@ App::Yak->mk_accessors(qw(
     default_config_file
     default_checksums_src
     version
-    verbose 
-    silent 
-    debug 
-    nodebug 
-    color 
-    nocolor 
-    emoji 
+    verbose
+    silent
+    debug
+    nodebug
+    color
+    nocolor
+    emoji
     noemoji
     success_emoji
     failure_emoji
@@ -51,13 +52,14 @@ App::Yak->mk_accessors(qw(
     checksums
     checksums_src
     config_src
+    yakignores
 ));
 
 sub new {
     my $class = shift;
 
     my $object = bless {}, $class;
-    
+
     $object->version($VERSION);
 
     $object->default_config_file("$HOME/.config/yak/config.yml");
@@ -77,10 +79,10 @@ sub new {
     $object->failure_emoji('❗️');
     $object->skip_emoji('  ');
     $object->ignore_emoji('  ');
-    
+
     $yak = $object;
 
-    return $object;    
+    return $object;
 }
 
 sub process {
@@ -462,7 +464,7 @@ sub print_help {
     say '--color: enable colorized output';
     say '--noemoji: disable emoji output';
     say '--emoji: enable emoji output';
-    say '--about: emit configuration and invocation description';    
+    say '--about: emit configuration and invocation description';
 
     return SUCCESS;
 }
