@@ -279,13 +279,13 @@ C<yak> can be configured using the following parameters:
 
 =over
 
-=item * C<verbose>, enabling (C<$TRUE>) or disabling (C<$FALSE>) more verbose output
+=item * C<verbose>, enabling (C<true>) or disabling (C<false>) more verbose output
 
-=item * C<debug>, enabling (C<$TRUE>) or disabling (C<$FALSE>) debug output
+=item * C<debug>, enabling (C<true>) or disabling (C<false>) debug output
 
-=item * C<color>, enabling (C<$TRUE>) or disabling (C<$FALSE>) colorized output
+=item * C<color>, enabling (C<true>) or disabling (C<false>) colorized output
 
-=item * C<emoji>, enabling (C<$TRUE>) or disabling (C<$FALSE>) colorized output
+=item * C<emoji>, enabling (C<true>) or disabling (C<false>) colorized output
 
 =item * C<success_emoji>
 
