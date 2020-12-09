@@ -9,17 +9,14 @@ WIP
 YAML
 checksums
 commandline
-confgured
 config
 entrypoint
 gmail
 http
 jonasbn
 json
-paramters
 perl
 probot
-repetive
 sexualized
 todo
 yaksums
