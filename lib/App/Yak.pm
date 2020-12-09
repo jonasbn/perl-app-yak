@@ -56,6 +56,7 @@ App::Yak->mk_accessors(qw(
     nochecksums
     checksums
     checksums_src
+    noconfig
     config_src
     yakignores
 ));
@@ -79,6 +80,7 @@ sub new {
     $object->noemoji($FALSE);
     $object->emoji($TRUE);
     $object->nochecksums($FALSE);
+    $object->noconfig($FALSE);
 
     $object->success_emoji('👍🏻');
     $object->failure_emoji('❗️');
