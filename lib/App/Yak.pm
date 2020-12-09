@@ -17,7 +17,7 @@ use Data::Stack;
 use Text::Gitignore qw(match_gitignore build_gitignore_matcher);
 use Cwd; # getcwd
 use File::Find; # find
-use File::Slurper qw(read_lines);
+use File::Slurper qw(read_lines read_text);
 use Readonly;
 use Carp; # croak
 
@@ -428,9 +428,7 @@ sub read_checksums {
     if ($checksums_file and (not -e $checksums_file or not -f _ or not -r _)) {
         croak 'No checksums file available, please specify either a checksum file in the configuration directory or in the designated directory';
     } else {
-        open (my $checksums_fh, '<', $checksums_file) or croak "Unable to read checksum file: $checksums_file - $!";
-        my $checksum_json = join '', <$checksums_fh>;
-        close $checksums_fh;
+        my $checksum_json = read_text($checksums_file);
 
         $checksums = from_json($checksum_json);
     }
