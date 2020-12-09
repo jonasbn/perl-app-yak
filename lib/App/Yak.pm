@@ -16,21 +16,24 @@ use Text::Gitignore qw(match_gitignore build_gitignore_matcher);
 use Cwd; # getcwd
 use File::Find; # find
 use File::Slurper qw(read_lines);
+use Readonly;
+use Carp; # croak
 
 use Env qw($HOME);
 use base qw(Class::Accessor);
 
-use constant FALSE => 0;
-use constant TRUE  => 1;
-use constant SUCCESS => 0;
-use constant FAILURE => 1;
+Readonly::Scalar my $FALSE => 0;
+Readonly::Scalar my $TRUE  => 1;
+Readonly::Scalar my $SUCCESS => 0;
+Readonly::Scalar my $FAILURE => 1;
+Readonly::Scalar my $OK  => 1;
 
 our $VERSION = '1.0.0';
 
 # HACK: I need to address these, I do not like the scoping
 my $yak;
 my $matcher;
-my $directory_stack = new Data::Stack();
+my $directory_stack = Data::Stack->new();
 
 App::Yak->mk_accessors(qw(
     default_config_file
@@ -65,15 +68,15 @@ sub new {
     $object->default_config_file("$HOME/.config/yak/config.yml");
     $object->default_checksums_src("$HOME/.config/yak/checksums.json");
 
-    $object->silent(FALSE);
-    $object->verbose(FALSE);
-    $object->nodebug(FALSE);
-    $object->debug(FALSE);
-    $object->nocolor(FALSE);
-    $object->color(TRUE);
-    $object->noemoji(FALSE);
-    $object->emoji(TRUE);
-    $object->nochecksums(FALSE);
+    $object->silent($FALSE);
+    $object->verbose($FALSE);
+    $object->nodebug($FALSE);
+    $object->debug($FALSE);
+    $object->nocolor($FALSE);
+    $object->color($TRUE);
+    $object->noemoji($FALSE);
+    $object->emoji($TRUE);
+    $object->nochecksums($FALSE);
 
     $object->success_emoji('👍🏻');
     $object->failure_emoji('❗️');
@@ -105,16 +108,16 @@ sub process {
 
     find({ wanted => \&_process, preprocess => \&_preprocess, postprocess => \&_postprocess }, qw(.));
 
-    return SUCCESS;
+    return $SUCCESS;
 }
 
 sub _process {
     $matcher->($_)
     && $yak->print_ignore($File::Find::name)
-    && ($File::Find::prune = TRUE)
+    && ($File::Find::prune = $TRUE)
     || $yak->subprocess($_);
 
-    return SUCCESS;
+    return $SUCCESS;
 }
 
 sub _preprocess {
@@ -155,7 +158,7 @@ sub _postprocess {
 sub subprocess {
     my ($self, $file) = @_;
 
-    my $rv = SUCCESS;
+    my $rv = $SUCCESS;
 
     if (-f $file and any { $file eq $_ } keys %{$self->checksums} ) {
 
@@ -169,7 +172,7 @@ sub subprocess {
             $self->print_success($File::Find::name);
         } elsif ($assertion eq $JSON::false) {
             $self->print_failure($File::Find::name);
-            $rv = FAILURE;
+            $rv = $FAILURE;
 
         } else {
             $checksum = $assertion;
@@ -182,7 +185,7 @@ sub subprocess {
                 $self->print_success($File::Find::name);
             } else {
                 $self->print_failure($File::Find::name);
-                $rv = FAILURE;
+                $rv = $FAILURE;
             }
         }
 
@@ -203,6 +206,8 @@ sub print_success {
             say $self->success_emoji . $filename;
         }
     }
+
+    return $OK;
 }
 
 sub print_skip {
@@ -215,6 +220,8 @@ sub print_skip {
             say $self->skip_emoji, "$filename skipped";
         }
     }
+
+    return $OK;
 }
 
 sub print_failure {
@@ -227,6 +234,8 @@ sub print_failure {
             say $self->failure_emoji . $filename;
         }
     }
+
+    return $OK;
 }
 
 sub print_ignore {
@@ -239,6 +248,8 @@ sub print_ignore {
             say $self->ignore_emoji, "$filename ignored";
         }
     }
+
+    return $OK;
 }
 
 sub print_version {
@@ -246,7 +257,7 @@ sub print_version {
 
     say 'yak : '.$self->version;
 
-    return SUCCESS;
+    return $SUCCESS;
 }
 
 sub emoji {
@@ -254,7 +265,7 @@ sub emoji {
 
     if ($emoji) {
         if ($self->noemoji) {
-            $self->{emoji} = FALSE;
+            $self->{emoji} = $FALSE;
         } else {
             $self->{emoji} = $emoji;
         }
@@ -268,7 +279,7 @@ sub debug {
 
     if ($debug) {
         if ($self->nodebug) {
-            $self->{debug} = FALSE;
+            $self->{debug} = $FALSE;
         } else {
             $self->{debug} = $debug;
         }
@@ -282,7 +293,7 @@ sub verbose {
 
     if ($verbose) {
         if ($self->silent) {
-            $self->{verbose} = FALSE;
+            $self->{verbose} = $FALSE;
         } else {
             $self->{verbose} = $verbose;
         }
@@ -312,28 +323,28 @@ sub color {
     my ($self, $color) = @_;
 
     if ($self->nocolor) {
-        return FALSE;
+        return $FALSE;
     }
 
-    if (exists($ENV{CLICOLOR_FORCE}) && $ENV{CLICOLOR_FORCE} == FALSE) {
-        $self->{color} = FALSE;
-        return FALSE;
-    } elsif (exists($ENV{CLICOLOR_FORCE}) && $ENV{CLICOLOR_FORCE} != FALSE) {
-        $self->{color} = TRUE;
-        return TRUE;
+    if (exists($ENV{CLICOLOR_FORCE}) && $ENV{CLICOLOR_FORCE} == $FALSE) {
+        $self->{color} = $FALSE;
+        return $FALSE;
+    } elsif (exists($ENV{CLICOLOR_FORCE}) && $ENV{CLICOLOR_FORCE} != $FALSE) {
+        $self->{color} = $TRUE;
+        return $TRUE;
     }
 
-    if (exists($ENV{CLICOLOR}) && $ENV{CLICOLOR} == FALSE) {
-        $self->{color} = FALSE;
-        return FALSE;
-    } elsif (exists($ENV{CLICOLOR}) && $ENV{CLICOLOR} != TRUE) {
-        $self->{color} = TRUE;
-        return TRUE;
+    if (exists($ENV{CLICOLOR}) && $ENV{CLICOLOR} == $FALSE) {
+        $self->{color} = $FALSE;
+        return $FALSE;
+    } elsif (exists($ENV{CLICOLOR}) && $ENV{CLICOLOR} != $TRUE) {
+        $self->{color} = $TRUE;
+        return $TRUE;
     }
 
     if ($color) {
         if ($self->nocolor) {
-            $self->{color} = FALSE;
+            $self->{color} = $FALSE;
         }
         $self->{color} = $color;
     }
@@ -409,9 +420,9 @@ sub read_checksums {
     my $checksums;
 
     if ($checksums_file and (not -e $checksums_file or not -f _ or not -r _)) {
-        die 'No checksums file available, please specify either a checksum file in the configuration directory or in the designated directory';
+        croak 'No checksums file available, please specify either a checksum file in the configuration directory or in the designated directory';
     } else {
-        open (my $checksums_fh, '<', $checksums_file) or die "Unable to read checksum file: $checksums_file - $!";
+        open (my $checksums_fh, '<', $checksums_file) or croak "Unable to read checksum file: $checksums_file - $!";
         my $checksum_json = join '', <$checksums_fh>;
         close $checksums_fh;
 
@@ -422,27 +433,26 @@ sub read_checksums {
 
     $self->checksums_src($checksums_file);
 
-    return;
+    return $OK;
 }
 
 sub _is_config_true {
     my ($key, $config) = @_;
 
     if ($config and $config->[0]->{$key}) {
-        return $config->[0]->{$key} eq 'true'?TRUE:FALSE;
-    } else {
-        return FALSE;
+        return $config->[0]->{$key} eq 'true'?$TRUE:$FALSE;
     }
+    return $FALSE;
 }
 
 sub _is_config_false {
     my ($key, $config) = @_;
 
     if ($config and $config->[0]->{$key}) {
-        return $config->[0]->{$key} eq 'false'?TRUE:FALSE;
-    } else {
-        return FALSE;
+        return $config->[0]->{$key} eq 'false'?$TRUE:$FALSE;
     }
+
+    return $FALSE;
 }
 
 sub print_help {
@@ -466,7 +476,7 @@ sub print_help {
     say '--emoji: enable emoji output';
     say '--about: emit configuration and invocation description';
 
-    return SUCCESS;
+    return $SUCCESS;
 }
 
 sub print_about {
@@ -509,7 +519,7 @@ sub print_about {
     say '--emoji'                             if $flags->{emoji};
     say '--about'                             if $flags->{about};
 
-    return SUCCESS;
+    return $SUCCESS;
 }
 
 sub _set_emoji {
