@@ -375,7 +375,7 @@ severity = 1
 # spell_command = aspell list
 
 # The words to not consider as misspelled.
-# stop_words =
+stop_words = JSON checksums YAML boolean yaml jonasbn Brømsø Aldendorff
 
 # A file containing words to not consider as misspelled.
 stop_words_file = /Users/jonasbn/develop/github-jonasbn/perl-app-yak/.wordlist.txt

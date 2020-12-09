@@ -1,5 +1,7 @@
 package App::Yak;
 
+## no critic (RequireExtendedFormatting ProhibitVersionStrings RequireArgUnpacking ProhibitPackageVars)
+
 use strict;
 use warnings;
 use v5.10; # say
@@ -137,6 +139,7 @@ sub _preprocess {
     return @_;
 }
 
+## no critic (RequireFinalReturn)
 sub _postprocess {
 
     if (-e '.yakignore' and -f _ and -r _) {
@@ -154,6 +157,7 @@ sub _postprocess {
         }
     }
 }
+## use critic
 
 sub subprocess {
     my ($self, $file) = @_;
@@ -309,10 +313,10 @@ sub noemoji {
         $self->{noemoji} = $noemoji;
 
         if ($self->{noemoji}) {
-            $self->success_emoji('');
-            $self->failure_emoji('');
-            $self->skip_emoji('');
-            $self->ignore_emoji('');
+            $self->success_emoji(q{});
+            $self->failure_emoji(q{});
+            $self->skip_emoji(q{});
+            $self->ignore_emoji(q{});
         }
     }
 
