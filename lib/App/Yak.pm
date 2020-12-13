@@ -654,7 +654,7 @@ C<yak> takes the following command line arguments:
 
 =item * C<--debug>, enables debug output. can be configured see L</CONFIGURATION>
 
-=item * C<--nodebug>, disables debug output even if confgured or provided as C<--debug>, see above
+=item * C<--nodebug>, disables debug output even if configured or provided as C<--debug>, see above
 
 =item * C<--config file>, reads alternative configuration file instead of default, see L</CONFIGURATION>
 
@@ -666,11 +666,11 @@ C<yak> takes the following command line arguments:
 
 =item * C<--color>, enables colorized output, enabled by default or can be configured, see L</CONFIGURATION>
 
-=item * C<--nocolor>, disables colorized output, even if confgured or provided as C<--color>, see above
+=item * C<--nocolor>, disables colorized output, even if configured or provided as C<--color>, see above
 
 =item * C<--emoji>, enables emojis in output, enabled by default or can be configured, see L</CONFIGURATION>
 
-=item * C<--noemoji>, disables emojis in output, even if confgured or provided as C<--emoji>, see above
+=item * C<--noemoji>, disables emojis in output, even if configured or provided as C<--emoji>, see above
 
 =item * C<--about>, emits output on configuration and invocation and terminates with success
 
@@ -724,7 +724,7 @@ This aims to follow the proposed standard described in L<this article|https://bi
 
 F<$HOME/.config/yak/config.yml>
 
-C<yak> can be configured using the following paramters:
+C<yak> can be configured using the following parameters:
 
 =over
 
@@ -902,7 +902,7 @@ and follow L<the pull request guidelines|https://github.com/jonasbn/yak/blob/mas
 
 =head2 CONTINUOUS INTEGRATION
 
-The GitHub repository of B<perl-app-yak> was renamed from B<yak>. This broke the continous integration setup with Travis CI. Therefore this has been disabled for now and instead an experimental CI based on GitHub Actions.
+The GitHub repository of B<perl-app-yak> was renamed from B<yak>. This broke the continuous integration setup with Travis CI. Therefore this has been disabled for now and instead an experimental CI based on GitHub Actions.
 
 =over
 
@@ -921,7 +921,7 @@ Much of what I do is yak shaving. For you who are not familiar with the term:
 
 REF: L<The Jargon File|http://www.catb.org/~esr/jargon/html/Y/yak-shaving.html>
 
-Used commonly for repetive and boring work, required to reach a certain goal.
+Used commonly for repetitive and boring work, required to reach a certain goal.
 
 =head1 AUTHOR
 

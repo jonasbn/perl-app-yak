@@ -34,3 +34,6 @@ SHA
 boolean
 Zilla
 CPAN
+github
+https
+zilla
