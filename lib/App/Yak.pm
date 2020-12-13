@@ -542,6 +542,7 @@ __END__
 
 =begin markdown
 
+![CI Action](https://github.com/jonasbn/perl-app-yak/workflows/CI%20Action/badge.svg)
 ![Spellcheck Action](https://github.com/jonasbn/perl-app-yak/workflows/Spellcheck%20Action/badge.svg)
 ![Markdownlint Action](https://github.com/jonasbn/perl-app-yak/workflows/Markdownlint%20Action/badge.svg)
 

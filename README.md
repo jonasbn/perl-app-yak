@@ -1,3 +1,4 @@
+![CI Action](https://github.com/jonasbn/perl-app-yak/workflows/CI%20Action/badge.svg)
 ![Spellcheck Action](https://github.com/jonasbn/perl-app-yak/workflows/Spellcheck%20Action/badge.svg)
 ![Markdownlint Action](https://github.com/jonasbn/perl-app-yak/workflows/Markdownlint%20Action/badge.svg)
 
@@ -86,15 +87,15 @@ Since `yak` is processing a directory structure recursively, specifying director
 - `--verbose`, enables more verbose output, can be configured see ["CONFIGURATION"](#configuration)
 - `--silent`, disables output and you have to rely on the return value see ["RETURN VALUES"](#return-values) below.
 - `--debug`, enables debug output. can be configured see ["CONFIGURATION"](#configuration)
-- `--nodebug`, disables debug output even if confgured or provided as `--debug`, see above
+- `--nodebug`, disables debug output even if configured or provided as `--debug`, see above
 - `--config file`, reads alternative configuration file instead of default, see ["CONFIGURATION"](#configuration)
 - `--noconfig`, disables reading of the configuration file, (see ["CONFIGURATION"](#configuration)) and you have to rely on the command line arguments
 - `--nochecksums`, disables reading of the global checksums file, see ["DATA SOURCE"](#data-source)
 - `--checksums file`, reads alternative checksums file instead of default, see ["DATA SOURCE"](#data-source)
 - `--color`, enables colorized output, enabled by default or can be configured, see ["CONFIGURATION"](#configuration)
-- `--nocolor`, disables colorized output, even if confgured or provided as `--color`, see above
+- `--nocolor`, disables colorized output, even if configured or provided as `--color`, see above
 - `--emoji`, enables emojis in output, enabled by default or can be configured, see ["CONFIGURATION"](#configuration)
-- `--noemoji`, disables emojis in output, even if confgured or provided as `--emoji`, see above
+- `--noemoji`, disables emojis in output, even if configured or provided as `--emoji`, see above
 - `--about`, emits output on configuration and invocation and terminates with success
 - `--help`, emits help message listing all available options
 
@@ -127,7 +128,7 @@ This aims to follow the proposed standard described in [this article](https://bi
 
 `$HOME/.config/yak/config.yml`
 
-`yak` can be configured using the following paramters:
+`yak` can be configured using the following parameters:
 
 - `verbose`, enabling (`true`) or disabling (`false`) more verbose output
 - `debug`, enabling (`true`) or disabling (`false`) debug output
@@ -259,7 +260,7 @@ and follow [the pull request guidelines](https://github.com/jonasbn/yak/blob/mas
 
 ## CONTINUOUS INTEGRATION
 
-The GitHub repository of **perl-app-yak** was renamed from **yak**. This broke the continous integration setup with Travis CI. Therefore this has been disabled for now and instead an experimental CI based on GitHub Actions.
+The GitHub repository of **perl-app-yak** was renamed from **yak**. This broke the continuous integration setup with Travis CI. Therefore this has been disabled for now and instead an experimental CI based on GitHub Actions.
 
 - [https://github.com/jonasbn/github-action-perl-dist-zilla](https://github.com/jonasbn/github-action-perl-dist-zilla)
 
@@ -274,7 +275,7 @@ Much of what I do is yak shaving. For you who are not familiar with the term:
 
 REF: [The Jargon File](http://www.catb.org/~esr/jargon/html/Y/yak-shaving.html)
 
-Used commonly for repetive and boring work, required to reach a certain goal.
+Used commonly for repetitive and boring work, required to reach a certain goal.
 
 # AUTHOR
 
