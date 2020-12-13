@@ -1,0 +1,15 @@
+name: CI Action
+on: push
+
+jobs:
+  build:
+    name: Continuous Integration
+    runs-on: ubuntu-latest
+    steps:
+    # REF: https://help.github.com/en/actions/configuring-and-managing-workflows/configuring-a-workflow#using-the-checkout-action
+    - name: "Checkout repository"
+      uses: actions/checkout@v2
+    - name: "Installing dependencies and testing all using dzil"
+      uses: jonasbn/github-action-perl-dist-zilla@master
+      with:
+          dzil-arguments: 'test --all'
