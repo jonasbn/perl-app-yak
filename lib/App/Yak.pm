@@ -542,7 +542,6 @@ __END__
 
 =begin markdown
 
-[![Build Status](https://travis-ci.org/jonasbn/perl-app-yak.svg?branch=master)](https://travis-ci.org/jonasbn/yak)
 ![Spellcheck Action](https://github.com/jonasbn/perl-app-yak/workflows/Spellcheck%20Action/badge.svg)
 ![Markdownlint Action](https://github.com/jonasbn/perl-app-yak/workflows/Markdownlint%20Action/badge.svg)
 
@@ -900,6 +899,16 @@ If you experience any issues with B<yak> report these via GitHub. Please read L<
 
 If you want to contribute to B<yak> please read the L<Contribution guidelines|https://github.com/jonasbn/perl-app-yak/blob/master/CONTRIBUTING.md>
 and follow L<the pull request guidelines|https://github.com/jonasbn/yak/blob/master/.github/PULL_TEMPLATE.md>.
+
+=head2 CONTINUOUS INTEGRATION
+
+The GitHub repository of B<perl-app-yak> was renamed from B<yak>. This broke the continous integration setup with Travis CI. Therefore this has been disabled for now and instead an experimental CI based on GitHub Actions.
+
+=over
+
+=item * L<https://github.com/jonasbn/github-action-perl-dist-zilla>
+
+=back
 
 =head1 MOTIVATION
 

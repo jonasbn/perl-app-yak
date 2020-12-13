@@ -1,4 +1,3 @@
-[![Build Status](https://travis-ci.org/jonasbn/perl-app-yak.svg?branch=master)](https://travis-ci.org/jonasbn/yak)
 ![Spellcheck Action](https://github.com/jonasbn/perl-app-yak/workflows/Spellcheck%20Action/badge.svg)
 ![Markdownlint Action](https://github.com/jonasbn/perl-app-yak/workflows/Markdownlint%20Action/badge.svg)
 
@@ -6,9 +5,9 @@ The **yak** command line utility is still WIP and to be regarded as *alpha* soft
 
 ---
 
-# yak
+# App::Yak
 
-**App::Yak** - application to help with yak shaving for Git repositories etc.
+Application to help with yak shaving for Git repositories etc.
 
 # SYNOPSIS
 
@@ -257,6 +256,12 @@ If you experience any issues with **yak** report these via GitHub. Please read [
 
 If you want to contribute to **yak** please read the [Contribution guidelines](https://github.com/jonasbn/perl-app-yak/blob/master/CONTRIBUTING.md)
 and follow [the pull request guidelines](https://github.com/jonasbn/yak/blob/master/.github/PULL_TEMPLATE.md).
+
+## CONTINUOUS INTEGRATION
+
+The GitHub repository of **perl-app-yak** was renamed from **yak**. This broke the continous integration setup with Travis CI. Therefore this has been disabled for now and instead an experimental CI based on GitHub Actions.
+
+- [https://github.com/jonasbn/github-action-perl-dist-zilla](https://github.com/jonasbn/github-action-perl-dist-zilla)
 
 # MOTIVATION
 
