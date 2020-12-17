@@ -41,4 +41,4 @@ jobs:
           push: true
           tags: |
             jonasbn/yak:latest
-            ghcr.io/jonasbn/yak:latest
+            ghcr.io/jonasbn/perl-app-yak:latest
