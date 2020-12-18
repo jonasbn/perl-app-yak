@@ -11,6 +11,11 @@ requires 'Text::Gitignore';       # Not core
 requires 'Getopt::Long';          # Core since Perl 5
 requires 'File::Slurper';         # Not core
 requires 'Data::Stack';           # Not core
+requires 'Carp';
+requires 'Readonly';
+requires 'Cwd';
+requires 'Class::Accessor';
+requires 'Find::Bin';
 
 on 'test' => sub {
     requires 'Test2::V0';                   # Not core

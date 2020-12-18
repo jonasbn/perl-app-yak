@@ -7,7 +7,6 @@ use warnings;
 use v5.10; # say
            # stacked file tests, REF: https://perldoc.perl.org/functions/-X
 use utf8;
-use Carp;
 use YAML::Tiny;
 use JSON; # from_json
 use Term::ANSIColor qw(:constants);

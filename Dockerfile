@@ -31,4 +31,4 @@ WORKDIR /tmp
 ENV PATH=$PATH:/usr/src/app
 
 # This is our executable, it consumes all parameters passed to our container
-ENTRYPOINT [ "yak", "--noconfig", "--nochecksums" ]
+ENTRYPOINT [ "script/yak", "--noconfig", "--nochecksums" ]
