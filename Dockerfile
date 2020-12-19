@@ -28,7 +28,7 @@ WORKDIR /tmp
 
 # yak is only installed from repository not from CPAN, so we do not rely on a long
 # distribution chain to build our Docker image
-ENV PATH=$PATH:/usr/src/app
+ENV PATH=$PATH:/usr/src/app/script
 
 # This is our executable, it consumes all parameters passed to our container
-ENTRYPOINT [ "script/yak", "--noconfig", "--nochecksums" ]
+ENTRYPOINT [ "yak", "--noconfig", "--nochecksums" ]
