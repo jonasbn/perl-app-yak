@@ -1,6 +1,6 @@
 # CHANGELOG for `yak`
 
-## 0.15.0 2020-12-07 Milestone release, preparing for CPAN distribution
+## 0.15.0 2020-12-19 Milestone release, preparing for CPAN distribution
 
 - Rolled into Dist::Zilla based release
 
