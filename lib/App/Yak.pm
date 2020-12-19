@@ -497,6 +497,7 @@ sub print_about {
         say '- debug: '.$config->[0]->{debug} if $config->[0]->{debug};
         say '- verbose: '.$config->[0]->{verbose} if $config->[0]->{verbose};
         say '- color: '.$config->[0]->{color} if $config->[0]->{color};
+        say '- emoji: '.$config->[0]->{emoji} if $config->[0]->{emoji};
         if ($config->[0]->{yakignores}) {
             say '- yakignores: ';
             foreach my $yakignore (@{$config->[0]->{yakignores}}) {
