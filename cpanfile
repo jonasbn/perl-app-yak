@@ -15,7 +15,7 @@ requires 'Carp';
 requires 'Readonly';
 requires 'Cwd';
 requires 'Class::Accessor';
-requires 'Find::Bin';
+requires 'FindBin';
 
 on 'test' => sub {
     requires 'Test2::V0';                   # Not core
