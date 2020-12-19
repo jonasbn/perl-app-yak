@@ -81,10 +81,7 @@ sub new {
     $object->nochecksums($FALSE);
     $object->noconfig($FALSE);
 
-    $object->success_emoji('👍🏻');
-    $object->failure_emoji('❗️');
-    $object->skip_emoji('  ');
-    $object->ignore_emoji('  ');
+    $object->_set_emojis();
 
     $yak = $object;
 
@@ -206,9 +203,9 @@ sub print_success {
 
     unless ($self->silent) {
         if ($self->color) {
-            say GREEN, $self->success_emoji . $filename . RESET;
+            say GREEN, $self->success_emoji() . $filename . ' succeeded'. RESET;
         } else {
-            say $self->success_emoji . $filename;
+            say $self->success_emoji() . $filename . ' succeeded';
         }
     }
 
@@ -234,9 +231,9 @@ sub print_failure {
 
     unless ($self->silent) {
         if ($self->color) {
-            say RED, $self->failure_emoji . $filename . RESET;
+            say RED, $self->failure_emoji . $filename . ' failed' . RESET;
         } else {
-            say $self->failure_emoji . $filename;
+            say $self->failure_emoji . $filename . ' failed';
         }
     }
 
@@ -268,11 +265,18 @@ sub print_version {
 sub emoji {
     my ($self, $emoji) = @_;
 
-    if ($emoji) {
+    if (defined $emoji) {
         if ($self->noemoji) {
             $self->{emoji} = $FALSE;
+            $self->_reset_emojis;
         } else {
-            $self->{emoji} = $emoji;
+            if ($emoji) {
+                $self->{emoji} = $TRUE;
+                $self->_set_emojis;
+            } else {
+                $self->{emoji} = $FALSE;
+                $self->_reset_emojis;
+            }
         }
     }
 
@@ -282,7 +286,7 @@ sub emoji {
 sub debug {
     my ($self, $debug) = @_;
 
-    if ($debug) {
+    if (defined $debug) {
         if ($self->nodebug) {
             $self->{debug} = $FALSE;
         } else {
@@ -296,7 +300,7 @@ sub debug {
 sub verbose {
     my ($self, $verbose) = @_;
 
-    if ($verbose) {
+    if (defined $verbose) {
         if ($self->silent) {
             $self->{verbose} = $FALSE;
         } else {
@@ -310,18 +314,37 @@ sub verbose {
 sub noemoji {
     my ($self, $noemoji) = @_;
 
-    if ($noemoji) {
+    if (defined $noemoji) {
         $self->{noemoji} = $noemoji;
 
-        if ($self->{noemoji}) {
-            $self->success_emoji(q{});
-            $self->failure_emoji(q{});
-            $self->skip_emoji(q{});
-            $self->ignore_emoji(q{});
+        if (defined $self->{noemoji}) {
+            $self->_reset_emojis;
         }
     }
 
     return $self->{noemoji};
+}
+
+sub _set_emojis {
+    my $self = shift;
+
+    $self->success_emoji('👍🏻');
+    $self->failure_emoji('❗️');
+    $self->skip_emoji('  ');
+    $self->ignore_emoji('  ');
+
+    return $TRUE;
+}
+
+sub _reset_emojis {
+    my $self = shift;
+
+    $self->success_emoji('  ');
+    $self->failure_emoji('  ');
+    $self->skip_emoji('  ');
+    $self->ignore_emoji('  ');
+
+    return $TRUE;
 }
 
 sub color {
@@ -347,7 +370,7 @@ sub color {
         return $TRUE;
     }
 
-    if ($color) {
+    if (defined $color) {
         if ($self->nocolor) {
             $self->{color} = $FALSE;
         }
@@ -370,7 +393,7 @@ sub _set_yakignores {
 }
 
 sub read_config {
-    my ($self) = @_;
+    my ($self, $flags) = @_;
 
     my $config;
 
@@ -387,10 +410,15 @@ sub read_config {
 
     $config = YAML::Tiny->read($config_file);
 
-    $self->debug(_is_config_true('debug', $config,));
-    $self->verbose(_is_config_true('verbose', $config));
-    $self->color(_is_config_false('color', $config));
-    $self->emoji(_is_config_false('emoji', $config));
+    $self->debug($self->_has_config('debug', $config,));
+    $self->verbose($self->_has_config('verbose', $config));
+    $self->color($self->_has_config('color', $config));
+    $self->emoji($self->_has_config('emoji', $config));
+
+    $self->debug($TRUE) if $flags->{debug};
+    $self->verbose($TRUE) if $flags->{verbose};
+    $self->color($TRUE) if $flags->{color};
+    $self->emoji($TRUE) if $flags->{emoji};
 
     my $failure_emoji = _set_emoji('failure', $config);
     my $success_emoji = _set_emoji('success', $config);
@@ -439,23 +467,18 @@ sub read_checksums {
     return $OK;
 }
 
-sub _is_config_true {
-    my ($key, $config) = @_;
+sub _has_config {
+    my ($self, $key, $config) = @_;
 
     if ($config and $config->[0]->{$key}) {
-        return $config->[0]->{$key} eq 'true'?$TRUE:$FALSE;
+        if ($config->[0]->{$key} eq 'false') {
+            return $FALSE;
+        } elsif ($config->[0]->{$key} eq 'true') {
+            return $TRUE;
+        }
+    } else {
+        return $self->$key();
     }
-    return $FALSE;
-}
-
-sub _is_config_false {
-    my ($key, $config) = @_;
-
-    if ($config and $config->[0]->{$key}) {
-        return $config->[0]->{$key} eq 'false'?$TRUE:$FALSE;
-    }
-
-    return $FALSE;
 }
 
 sub print_help {
@@ -491,7 +514,7 @@ sub print_about {
     say "- \$CLICOLOR = $ENV{CLICOLOR}"             if exists $ENV{CLICOLOR};
     say "- \$CLICOLOR_FORCE = $ENV{CLICOLOR_FORCE}" if exists $ENV{CLICOLOR_FORCE};
     say '';
-    if (not $flags->{noconfig}) {
+    if (not $flags->{noconfig} or $flags->{config_src}) {
         say "Using configuration located at: $self->{config_src}" if $self->{config_src};
         say 'Configured with:';
         say '- debug: '.$config->[0]->{debug} if $config->[0]->{debug};
@@ -505,6 +528,7 @@ sub print_about {
             }
         }
     }
+
     say '';
     say "Using data source located at: ".$self->checksums_src if $self->checksums_src;
     say '';

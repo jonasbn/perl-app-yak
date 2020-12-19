@@ -49,8 +49,8 @@ GetOptions ('debug'       => sub { $yak->debug($TRUE); $flags->{debug} = $TRUE; 
 # Reading the config
 my $config;
 
-if (not $flags->{noconfig}) {
-    $config = $yak->read_config();
+if ($flags->{config_src} or not $flags->{noconfig}) {
+   $config = $yak->read_config($flags);
 }
 
 # Reading the checksum data
