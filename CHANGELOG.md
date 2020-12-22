@@ -5,6 +5,7 @@
 - The feature of reporting on required files not being found has now been implemented
 
 - Added use of Clone as a dependency
+
 ## 0.16.0 2020-12-20 Milestone release, bug fix release
 
 - Stabilizing implementation with several bug fixes found by manual testing, particularly in the configuration handling
