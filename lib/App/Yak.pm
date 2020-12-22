@@ -892,6 +892,8 @@ C<yak> is specified to a minimum requirement of Perl 5.10, based on an analysis 
 
 =over
 
+=item * L<Clone|https://metacpan.org/pod/Clone>
+
 =item * L<Crypt::Digest::SHA256|https://metacpan.org/pod/CryptX>
 
 =item * L<Data::Dumper|https://metacpan.org/pod/Data::Dumper>

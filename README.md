@@ -227,6 +227,7 @@ If you want to utilize the supported environment variables (see ["ENVIRONMENT"](
 
 `yak` is specified to a minimum requirement of Perl 5.10, based on an analysis made using [Perl::MinimumVersion](https://metacpan.org/pod/Perl%3A%3AMinimumVersion), implementation syntax requires Perl 5.8.0, so `yak` _could be made to work_ for 5.8.0.
 
+- [Clone](https://metacpan.org/pod/Clone)
 - [Crypt::Digest::SHA256](https://metacpan.org/pod/CryptX)
 - [Data::Dumper](https://metacpan.org/pod/Data::Dumper)
 - [Data::Stack](https://metacpan.org/pod/Data::Stack)
