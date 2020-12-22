@@ -19,6 +19,7 @@ use File::Find; # find
 use File::Slurper qw(read_lines read_text);
 use Readonly;
 use Carp; # croak
+use Clone 'clone';
 
 use Env qw($HOME);
 use base qw(Class::Accessor);
@@ -35,6 +36,7 @@ our $VERSION = '1.0.0';
 my $yak;
 my $matcher;
 my $directory_stack = Data::Stack->new();
+my $files;
 
 App::Yak->mk_accessors(qw(
     default_config_file
@@ -91,6 +93,10 @@ sub new {
 sub process {
     my ($self, $config) = @_;
 
+    my $rv = $SUCCESS;
+
+    $files = clone($self->checksums);
+
     if ($self->verbose) {
         $self->print_version;
     }
@@ -108,7 +114,12 @@ sub process {
 
     find({ wanted => \&_process, preprocess => \&_preprocess, postprocess => \&_postprocess }, qw(.));
 
-    return $SUCCESS;
+    foreach my $not_found_file ( keys %{$files} ) {
+        $self->print_failure($not_found_file);
+        $rv = $FAILURE;
+    }
+
+    return $rv;
 }
 
 sub _process {
@@ -160,9 +171,13 @@ sub _postprocess {
 sub subprocess {
     my ($self, $file) = @_;
 
+    if ($self->debug) {
+        say STDERR "subprocess: Asserting file: $file";
+    }
+
     my $rv = $SUCCESS;
 
-    if (-f $file and any { $file eq $_ } keys %{$self->checksums} ) {
+    if (any { $file eq $_ } keys %{$self->checksums} ) {
 
         my $checksum;
         my $assertion = $self->checksums->{$file};
@@ -170,9 +185,9 @@ sub subprocess {
         if ($assertion =~ m/file/i) {
             my ($filename) = $assertion =~ s{file:\/\/(.*)}{$1};
             $checksum = sha256_file_hex("$HOME/.config/yak/files/$assertion");
-        } elsif ($assertion eq $JSON::true) {
+        } elsif ($assertion eq $JSON::true and -f $file) {
             $self->print_success($File::Find::name);
-        } elsif ($assertion eq $JSON::false) {
+        } elsif ($assertion eq $JSON::false and -f $file) {
             $self->print_failure($File::Find::name);
             $rv = $FAILURE;
 
@@ -190,6 +205,7 @@ sub subprocess {
                 $rv = $FAILURE;
             }
         }
+        delete $files->{$file};
 
     } elsif (-f $file and $self->verbose) {
         $self->print_skip($File::Find::name);
@@ -441,6 +457,10 @@ sub read_checksums {
     if ($self->nochecksums) {
         my $cwd = getcwd();
         $checksums_file = "$cwd/.yaksums.json";
+
+        if ($yak->debug) {
+            say STDERR "read_checksums: Located .yaksums.json in $cwd";
+        }
     } else {
 
         if ($self->checksums_src) {
