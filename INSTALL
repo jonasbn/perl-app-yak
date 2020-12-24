@@ -1,0 +1,22 @@
+INSTALL file for App::Yak
+
+The recommended way of installing the distribution and tools is using
+
+cpan, cpanm or similar.
+
+cpanm:
+
+$ cpanm App::Yak
+
+CPAN Shell:
+
+$ cpan App::Yak
+
+I you have downloaded the tar-ball you can unpack it and perform the following steps:
+
+$ perl Makefile.PL
+$ make
+$ make test
+$ make install
+
+For more information on module installation, please visit the detailed CPAN module installation guide: at https://www.cpan.org/modules/INSTALL.html.
