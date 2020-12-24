@@ -30,8 +30,7 @@ Readonly::Scalar my $SUCCESS => 0;
 Readonly::Scalar my $FAILURE => 1;
 Readonly::Scalar my $OK  => 1;
 
-our $VERSION = '1.0.0';
-
+use version; our $VERSION = version->declare("v1.0.0");
 # HACK: I need to address these, I do not like the scoping
 my $yak;
 my $matcher;
