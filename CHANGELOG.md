@@ -1,5 +1,13 @@
 # CHANGELOG for `yak`
 
+## 0.18.0 2020-12-26 Milestone release, implemented handling of URLs for checksum resources and checksum calculation
+
+- The feature of fetching a checksums resource via URL added
+
+- The feature of fetching a single checksum resource via URL for dynamic calculation added
+
+- Added use of LWP::UserAgent as a dependency
+
 ## 0.17.0 2020-12-22 Milestone release, implemented handling of non-found files
 
 - The feature of reporting on required files not being found has now been implemented

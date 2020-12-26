@@ -49,7 +49,7 @@ Then `yak` can calculate the checksum dynamically, based on the reference file a
 This JSON file should be created as `$HOME/.config/yak/checksums.json`.
 
     {
-        "CODE_OF_CONDUCT.md": "da9eed24b35eed80ce28e07b02725dbb356cfa56500a1552a1410ab5c73af82c",
+        "CODE_OF_CONDUCT.md": "https://gist.githubusercontent.com/jonasbn/dc331774eb67d067981902cadd3955ba/raw/b41de645c599be51e40a27e856333eeea261c12b/yaksums.json",
         "CONTRIBUTING.md": "file://CONTRIBUTING.md",
         "PULL_REQUEST_TEMPLATE.md": "91dabee84afd46f93894d1a266a773f3d46c2c0b1ae4813f0c7dba34df1dc260",
         "MANIFEST.SKIP": "file://MANIFEST.SKIP"
@@ -98,6 +98,7 @@ Since `yak` is processing a directory structure recursively, specifying director
 - `--noemoji`, disables emojis in output, even if configured or provided as `--emoji`, see above
 - `--about`, emits output on configuration and invocation and terminates with success
 - `--help`, emits help message listing all available options
+- `--version`, emits version message listing version of the software
 
 Command line arguments override the configuration.
 
@@ -177,7 +178,7 @@ This JSON file should look as follows:
 An example:
 
     {
-        "CODE_OF_CONDUCT.md": "da9eed24b35eed80ce28e07b02725dbb356cfa56500a1552a1410ab5c73af82c",
+        "CODE_OF_CONDUCT.md": "https://gist.githubusercontent.com/jonasbn/dc331774eb67d067981902cadd3955ba/raw/b41de645c599be51e40a27e856333eeea261c12b/yaksums.json",
         "CONTRIBUTING.md": "file://CONTRIBUTING.md",
         "PULL_REQUEST_TEMPLATE.md": "91dabee84afd46f93894d1a266a773f3d46c2c0b1ae4813f0c7dba34df1dc260",
         "MANIFEST.SKIP": "file://MANIFEST.SKIP"
@@ -237,8 +238,10 @@ If you want to utilize the supported environment variables (see ["ENVIRONMENT"](
 - [Getopt::Long](https://metacpan.org/pod/Getopt::Long)
 - [JSON](https://metacpan.org/pod/JSON)
 - [List::MoreUtils](https://metacpan.org/pod/List::MoreUtils)
+- [LWP::UserAgent](https://metacpan.org/pod/LWP::UserAgent)
 - [Term::ANSIColor](https://metacpan.org/pod/Term::ANSIColor)
 - [Text::Gitignore](https://metacpan.org/pod/Text::Gitignore)
+- [version](https://metacpan.org/pod/version)
 - [YAML::Tiny](https://metacpan.org/pod/YAML::Tiny)
 
 # LIMITATIONS
