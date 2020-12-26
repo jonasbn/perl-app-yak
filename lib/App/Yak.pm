@@ -510,14 +510,11 @@ sub _read_checksum_url {
     $ua->agent($self->version);
 
     my $req = HTTP::Request->new(GET => $url);
-    #$req->content_type('application/json');
     my $res = $ua->request($req);
-
-    print STDERR "Fetching $url\n";
 
     # Check the outcome of the response
     if ($res->is_success) {
-        $content =  $res->content;
+        $content = $res->content;
     } else {
         croak $res->status_line;
     }
@@ -528,25 +525,7 @@ sub _read_checksum_url {
 sub _read_checksums_url {
     my $self = shift;
 
-    my $content;
-
-    my $ua = LWP::UserAgent->new;
-    $ua->agent($self->version);
-
-    my $req = HTTP::Request->new(GET => $self->checksums_src);
-    $req->content_type('application/json');
-    my $res = $ua->request($req);
-
-    print STDERR "Fetching ".$self->checksums_src;
-
-    # Check the outcome of the response
-    if ($res->is_success) {
-        $content =  $res->content;
-    } else {
-        croak $res->status_line;
-    }
-
-    return $content;
+    return $self->_read_checksum_url($self->checksums_src);
 }
 
 sub _has_config {
