@@ -60,6 +60,10 @@ App::Yak->mk_accessors(qw(
     noconfig
     config_src
     yakignores
+    failure_color
+    success_color
+    skip_color
+    ignore_color
 ));
 
 sub new {
@@ -84,6 +88,7 @@ sub new {
     $object->noconfig($FALSE);
 
     $object->_set_emojis();
+    $object->_set_colors();
 
     $yak = $object;
 
@@ -222,9 +227,9 @@ sub print_success {
 
     unless ($self->silent) {
         if ($self->color) {
-            say GREEN, $self->success_emoji() . $filename . ' succeeded'. RESET;
+            say $self->success_color, $self->success_emoji . $filename . ' succeeded'. RESET;
         } else {
-            say $self->success_emoji() . $filename . ' succeeded';
+            say $self->success_emoji . $filename . ' succeeded';
         }
     }
 
@@ -236,7 +241,7 @@ sub print_skip {
 
     unless ($self->silent) {
         if ($self->color) {
-            say FAINT, $self->skip_emoji . "$filename skipped", RESET;
+            say $self->skip_color, $self->skip_emoji . "$filename skipped", RESET;
         } else {
             say $self->skip_emoji, "$filename skipped";
         }
@@ -250,7 +255,7 @@ sub print_failure {
 
     unless ($self->silent) {
         if ($self->color) {
-            say RED, $self->failure_emoji . $filename . ' failed' . RESET;
+            say $self->failure_color, $self->failure_emoji . $filename . ' failed' . RESET;
         } else {
             say $self->failure_emoji . $filename . ' failed';
         }
@@ -264,7 +269,7 @@ sub print_ignore {
 
     unless ($self->silent) {
         if ($self->color) {
-            say FAINT, $self->ignore_emoji . "$filename ignored", RESET;
+            say $self->ignore_color, $self->ignore_emoji . "$filename ignored", RESET;
         } else {
             say $self->ignore_emoji, "$filename ignored";
         }
@@ -342,6 +347,17 @@ sub noemoji {
     }
 
     return $self->{noemoji};
+}
+
+sub _set_colors {
+    my $self = shift;
+
+    $self->failure_color(RED);
+    $self->success_color(GREEN);
+    $self->ignore_color(FAINT);
+    $self->skip_color(FAINT);
+
+    return $TRUE;
 }
 
 sub _set_emojis {
@@ -439,15 +455,25 @@ sub read_config {
     $self->color($TRUE) if $flags->{color};
     $self->emoji($TRUE) if $flags->{emoji};
 
-    my $failure_emoji = _set_emoji('failure', $config);
-    my $success_emoji = _set_emoji('success', $config);
-    my $ignore_emoji  = _set_emoji('ignore', $config);
-    my $skip_emoji    = _set_emoji('skip', $config);
+    my $failure_emoji = _set_emoji('failure_emoji', $config);
+    my $success_emoji = _set_emoji('success_emoji', $config);
+    my $ignore_emoji  = _set_emoji('ignore_emoji', $config);
+    my $skip_emoji    = _set_emoji('skip_emoji', $config);
 
     $self->failure_emoji($failure_emoji) if $failure_emoji;
     $self->success_emoji($success_emoji) if $success_emoji;
     $self->ignore_emoji($ignore_emoji) if $ignore_emoji;
     $self->skip_emoji($skip_emoji) if $skip_emoji;
+
+    my $failure_color = _set_color('failure_color', $config);
+    my $success_color = _set_color('success_color', $config);
+    my $ignore_color  = _set_color('ignore_color', $config);
+    my $skip_color    = _set_color('skip_color', $config);
+
+    $self->failure_color($failure_color) if $failure_color;
+    $self->success_color($success_color) if $success_color;
+    $self->ignore_color($ignore_color) if $ignore_color;
+    $self->skip_color($skip_color) if $skip_color;
 
     return $config;
 }
@@ -612,6 +638,12 @@ sub print_about {
 }
 
 sub _set_emoji {
+    my ($key, $config) = @_;
+
+    return $config->[0]->{$key} || '';
+}
+
+sub _set_color {
     my ($key, $config) = @_;
 
     return $config->[0]->{$key} || '';
