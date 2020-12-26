@@ -131,7 +131,7 @@ If a file is encountered, which matches the name, the checksum of the encountere
 
 The recommendation is to have the checksum in the central file, reflect the authoritative revision and hence you can overwrite the file in the directory you where inspecting.
 
-Alternatively to specifying a checksum, you can specify a file URL:
+Alternatively to specifying a checksum, you can specify a file path URL:
 
     {
         "MANIFEST.SKIP": "file://MANIFEST.SKIP"
@@ -139,14 +139,22 @@ Alternatively to specifying a checksum, you can specify a file URL:
 
 The file pointed to has to be available in: F<$HOME/.config/yak/files>
 
-Then C<yak> can calculate the checksum dynamically, based on the reference file and can based on invocation copy the reference file to the location of the evaluated file in the case where the two differ.
+Then C<yak> can calculate the checksum dynamically based on the referenced file.
+
+And again a checksum can be specified as a URL:
+
+    {
+        "CODE_OF_CONDUCT.md": "https://gist.githubusercontent.com/jonasbn/dc331774eb67d067981902cadd3955ba/raw/b41de645c599be51e40a27e856333eeea261c12b/yaksums.json"
+    }
+
+Then C<yak> will calculate the checksum dynamically based on the retrieved data.
 
 =head2 CHECKSUM DATA FILE EXAMPLE
 
 This JSON file should be created as C<$HOME/.config/yak/checksums.json>.
 
     {
-        "CODE_OF_CONDUCT.md": "da9eed24b35eed80ce28e07b02725dbb356cfa56500a1552a1410ab5c73af82c",
+        "CODE_OF_CONDUCT.md": "https://gist.githubusercontent.com/jonasbn/dc331774eb67d067981902cadd3955ba/raw/b41de645c599be51e40a27e856333eeea261c12b/yaksums.json",
         "CONTRIBUTING.md": "file://CONTRIBUTING.md",
         "PULL_REQUEST_TEMPLATE.md": "91dabee84afd46f93894d1a266a773f3d46c2c0b1ae4813f0c7dba34df1dc260",
         "MANIFEST.SKIP": "file://MANIFEST.SKIP"
@@ -213,7 +221,7 @@ C<yak> takes the following command line arguments:
 
 =item * C<--nochecksums>, disables reading of the global checksums file, see L</DATA SOURCE>
 
-=item * C<--checksums [file]>, reads alternative checksums file instead of default, see L</DATA SOURCE>
+=item * C<--checksums [file/URL]>, reads alternative checksums file instead of default, see L</DATA SOURCE>
 
 =item * C<--color>, enables colorized output, enabled by default or can be configured, see L</CONFIGURATION>
 
@@ -314,7 +322,7 @@ This YAML file should be created as C<$HOME/.config/yak/config.yml>.
 
 =head1 DATA SOURCE
 
-There are 3 ways to provide checksum data to C<yak>.
+There are 4 ways to provide checksum data to C<yak>.
 
 =over
 
@@ -322,7 +330,9 @@ There are 3 ways to provide checksum data to C<yak>.
 
 =item * Using a project or repository specific: C<.yaksums.json> located in the root of your project or repository directory
 
-=item * Using an JSON file adhering to formatting described in this chapter, which can be located elsewhere on your file system and then pointed out using the command line argument: C<--checksums [file]>
+=item * Using an JSON file adhering to formatting described in this chapter, which can be located elsewhere on your file system and then pointed to using the command line argument: C<--checksums [file]>
+
+=item * Using an JSON structure adhering to formatting described in this chapter, which can be retrieved from an URL and then pointed to using the command line argument: C<--checksums [file]>
 
 =back
 
@@ -341,7 +351,7 @@ This JSON file should look as follows:
 An example:
 
     {
-        "CODE_OF_CONDUCT.md": "da9eed24b35eed80ce28e07b02725dbb356cfa56500a1552a1410ab5c73af82c",
+        "CODE_OF_CONDUCT.md": "https://gist.githubusercontent.com/jonasbn/dc331774eb67d067981902cadd3955ba/raw/b41de645c599be51e40a27e856333eeea261c12b/yaksums.json",
         "CONTRIBUTING.md": "file://CONTRIBUTING.md",
         "PULL_REQUEST_TEMPLATE.md": "91dabee84afd46f93894d1a266a773f3d46c2c0b1ae4813f0c7dba34df1dc260",
         "MANIFEST.SKIP": "file://MANIFEST.SKIP"
