@@ -10,7 +10,7 @@ use utf8;
 use YAML::Tiny;
 use JSON; # from_json
 use Term::ANSIColor qw(:constants);
-use Crypt::Digest::SHA256 qw(sha256_file_hex); # Provided by CryptX
+use Crypt::Digest::SHA256 qw(sha256_file_hex sha256_hex); # Provided by CryptX
 use List::MoreUtils qw(any);
 use Data::Stack;
 use Text::Gitignore qw(match_gitignore build_gitignore_matcher);
@@ -20,6 +20,7 @@ use File::Slurper qw(read_lines read_text);
 use Readonly;
 use Carp; # croak
 use Clone 'clone';
+use LWP::UserAgent;
 
 use Env qw($HOME);
 use base qw(Class::Accessor);
@@ -184,6 +185,9 @@ sub subprocess {
         if ($assertion =~ m/file/i) {
             my ($filename) = $assertion =~ s{file:\/\/(.*)}{$1};
             $checksum = sha256_file_hex("$HOME/.config/yak/files/$assertion");
+        } elsif ($assertion =~ m/http/i) {
+            my $content = $self->_read_checksum_url($assertion);
+            $checksum = sha256_hex($content);
         } elsif ($assertion eq $JSON::true and -f $file) {
             $self->print_success($File::Find::name);
         } elsif ($assertion eq $JSON::false and -f $file) {
@@ -452,6 +456,7 @@ sub read_checksums {
     my $self = shift;
 
     my $checksums_file = '';
+    my $checksums_url  = '';
 
     if ($self->nochecksums) {
         my $cwd = getcwd();
@@ -462,7 +467,9 @@ sub read_checksums {
         }
     } else {
 
-        if ($self->checksums_src) {
+        if ($self->checksums_src and $self->checksums_src =~ m/^http/i) {
+            $checksums_url = $self->checksums_src;
+        } elsif ($self->checksums_src) {
             $checksums_file = $self->checksums_src;
         } else {
             $checksums_file = $self->default_checksums_src;
@@ -471,19 +478,54 @@ sub read_checksums {
 
     my $checksums;
 
-    if ($checksums_file and (not -e $checksums_file or not -f _ or not -r _)) {
-        croak 'No checksums file available, please specify either a checksum file in the configuration directory or in the designated directory';
-    } else {
-        my $checksum_json = read_text($checksums_file);
+    if ($checksums_url) {
+        my $content = $self->_read_checksums_url();
+        $checksums = from_json($content);
 
-        $checksums = from_json($checksum_json);
+        $self->checksums($checksums);
+
+    } else {
+        if ($checksums_file and (not -e $checksums_file or not -f _ or not -r _)) {
+            croak 'No checksums file available, please specify either a checksum file in the configuration directory or in the designated directory';
+        } else {
+            my $checksum_json = read_text($checksums_file);
+
+            $checksums = from_json($checksum_json);
+        }
+
+        $self->checksums($checksums);
+
+        $self->checksums_src($checksums_file);
     }
 
-    $self->checksums($checksums);
-
-    $self->checksums_src($checksums_file);
-
     return $OK;
+}
+
+sub _read_checksum_url {
+    my ($self, $url) = @_;
+
+    my $content;
+
+    my $ua = LWP::UserAgent->new;
+    $ua->agent($self->version);
+
+    my $req = HTTP::Request->new(GET => $url);
+    my $res = $ua->request($req);
+
+    # Check the outcome of the response
+    if ($res->is_success) {
+        $content = $res->content;
+    } else {
+        croak $res->status_line;
+    }
+
+    return $content;
+}
+
+sub _read_checksums_url {
+    my $self = shift;
+
+    return $self->_read_checksum_url($self->checksums_src);
 }
 
 sub _has_config {
@@ -643,7 +685,7 @@ Then C<yak> can calculate the checksum dynamically, based on the reference file 
 This JSON file should be created as C<$HOME/.config/yak/checksums.json>.
 
     {
-        "CODE_OF_CONDUCT.md": "da9eed24b35eed80ce28e07b02725dbb356cfa56500a1552a1410ab5c73af82c",
+        "CODE_OF_CONDUCT.md": "https://gist.githubusercontent.com/jonasbn/dc331774eb67d067981902cadd3955ba/raw/b41de645c599be51e40a27e856333eeea261c12b/yaksums.json",
         "CONTRIBUTING.md": "file://CONTRIBUTING.md",
         "PULL_REQUEST_TEMPLATE.md": "91dabee84afd46f93894d1a266a773f3d46c2c0b1ae4813f0c7dba34df1dc260",
         "MANIFEST.SKIP": "file://MANIFEST.SKIP"
@@ -834,7 +876,7 @@ This JSON file should look as follows:
 An example:
 
     {
-        "CODE_OF_CONDUCT.md": "da9eed24b35eed80ce28e07b02725dbb356cfa56500a1552a1410ab5c73af82c",
+        "CODE_OF_CONDUCT.md": "https://gist.githubusercontent.com/jonasbn/dc331774eb67d067981902cadd3955ba/raw/b41de645c599be51e40a27e856333eeea261c12b/yaksums.json",
         "CONTRIBUTING.md": "file://CONTRIBUTING.md",
         "PULL_REQUEST_TEMPLATE.md": "91dabee84afd46f93894d1a266a773f3d46c2c0b1ae4813f0c7dba34df1dc260",
         "MANIFEST.SKIP": "file://MANIFEST.SKIP"
@@ -911,9 +953,13 @@ C<yak> is specified to a minimum requirement of Perl 5.10, based on an analysis 
 
 =item * L<List::MoreUtils|https://metacpan.org/pod/List::MoreUtils>
 
+=item * L<LWP::UserAgent|https://metacpan.org/pod/LWP::UserAgent>
+
 =item * L<Term::ANSIColor|https://metacpan.org/pod/Term::ANSIColor>
 
 =item * L<Text::Gitignore|https://metacpan.org/pod/Text::Gitignore>
+
+=item * L<version|https://metacpan.org/pod/version>
 
 =item * L<YAML::Tiny|https://metacpan.org/pod/YAML::Tiny>
 

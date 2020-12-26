@@ -18,6 +18,7 @@ requires 'Class::Accessor';       # Not core
 requires 'FindBin';               # Core since Perl 5.00307
 requires 'Clone';                 # Not core
 requires 'version';               # Core since 5.9.0
+requires 'LWP::UserAgent';        # Not core
 
 on 'test' => sub {
     requires 'Test2::V0';                   # Not core
