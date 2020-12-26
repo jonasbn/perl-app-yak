@@ -10,7 +10,7 @@ use utf8;
 use YAML::Tiny;
 use JSON; # from_json
 use Term::ANSIColor qw(:constants);
-use Crypt::Digest::SHA256 qw(sha256_file_hex); # Provided by CryptX
+use Crypt::Digest::SHA256 qw(sha256_file_hex sha256_hex); # Provided by CryptX
 use List::MoreUtils qw(any);
 use Data::Stack;
 use Text::Gitignore qw(match_gitignore build_gitignore_matcher);
@@ -185,6 +185,9 @@ sub subprocess {
         if ($assertion =~ m/file/i) {
             my ($filename) = $assertion =~ s{file:\/\/(.*)}{$1};
             $checksum = sha256_file_hex("$HOME/.config/yak/files/$assertion");
+        } elsif ($assertion =~ m/http/i) {
+            my $content = $self->_read_checksum_url($assertion);
+            $checksum = sha256_hex($content);
         } elsif ($assertion eq $JSON::true and -f $file) {
             $self->print_success($File::Find::name);
         } elsif ($assertion eq $JSON::false and -f $file) {
@@ -496,6 +499,30 @@ sub read_checksums {
     }
 
     return $OK;
+}
+
+sub _read_checksum_url {
+    my ($self, $url) = @_;
+
+    my $content;
+
+    my $ua = LWP::UserAgent->new;
+    $ua->agent($self->version);
+
+    my $req = HTTP::Request->new(GET => $url);
+    #$req->content_type('application/json');
+    my $res = $ua->request($req);
+
+    print STDERR "Fetching $url\n";
+
+    # Check the outcome of the response
+    if ($res->is_success) {
+        $content =  $res->content;
+    } else {
+        croak $res->status_line;
+    }
+
+    return $content;
 }
 
 sub _read_checksums_url {
