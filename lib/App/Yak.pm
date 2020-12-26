@@ -20,6 +20,7 @@ use File::Slurper qw(read_lines read_text);
 use Readonly;
 use Carp; # croak
 use Clone 'clone';
+use LWP::UserAgent;
 
 use Env qw($HOME);
 use base qw(Class::Accessor);
@@ -452,6 +453,7 @@ sub read_checksums {
     my $self = shift;
 
     my $checksums_file = '';
+    my $checksums_url  = '';
 
     if ($self->nochecksums) {
         my $cwd = getcwd();
@@ -462,7 +464,9 @@ sub read_checksums {
         }
     } else {
 
-        if ($self->checksums_src) {
+        if ($self->checksums_src and $self->checksums_src =~ m/^http/i) {
+            $checksums_url = $self->checksums_src;
+        } elsif ($self->checksums_src) {
             $checksums_file = $self->checksums_src;
         } else {
             $checksums_file = $self->default_checksums_src;
@@ -471,19 +475,51 @@ sub read_checksums {
 
     my $checksums;
 
-    if ($checksums_file and (not -e $checksums_file or not -f _ or not -r _)) {
-        croak 'No checksums file available, please specify either a checksum file in the configuration directory or in the designated directory';
-    } else {
-        my $checksum_json = read_text($checksums_file);
+    if ($checksums_url) {
+        my $content = $self->_read_checksums_url();
+        $checksums = from_json($content);
 
-        $checksums = from_json($checksum_json);
+        $self->checksums($checksums);
+
+    } else {
+        if ($checksums_file and (not -e $checksums_file or not -f _ or not -r _)) {
+            croak 'No checksums file available, please specify either a checksum file in the configuration directory or in the designated directory';
+        } else {
+            my $checksum_json = read_text($checksums_file);
+
+            $checksums = from_json($checksum_json);
+        }
+
+        $self->checksums($checksums);
+
+        $self->checksums_src($checksums_file);
     }
 
-    $self->checksums($checksums);
-
-    $self->checksums_src($checksums_file);
-
     return $OK;
+}
+
+sub _read_checksums_url {
+    my $self = shift;
+
+    my $content;
+
+    my $ua = LWP::UserAgent->new;
+    $ua->agent($self->version);
+
+    my $req = HTTP::Request->new(GET => $self->checksums_src);
+    $req->content_type('application/json');
+    my $res = $ua->request($req);
+
+    print STDERR "Fetching ".$self->checksums_src;
+
+    # Check the outcome of the response
+    if ($res->is_success) {
+        $content =  $res->content;
+    } else {
+        croak $res->status_line;
+    }
+
+    return $content;
 }
 
 sub _has_config {

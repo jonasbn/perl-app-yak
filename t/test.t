@@ -11,6 +11,7 @@ if ($CONTINUOUS_INTEGRATION and $CONTINUOUS_INTEGRATION eq 'true') {
 } else {
     script_runs(['script/yak', '--about'], { exit => 0 }, '"yak --about" run');
     script_runs(['script/yak', '--help'], { exit => 0 }, '"yak --help" run');
+    script_runs(['script/yak', '--version'], '"yak --version" run');
     script_runs(['script/yak', '--debug'], '"yak --debug" run');
     script_runs(['script/yak', '--nodebug'], '"yak --nodebug" run');
     script_runs(['script/yak', '--verbose'], '"yak --verbose" run');
@@ -21,6 +22,7 @@ if ($CONTINUOUS_INTEGRATION and $CONTINUOUS_INTEGRATION eq 'true') {
     script_stdout_is '', 'We run in silence so no output';
     script_runs(['script/yak', '--nochecksums'], '"yak --nochecksums" run');
     script_runs(['script/yak', '--checksums', 'examples/checksums.json'], '"yak --checksums examples/checksums.json" run');
+    script_runs(['script/yak', '--checksums', 'https://gist.githubusercontent.com/jonasbn/dc331774eb67d067981902cadd3955ba/raw/b41de645c599be51e40a27e856333eeea261c12b/yaksums.json'], '"yak --checksums https://gist.githubusercontent.com/jonasbn/dc331774eb67d067981902cadd3955ba/raw/b41de645c599be51e40a27e856333eeea261c12b/yaksums.json" run');
     script_runs(['script/yak', '--color'], '"yak --color" run');
     script_runs(['script/yak', '--nocolor'], '"yak --nocolor" run');
     script_runs(['script/yak', '--emoji'], '"yak --emoji" run');
