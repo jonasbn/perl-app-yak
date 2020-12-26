@@ -762,6 +762,8 @@ C<yak> takes the following command line arguments:
 
 =item * C<--help>, emits help message listing all available options
 
+=item * C<--version>, emits version message listing version of the software
+
 =back
 
 Command line arguments override the configuration.
