@@ -3,6 +3,7 @@
 ## 0.19.0 2021-01-04 Milestone release, implemented customization of colors using configuration
 
 - Colors for output can now be customized using the configuration file
+
 ## 0.18.0 2020-12-26 Milestone release, implemented handling of URLs for checksum resources and checksum calculation
 
 - The feature of fetching a checksums resource via URL added
