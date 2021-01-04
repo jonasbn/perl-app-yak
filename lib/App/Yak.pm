@@ -9,7 +9,7 @@ use v5.10; # say
 use utf8;
 use YAML::Tiny;
 use JSON; # from_json
-use Term::ANSIColor qw(:constants);
+use Term::ANSIColor qw(); # color is exported by default unless we supress it
 use Crypt::Digest::SHA256 qw(sha256_file_hex sha256_hex); # Provided by CryptX
 use List::MoreUtils qw(any);
 use Data::Stack;
@@ -227,7 +227,9 @@ sub print_success {
 
     unless ($self->silent) {
         if ($self->color) {
-            say $self->success_color, $self->success_emoji . $filename . ' succeeded'. RESET;
+            print Term::ANSIColor::color($self->success_color);
+            say $self->success_emoji . $filename . ' succeeded';
+            print Term::ANSIColor::color('reset');
         } else {
             say $self->success_emoji . $filename . ' succeeded';
         }
@@ -241,7 +243,9 @@ sub print_skip {
 
     unless ($self->silent) {
         if ($self->color) {
-            say $self->skip_color, $self->skip_emoji . "$filename skipped", RESET;
+            print Term::ANSIColor::color($self->skip_color);
+            say $self->skip_emoji . $filename . ' skipped';
+            print Term::ANSIColor::color('reset');
         } else {
             say $self->skip_emoji, "$filename skipped";
         }
@@ -255,7 +259,9 @@ sub print_failure {
 
     unless ($self->silent) {
         if ($self->color) {
-            say $self->failure_color, $self->failure_emoji . $filename . ' failed' . RESET;
+            print Term::ANSIColor::color($self->failure_color);
+            say $self->failure_emoji . $filename . ' failed';
+            print Term::ANSIColor::color('reset');
         } else {
             say $self->failure_emoji . $filename . ' failed';
         }
@@ -269,7 +275,9 @@ sub print_ignore {
 
     unless ($self->silent) {
         if ($self->color) {
-            say $self->ignore_color, $self->ignore_emoji . "$filename ignored", RESET;
+            print Term::ANSIColor::color($self->ignore_color);
+            say $self->ignore_emoji . $filename . ' ignored';
+            print Term::ANSIColor::color('reset');
         } else {
             say $self->ignore_emoji, "$filename ignored";
         }
@@ -352,10 +360,10 @@ sub noemoji {
 sub _set_colors {
     my $self = shift;
 
-    $self->failure_color(RED);
-    $self->success_color(GREEN);
-    $self->ignore_color(FAINT);
-    $self->skip_color(FAINT);
+    $self->failure_color('red');
+    $self->success_color('green');
+    $self->ignore_color('blue');
+    $self->skip_color('blue');
 
     return $TRUE;
 }
@@ -608,6 +616,11 @@ sub print_about {
         say '- verbose: '.$config->[0]->{verbose} if $config->[0]->{verbose};
         say '- color: '.$config->[0]->{color} if $config->[0]->{color};
         say '- emoji: '.$config->[0]->{emoji} if $config->[0]->{emoji};
+        say '- success_color: '.$config->[0]->{success_color} if $config->[0]->{success_color};
+        say '- failure_color: '.$config->[0]->{failure_color} if $config->[0]->{failure_color};
+        say '- skip_color: '.$config->[0]->{skip_color} if $config->[0]->{skip_color};
+        say '- ignore_color: '.$config->[0]->{ignore_color} if $config->[0]->{ignore_color};
+
         if ($config->[0]->{yakignores}) {
             say '- yakignores: ';
             foreach my $yakignore (@{$config->[0]->{yakignores}}) {
@@ -856,11 +869,21 @@ C<yak> can be configured using the following parameters:
 
 =item * C<emoji>, enabling (C<true>) or disabling (C<false>) colorized output
 
-=item * C<success_emoji>
+=item * C<success_emoji>, setting emoji for success messages, used when emojis are enabled
 
-=item * C<failure_emoji>
+=item * C<failure_emoji>, setting emoji for failure messages, used when emojis are enabled
 
-=item * C<skip_emoji>
+=item * C<skip_emoji>, setting emoji for skip messages, used when emojis are enabled
+
+=item * C<ignore_emoji>, setting emoji for ignore messages, used when emojis are enabled
+
+=item * C<success_color>, setting color for success messages, used when colors are enabled
+
+=item * C<failure_color>, setting color for failure messages, used when colors are enabled
+
+=item * C<skip_color>, setting color for skip messages, used when colors are enabled
+
+=item * C<ignore_color>, setting color for ignore messages, used when colors are enabled
 
 =item * C<yakignores>, specify a list of file directory names and patterns to be ignored
 
@@ -877,6 +900,7 @@ This YAML file should be created as C<$HOME/.config/yak/config.yml>.
     skip_emoji: ✖️
     failure_emoji: ❌
     success_emoji: ✅
+    failure_color: yellow
     yakignores:
     - .git
     - local
@@ -928,6 +952,50 @@ Or you can issue an error if a file is present, which should not be there, again
     {
         ".vstags": false
     }
+
+=head1 COLORS
+
+Terminal colors are awesome, but also not as easy to work with. B<yak> supports quite a few and relies on the implementation made available by L<Term::ANSIColor>, more options and more information is available, so please consult the L<Term::ANSIColor> documentation for more details.
+
+=over
+
+=item * C<black>
+
+=item * C<red>, default for failure
+
+=item * C<green>, default for success
+
+=item * C<yellow>
+
+=item * C<blue>, default for skip and ignore
+
+=item * C<magenta>
+
+=item * C<cyan>
+
+=item * C<white>
+
+=item * C<bright_black>
+
+=item * C<bright_red>
+
+=item * C<bright_green>
+
+=item * C<bright_yellow>
+
+=item * C<bright_blue>
+
+=item * C<bright_magenta>
+
+=item * C<bright_cyan>
+
+=item * C<bright_white>
+
+=item * C<faint>
+
+=back
+
+The default colors should be available in most terminals. The color C<faint> is not supported by all terminals, but looks truly awesome, please consult the L<Term::ANSIColor> documentation for compability details.
 
 =head1 USING DOCKER
 
