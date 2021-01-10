@@ -135,9 +135,14 @@ This aims to follow the proposed standard described in [this article](https://bi
 - `debug`, enabling (`true`) or disabling (`false`) debug output
 - `color`, enabling (`true`) or disabling (`false`) colorized output
 - `emoji`, enabling (`true`) or disabling (`false`) colorized output
-- `success_emoji`
-- `failure_emoji`
-- `skip_emoji`
+- `success_emoji`, setting emoji for success messages, used when emojis are enabled
+- `failure_emoji`, setting emoji for failure messages, used when emojis are enabled
+- `skip_emoji`, setting emoji for skip messages, used when emojis are enabled
+- `ignore_emoji`, setting emoji for ignore messages, used when emojis are enabled
+- `success_color`, setting color for success messages, used when colors are enabled
+- `failure_color`, setting color for failure messages, used when colors are enabled
+- `skip_color`, setting color for skip messages, used when colors are enabled
+- `ignore_color`, setting color for ignore messages, used when colors are enabled
 - `yakignores`, specify a list of file directory names and patterns to be ignored
 
 Configuration can be overridden by command line arguments, see ["INVOCATION"](#invocation).
@@ -151,6 +156,7 @@ This YAML file should be created as `$HOME/.config/yak/config.yml`.
     skip_emoji: ✖️
     failure_emoji: ❌
     success_emoji: ✅
+    failure_color: yellow
     yakignores:
     - .git
     - local
@@ -196,6 +202,30 @@ Or you can issue an error if a file is present, which should not be there, again
     {
         ".vstags": false
     }
+
+# COLORS
+
+Terminal colors are awesome, but also not as easy to work with. **yak** supports quite a few and relies on the implementation made available by [Term::ANSIColor](https://metacpan.org/pod/Term%3A%3AANSIColor), more options and more information is available, so please consult the [Term::ANSIColor](https://metacpan.org/pod/Term%3A%3AANSIColor) documentation for more details.
+
+- `black`
+- `red`, default for failure
+- `green`, default for success
+- `yellow`
+- `blue`, default for skip and ignore
+- `magenta`
+- `cyan`
+- `white`
+- `bright_black`
+- `bright_red`
+- `bright_green`
+- `bright_yellow`
+- `bright_blue`
+- `bright_magenta`
+- `bright_cyan`
+- `bright_white`
+- `faint`
+
+The default colors should be available in most terminals. The color `faint` is not supported by all terminals, but looks truly awesome, please consult the [Term::ANSIColor](https://metacpan.org/pod/Term%3A%3AANSIColor) documentation for compability details.
 
 # USING DOCKER
 
