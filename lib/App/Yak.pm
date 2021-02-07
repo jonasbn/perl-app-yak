@@ -995,7 +995,7 @@ Terminal colors are awesome, but also not as easy to work with. B<yak> supports 
 
 =back
 
-The default colors should be available in most terminals. The color C<faint> is not supported by all terminals, but looks truly awesome, please consult the L<Term::ANSIColor> documentation for compability details.
+The default colors should be available in most terminals. The color C<faint> is not supported by all terminals, but looks truly awesome, please consult the L<Term::ANSIColor> documentation for compatibility details.
 
 =head1 USING DOCKER
 
