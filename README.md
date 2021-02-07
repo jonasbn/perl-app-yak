@@ -225,7 +225,7 @@ Terminal colors are awesome, but also not as easy to work with. **yak** supports
 - `bright_white`
 - `faint`
 
-The default colors should be available in most terminals. The color `faint` is not supported by all terminals, but looks truly awesome, please consult the [Term::ANSIColor](https://metacpan.org/pod/Term%3A%3AANSIColor) documentation for compability details.
+The default colors should be available in most terminals. The color `faint` is not supported by all terminals, but looks truly awesome, please consult the [Term::ANSIColor](https://metacpan.org/pod/Term%3A%3AANSIColor) documentation for compatibility details.
 
 # USING DOCKER
 
