@@ -115,8 +115,14 @@ Note that `--about` return as success with out processing any data apart from re
 
 - `$CLICOLOR}`, if set to false (`0`) it attempts to disable colorized output, if set to true (`1`), it attempts to enable colorized output
 - `$CLICOLOR_FORCE`, if set to true (`1`) it enables colorized output, if set to false (`1`), it disables colorized output
+- `$YAK_SUCCESS_COLOR`, setting color for success messages, used when colors are enabled
+- `$YAK_FAILURE_COLOR`, setting color for failure messages, used when colors are enabled
+- `$YAK_SKIP_COLOR`, setting color for skip messages, used when colors are enabled
+- `$YAK_IGNORE_COLOR`, setting color for ignore messages, used when colors are enabled
 
-The order of precedence is as follows:
+## CLI Color Control
+
+The order of precedence is as follows for CLI color control:
 
 - 1. Environment (this section), `$CLICOLOR_FORCE`
 - 2. Command line arguments, `--nocolor` and `--color` in that order, see ["INVOCATION"](#invocation)
@@ -124,6 +130,16 @@ The order of precedence is as follows:
 - 4. Configuration, see ["CONFIGURATION"](#configuration), `color` configuration option
 
 This aims to follow the proposed standard described in [this article](https://bixense.com/clicolors/).
+
+## Color Control
+
+The order of precedence is as follows for color control:
+
+- 1. Command line arguments, `--nocolor` and `--color` in that order, see ["INVOCATION"](#invocation)
+- 2. Environment (this section), `$YAK_*_COLOR`
+- 3. Configuration, see ["CONFIGURATION"](#configuration), colors configuration options: `success_color`, `failure_color`, `skip_color` and `ignore_color`
+
+Do note this works for the single environment variables, the command line arguments work generally.
 
 # CONFIGURATION
 

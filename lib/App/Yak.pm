@@ -22,7 +22,7 @@ use Carp; # croak
 use Clone 'clone';
 use LWP::UserAgent;
 
-use Env qw($HOME);
+use Env qw($HOME $YAK_SUCCESS_COLOR $YAK_FAILURE_COLOR $YAK_SKIP_COLOR $YAK_IGNORE_COLOR);
 use base qw(Class::Accessor);
 
 Readonly::Scalar my $FALSE => 0;
@@ -486,6 +486,20 @@ sub read_config {
     return $config;
 }
 
+sub read_environment {
+    my $self = shift;
+
+    # Setting colors from environment
+    if ($yak->color) {
+        $yak->failure_color($YAK_FAILURE_COLOR) if $YAK_FAILURE_COLOR;
+        $yak->success_color($YAK_SUCCESS_COLOR) if $YAK_SUCCESS_COLOR;
+        $yak->ignore_color($YAK_IGNORE_COLOR) if $YAK_IGNORE_COLOR;
+        $yak->skip_color($YAK_SKIP_COLOR) if $YAK_SKIP_COLOR;
+    }
+
+    return $OK;
+}
+
 sub read_checksums {
     my $self = shift;
 
@@ -835,9 +849,19 @@ C<yak> supports the following environment variables:
 
 =item * C<$CLICOLOR_FORCE>, if set to true (C<1>) it enables colorized output, if set to false (C<1>), it disables colorized output
 
+=item * C<$YAK_SUCCESS_COLOR>, setting color for success messages, used when colors are enabled
+
+=item * C<$YAK_FAILURE_COLOR>, setting color for failure messages, used when colors are enabled
+
+=item * C<$YAK_SKIP_COLOR>, setting color for skip messages, used when colors are enabled
+
+=item * C<$YAK_IGNORE_COLOR>, setting color for ignore messages, used when colors are enabled
+
 =back
 
-The order of precedence is as follows:
+=head2 CLI Color Control
+
+The order of precedence is as follows for CLI color control:
 
 =over
 
@@ -852,6 +876,22 @@ The order of precedence is as follows:
 =back
 
 This aims to follow the proposed standard described in L<this article|https://bixense.com/clicolors/>.
+
+=head2 Color Control
+
+The order of precedence is as follows for color control:
+
+=over
+
+=item 1. Command line arguments, C<--nocolor> and C<--color> in that order, see L</INVOCATION>
+
+=item 2. Environment (this section), C<$YAK_*_COLOR>
+
+=item 3. Configuration, see L</CONFIGURATION>, colors configuration options: C<success_color>, C<failure_color>, C<skip_color> and C<ignore_color>
+
+=back
+
+Do note this works for the single environment variables, the command line arguments work generally.
 
 =head1 CONFIGURATION
 
