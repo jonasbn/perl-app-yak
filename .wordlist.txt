@@ -39,3 +39,4 @@ https
 zilla
 LWP
 UserAgent
+CLI
