@@ -1,5 +1,9 @@
 # CHANGELOG for `yak`
 
+## 0.20.0 2021-02-20 Milestone release, implemented support for color configuration via environment
+
+- Colors for output can now be customized using environment variables
+
 ## 0.19.0 2021-01-04 Milestone release, implemented customization of colors using configuration
 
 - Colors for output can now be customized using the configuration file
