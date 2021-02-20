@@ -310,7 +310,7 @@ and follow [the pull request guidelines](https://github.com/jonasbn/yak/blob/mas
 
 ## CONTINUOUS INTEGRATION
 
-The GitHub repository of **perl-app-yak** was renamed from **yak**. This broke the continuous integration setup with Travis CI. Therefore this has been disabled for now and instead an experimental CI based on GitHub Actions.
+The GitHub repository of **perl-app-yak** was renamed from **yak**. This broke the continuous integration setup with Travis CI. Therefore this has been disabled for now and instead an experimental CI based on GitHub Actions is used.
 
 - [https://github.com/jonasbn/github-action-perl-dist-zilla](https://github.com/jonasbn/github-action-perl-dist-zilla)
 
@@ -333,7 +333,7 @@ Used commonly for repetitive and boring work, required to reach a certain goal.
 
 # COPYRIGHT
 
-`yak` is (C) by Jonas Brømsø, (jonasbn) 2018-2020
+`yak` is (C) by Jonas Brømsø, (jonasbn) 2018-2021
 
 [Image](https://unsplash.com/photos/3b3O75X0Jzg) used on the **yak** [website](https://jonasbn.github.io/perl-app-yak/) is under copyright by [Shane Aldendorff](https://unsplash.com/@pluyar).
 

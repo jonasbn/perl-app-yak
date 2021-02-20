@@ -1136,7 +1136,7 @@ and follow L<the pull request guidelines|https://github.com/jonasbn/yak/blob/mas
 
 =head2 CONTINUOUS INTEGRATION
 
-The GitHub repository of B<perl-app-yak> was renamed from B<yak>. This broke the continuous integration setup with Travis CI. Therefore this has been disabled for now and instead an experimental CI based on GitHub Actions.
+The GitHub repository of B<perl-app-yak> was renamed from B<yak>. This broke the continuous integration setup with Travis CI. Therefore this has been disabled for now and instead an experimental CI based on GitHub Actions is used.
 
 =over
 
@@ -1167,7 +1167,7 @@ Used commonly for repetitive and boring work, required to reach a certain goal.
 
 =head1 COPYRIGHT
 
-C<yak> is (C) by Jonas Brømsø, (jonasbn) 2018-2020
+C<yak> is (C) by Jonas Brømsø, (jonasbn) 2018-2021
 
 L<Image|https://unsplash.com/photos/3b3O75X0Jzg> used on the B<yak> L<website|https://jonasbn.github.io/perl-app-yak/> is under copyright by L<Shane Aldendorff|https://unsplash.com/@pluyar>.
 
