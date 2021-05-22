@@ -591,20 +591,22 @@ sub _has_config {
 }
 
 sub print_help {
-    say "yak version $VERSION";
+    my $self = shift;
+
+    $self->print_version();
     say '';
-    say 'yak [options]';
+    say 'Usage: yak [options]';
     say '';
-    say 'Options';
+    say 'Options:';
     say '';
-    say '--debug: debug output';
+    say '--debug: output debug information';
     say '--nodebug: disabling debug output, if configured';
     say '--verbose: more verbose output';
-    say '--noconfig: ignore \$HOME/.config/.yak/config.yml';
-    say '--config <file>: specify alternative to \$HOME/.config/.yak/config.yml';
+    say '--noconfig: ignore $HOME/.config/.yak/config.yml';
+    say '--config <file>: specify alternative to $HOME/.config/.yak/config.yml';
     say '--silent: suppress all output and rely on return value';
-    say '--nochecksums: ignore \$HOME/.config/.yak/checksums.json and use local .yaksums';
-    say '--checksums <file>: specify alternative to \$HOME/.config/.yak/checksums.json';
+    say '--nochecksums: ignore $HOME/.config/.yak/checksums.json and use local .yaksums';
+    say '--checksums <file>: specify alternative to $HOME/.config/.yak/checksums.json';
     say '--nocolor: disable colorized output';
     say '--color: enable colorized output';
     say '--noemoji: disable emoji output';
@@ -617,7 +619,7 @@ sub print_help {
 sub print_about {
     my ($self, $flags, $config) = @_;
 
-    say 'yak version '.$self->version;
+    $self->print_version();
     say '';
     say 'Using environment';
     say "- \$CLICOLOR = $ENV{CLICOLOR}"             if exists $ENV{CLICOLOR};
