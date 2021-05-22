@@ -7,7 +7,7 @@
     ".yaksums.json": true,
     "auto_assign.yml": true,
     "CHANGELOG.md": true,
-    "CODE_OF_CONDUCT.md": "https://gist.githubusercontent.com/jonasbn/8efc144cdf107c4acb260178062dae05/raw/c3a3de08dee01da2a37993d20f5ce5cda37a00e2/CODE_OF_CONDUCT.md",
+    "CODE_OF_CONDUCT.md": "https://gist.githubusercontent.com/jonasbn/dc331774eb67d067981902cadd3955ba/raw/b41de645c599be51e40a27e856333eeea261c12b/yaksums.json",
     "CONTRIBUTING.md": true,
     "dependabot.yml": true,
     "ISSUE_TEMPLATE.md": true,
