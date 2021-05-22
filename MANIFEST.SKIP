@@ -110,6 +110,5 @@ _config.yml
 ^local
 
 # Diverse repository files
-^examples
 ^prototypes
 Dockerfile
