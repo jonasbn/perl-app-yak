@@ -1,12 +1,12 @@
 # Issue Template
 
-### Description
+## Description
 
 _If you raise an issue on bug/issue please provide the requested information, if not, please just provide a description of you issue._
 
 Please file your issue in English, this makes in consumable by others than the author.
 
-# Bugs and Issues
+## Bugs and Issues
 
 ### Specify what version was used
 
