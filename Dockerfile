@@ -3,7 +3,7 @@
 FROM perl:5.34.0
 
 # We point to the original repository for the image
-LABEL org.opencontainers.image.source https://github.com/jonasbn/yak
+LABEL org.opencontainers.image.source https://github.com/jonasbn/perl-app-yak
 
 # We need C compiler and related tools
 ENV DEBIAN_FRONTEND=noninteractive
@@ -14,7 +14,7 @@ RUN apt-get update -y \
 # with our staging area
 WORKDIR /usr/src/app
 
-# We use the canonical cpanfile, not the exact and testet fingerprint
+# We use the canonical cpanfile, not the exact and tested fingerprint
 # cpanfile.snapshot, this might change in the future if a snapshot file
 # created on macOS makes sense on a Linux based image
 COPY cpanfile .
