@@ -401,8 +401,15 @@ sub color {
         $self->{color} = $FALSE;
         return $FALSE;
     } elsif (exists($ENV{CLICOLOR_FORCE}) && $ENV{CLICOLOR_FORCE} != $FALSE) {
+        # REF: https://metacpan.org/pod/Term::ANSIColor#NO_COLOR
+        delete $ENV{NO_COLOR};
         $self->{color} = $TRUE;
         return $TRUE;
+    }
+
+    if (exists($ENV{NO_COLOR})) {
+        $self->{color} = $FALSE;
+        return $FALSE;
     }
 
     if (exists($ENV{CLICOLOR}) && $ENV{CLICOLOR} == $FALSE) {
@@ -623,6 +630,7 @@ sub print_about {
     say '';
     say 'Using environment';
     say "- \$CLICOLOR = $ENV{CLICOLOR}"             if exists $ENV{CLICOLOR};
+    say "- \$NO_COLOR = $ENV{NO_COLOR}"             if exists $ENV{NO_COLOR};
     say "- \$CLICOLOR_FORCE = $ENV{CLICOLOR_FORCE}" if exists $ENV{CLICOLOR_FORCE};
     say '';
     if (not $flags->{noconfig} or $flags->{config_src}) {
@@ -849,7 +857,9 @@ C<yak> supports the following environment variables:
 
 =item * C<$CLICOLOR}>, if set to false (C<0>) it attempts to disable colorized output, if set to true (C<1>), it attempts to enable colorized output
 
-=item * C<$CLICOLOR_FORCE>, if set to true (C<1>) it enables colorized output, if set to false (C<1>), it disables colorized output
+=item * C<$NO_COLOR>, if set it attempts to disable colorized output, do note that value does not matter
+
+=item * C<$CLICOLOR_FORCE>, if set to true (C<1>) it attempts to enable colorized output, if set to false (C<0>), it attempts to disable colorized output
 
 =item * C<$YAK_SUCCESS_COLOR>, setting color for success messages, used when colors are enabled
 
@@ -871,9 +881,11 @@ The order of precedence is as follows for CLI color control:
 
 =item 2. Command line arguments, C<--nocolor> and C<--color> in that order, see L</INVOCATION>
 
-=item 3. Environment (this section), C<$CLICOLOR>
+=item 3. Environment (this section), C<$NO_COLOR>
 
-=item 4. Configuration, see L</CONFIGURATION>, C<color> configuration option
+=item 4. Environment (this section), C<$CLICOLOR>
+
+=item 5. Configuration, see L</CONFIGURATION>, C<color> configuration option
 
 =back
 
