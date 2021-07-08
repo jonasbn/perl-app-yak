@@ -1199,6 +1199,8 @@ C<yak> is released under the MIT License
 
 =item 3. Bixsense: L<"Standard for ANSI Colors in Terminals"|https://bixense.com/clicolors/>
 
+=item 4. NO_COLOR: L<"NO_COLOR"|https://no-color.org/>
+
 =back
 
 =cut

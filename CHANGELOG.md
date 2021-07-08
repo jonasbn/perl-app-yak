@@ -1,5 +1,9 @@
 # CHANGELOG for `yak`
 
+## 0.21.0 2021-07-08 Milestine release, implemented support for NO_COLOR environment variable
+
+- The `NO_COLOR` environment variable is now supported. It might have been via [Term::ANSIColor](https://metacpan.org/pod/Term::ANSIColor), but now it is documented and explicitly implemented
+
 ## 0.20.0 2021-02-20 Milestone release, implemented support for color configuration via environment
 
 - Colors for output can now be customized using environment variables

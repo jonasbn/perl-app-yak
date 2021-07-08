@@ -348,3 +348,4 @@ Used commonly for repetitive and boring work, required to reach a certain goal.
 - 1. GitHub: ["The Yak Project"](https://jonasbn.github.io/yak/)
 - 2. MetaCPAN: [TERM-ANSICOLOR](https://metacpan.org/pod/Term%3A%3AANSIColor)
 - 3. Bixsense: ["Standard for ANSI Colors in Terminals"](https://bixense.com/clicolors/)
+- 4. NO\_COLOR: ["NO\_COLOR"](https://no-color.org/)
