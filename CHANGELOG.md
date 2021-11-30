@@ -1,5 +1,9 @@
 # CHANGELOG for `yak`
 
+## 0.22.0 2021-11-30 Maintenance release
+
+- Added [LWP::Protocol::https](https://metacpan.org/pod/LWP::Protocol::https) so the client support HTTPS
+
 ## 0.21.0 2021-07-08 Milestone release, implemented support for NO_COLOR environment variable
 
 - The `NO_COLOR` environment variable is now supported. It might have been via [Term::ANSIColor](https://metacpan.org/pod/Term::ANSIColor), but now it is documented and explicitly implemented
