@@ -4,8 +4,8 @@ package App::Yak;
 
 use strict;
 use warnings;
-use v5.10; # say
-           # stacked file tests, REF: https://perldoc.perl.org/functions/-X
+use v5.10;  # say
+            # stacked file tests, REF: https://perldoc.perl.org/functions/-X
 use utf8;
 use YAML::Tiny;
 use JSON; # from_json

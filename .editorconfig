@@ -12,11 +12,35 @@ indent_size = 4
 
 # Unix-style newlines with a newline ending the file
 end_of_line = lf
-insert_final_newline = false
+insert_final_newline = true
 
 # Trim possible trailing whitespace
 trim_trailing_whitespace = true
 
+[*.json]
+insert_final_newline = true
+
+[*.txt]
+insert_final_newline = true
+
 [*.md]
 indent_style = space
-max_line_length = 100
+indent_size = 2
+max_line_length = off
+
+[*.{yml,yaml}]
+indent_style = space
+indent_size = 2
+max_line_length = off
+
+[*.code-workspace]
+indent_style = off
+
+[cpanfile.snapshot]
+indent_size = off
+
+[ignoreme.txt]
+insert_final_newline = false
+
+[bad_yaksumfile.json]
+insert_final_newline = false
