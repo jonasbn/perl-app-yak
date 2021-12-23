@@ -4,8 +4,8 @@
 
 use strict;
 use warnings;
-use v5.10; # say
-           # stacked file tests, REF: https://perldoc.perl.org/functions/-X
+use v5.10;  # say
+            # stacked file tests, REF: https://perldoc.perl.org/functions/-X
 
 use FindBin;
 use lib "$FindBin::Bin/../lib";
@@ -50,7 +50,7 @@ GetOptions ('debug'       => sub { $yak->debug($TRUE); $flags->{debug} = $TRUE; 
 my $config;
 
 if ($flags->{config_src} or not $flags->{noconfig}) {
-   $config = $yak->read_config($flags);
+    $config = $yak->read_config($flags);
 }
 
 # Reading environment
