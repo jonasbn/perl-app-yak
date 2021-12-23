@@ -1,0 +1,11 @@
+name: EditorConfig Action
+on: push
+
+jobs:
+  build:
+    name: EditorConfig lint
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - uses: editorconfig-checker/action-editorconfig-checker@v1
+      name: Testing using editorconfig-checker
