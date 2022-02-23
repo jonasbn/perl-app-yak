@@ -25,3 +25,5 @@ Makefile.PL
 local/
 dictionary.dic
 App-Yak-*
+.DS_Store
+*.code-workspace
