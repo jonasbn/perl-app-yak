@@ -194,9 +194,12 @@ sub subprocess {
             my $content = $self->_read_checksum_url($assertion);
             $checksum = sha256_hex($content);
         } elsif ($assertion eq $JSON::true and -f $file) {
-            $self->print_success($File::Find::name);
+            $self->print_presence_success($File::Find::name);
         } elsif ($assertion eq $JSON::false and -f $file) {
-            $self->print_failure($File::Find::name);
+            $self->print_no_presence_success($File::Find::name);
+
+        } elsif ($assertion eq $JSON::false and -f $file) {
+            $self->print_presence_failure($File::Find::name);
             $rv = $FAILURE;
 
         } else {
@@ -207,9 +210,9 @@ sub subprocess {
             my $file_checksum = sha256_file_hex($file);
 
             if ($file_checksum eq $checksum) {
-                $self->print_success($File::Find::name);
+                $self->print_match_success($File::Find::name);
             } else {
-                $self->print_failure($File::Find::name);
+                $self->print_match_failure($File::Find::name);
                 $rv = $FAILURE;
             }
         }
@@ -222,16 +225,41 @@ sub subprocess {
     return $rv;
 }
 
-sub print_success {
+sub print_match_success {
     my ($self, $filename) = @_;
+
+    $self->_print_success($filename . ' matches');
+
+    return $OK;
+}
+
+sub print_no_presence_success {
+    my ($self, $filename) = @_;
+
+    $self->_print_success($filename . ' not present');
+
+    return $OK;
+}
+
+sub print_presence_success {
+    my ($self, $filename) = @_;
+
+    $self->_print_success($filename . ' present');
+
+    return $OK;
+}
+
+
+sub _print_success {
+    my ($self, $message) = @_;
 
     unless ($self->silent) {
         if ($self->color) {
             print Term::ANSIColor::color($self->success_color);
-            say $self->success_emoji . $filename . ' succeeded';
+            say $self->success_emoji . $message;
             print Term::ANSIColor::color('reset');
         } else {
-            say $self->success_emoji . $filename . ' succeeded';
+            say $self->success_emoji . $message;
         }
     }
 
@@ -254,16 +282,32 @@ sub print_skip {
     return $OK;
 }
 
-sub print_failure {
+sub print_presence_failure {
     my ($self, $filename) = @_;
+
+    $self->print_failure($filename . ' not present');
+
+    return $OK;
+}
+
+sub print_match_failure {
+    my ($self, $filename) = @_;
+
+    $self->print_failure($filename . ' not matching');
+
+    return $OK;
+}
+
+sub print_failure {
+    my ($self, $message) = @_;
 
     unless ($self->silent) {
         if ($self->color) {
             print Term::ANSIColor::color($self->failure_color);
-            say $self->failure_emoji . $filename . ' failed';
+            say $self->failure_emoji . $message;
             print Term::ANSIColor::color('reset');
         } else {
-            say $self->failure_emoji . $filename . ' failed';
+            say $self->failure_emoji . $message;
         }
     }
 
@@ -1082,6 +1126,35 @@ The mount point is expected to be a directory containing the files to be checked
 If you want to utilize the supported environment variables (see L</ENVIRONMENT>) you have to do something along the lines of:
 
     $ docker run --rm -it -v $PWD:/tmp --env CLICOLOR=$CLICOLOR jonasbn/yak
+
+=head1 API
+
+=head2 noemoji
+
+=head2 print_about
+
+=head2 print_failure
+
+=head2 print_help
+
+=head2 print_ignore
+
+=head2 print_skip
+
+=head2 print_success
+
+=head2 print_version
+
+=head2 process
+
+=head2 read_checksums
+
+=head2 read_config
+
+=head2 read_environment
+
+=head2 subprocess
+
 
 =head1 REQUIREMENTS AND DEPENDENCIES
 
