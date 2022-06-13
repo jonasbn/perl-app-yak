@@ -11,5 +11,6 @@
     "ol-prefix": false,
     "no-trailing-punctuation": false,
     "no-space-in-links": false,
-    "first-line-heading": false
+    "first-line-heading": false,
+    "emphasis-style": { "style": "underscore" }
 }

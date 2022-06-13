@@ -2,7 +2,7 @@
 ![Spellcheck Action](https://github.com/jonasbn/perl-app-yak/workflows/Spellcheck%20Action/badge.svg)
 ![Markdownlint Action](https://github.com/jonasbn/perl-app-yak/workflows/Markdownlint%20Action/badge.svg)
 
-The **yak** command line utility is still WIP and to be regarded as *alpha* software, most features are working but it not ready for first official release
+The **yak** command line utility is still WIP and to be regarded as _alpha_ software, most features are working but it not ready for first official release
 
 ---
 
@@ -271,6 +271,34 @@ The mount point is expected to be a directory containing the files to be checked
 If you want to utilize the supported environment variables (see ["ENVIRONMENT"](#environment)) you have to do something along the lines of:
 
     $ docker run --rm -it -v $PWD:/tmp --env CLICOLOR=$CLICOLOR jonasbn/yak
+
+# API
+
+## noemoji
+
+## print\_about
+
+## print\_failure
+
+## print\_help
+
+## print\_ignore
+
+## print\_skip
+
+## print\_success
+
+## print\_version
+
+## process
+
+## read\_checksums
+
+## read\_config
+
+## read\_environment
+
+## subprocess
 
 # REQUIREMENTS AND DEPENDENCIES
 
