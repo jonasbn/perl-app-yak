@@ -40,3 +40,5 @@ zilla
 LWP
 UserAgent
 CLI
+noemoji
+subprocess
