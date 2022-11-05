@@ -1159,6 +1159,15 @@ If you want to utilize the supported environment variables (see L</ENVIRONMENT>)
 
 =head2 subprocess
 
+=head2 print_match_failure
+
+=head2 print_match_success
+
+=head2 print_no_presence_success
+
+=head2 print_presence_failure
+
+=head2 print_presence_success
 
 =head1 REQUIREMENTS AND DEPENDENCIES
 
