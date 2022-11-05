@@ -4,6 +4,9 @@ on:
   schedule:
     - cron: '0 0 */28 */1 *'
 
+env:
+  CONTINUOUS_INTEGRATION: true
+
 jobs:
   build:
     name: Continuous Integration
