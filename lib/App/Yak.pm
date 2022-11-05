@@ -742,11 +742,11 @@ __END__
 
 =begin markdown
 
-![CI Action](https://github.com/jonasbn/perl-app-yak/workflows/CI%20Action/badge.svg)
-![Spellcheck Action](https://github.com/jonasbn/perl-app-yak/workflows/Spellcheck%20Action/badge.svg)
-![Markdownlint Action](https://github.com/jonasbn/perl-app-yak/workflows/Markdownlint%20Action/badge.svg)
+![CI GitHub Action status badge](https://github.com/jonasbn/perl-app-yak/actions/workflows/ci.yml/badge.svg)
+![Spellcheck Action status badge](https://github.com/jonasbn/perl-app-yak/actions/workflows/spellcheck.yml/badge.svg)
+![Markdownlint Action status badge](https://github.com/jonasbn/perl-app-yak/actions/workflows/markdownlint.yml/badge.svg)
 
-The **yak** command line utility is still WIP and to be regarded as *alpha* software, most features are working but it not ready for first official release
+The **yak** command line utility is still WIP and to be regarded as _alpha_ software, most features are working but it not ready for first official release
 
 ---
 
