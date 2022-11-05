@@ -363,7 +363,7 @@ Used commonly for repetitive and boring work, required to reach a certain goal.
 
 # COPYRIGHT
 
-`yak` is (C) by Jonas Brømsø, (jonasbn) 2018-2021
+`yak` is (C) by Jonas Brømsø, (jonasbn) 2018-2022
 
 [Image](https://unsplash.com/photos/3b3O75X0Jzg) used on the **yak** [website](https://jonasbn.github.io/perl-app-yak/) is under copyright by [Shane Aldendorff](https://unsplash.com/@pluyar).
 

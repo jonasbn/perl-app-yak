@@ -1256,7 +1256,7 @@ Used commonly for repetitive and boring work, required to reach a certain goal.
 
 =head1 COPYRIGHT
 
-C<yak> is (C) by Jonas Brømsø, (jonasbn) 2018-2021
+C<yak> is (C) by Jonas Brømsø, (jonasbn) 2018-2022
 
 L<Image|https://unsplash.com/photos/3b3O75X0Jzg> used on the B<yak> L<website|https://jonasbn.github.io/perl-app-yak/> is under copyright by L<Shane Aldendorff|https://unsplash.com/@pluyar>.
 
