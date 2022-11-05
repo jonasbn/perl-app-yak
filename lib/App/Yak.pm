@@ -754,9 +754,9 @@ The **yak** command line utility is still WIP and to be regarded as _alpha_ soft
 
 =end markdown
 
-=head1 App::Yak
+=head1 NAME
 
-Application to help with yak shaving for Git repositories etc.
+App::Yak - Application to help with yak shaving for Git repositories etc.
 
 =head1 SYNOPSIS
 

@@ -6,9 +6,9 @@ The **yak** command line utility is still WIP and to be regarded as _alpha_ soft
 
 ---
 
-# App::Yak
+# NAME
 
-Application to help with yak shaving for Git repositories etc.
+App::Yak - Application to help with yak shaving for Git repositories etc.
 
 # SYNOPSIS
 
@@ -299,6 +299,16 @@ If you want to utilize the supported environment variables (see ["ENVIRONMENT"](
 ## read\_environment
 
 ## subprocess
+
+## print\_match\_failure
+
+## print\_match\_success
+
+## print\_no\_presence\_success
+
+## print\_presence\_failure
+
+## print\_presence\_success
 
 # REQUIREMENTS AND DEPENDENCIES
 
