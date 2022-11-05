@@ -1,5 +1,5 @@
 # Globals
-severity = 1
+severity = 4
 # force = 0
 # only = 0
 # allow-unsafe = 0
@@ -198,7 +198,7 @@ severity = 1
 
 
 # Write `open $handle, $path' instead of `open($handle, $path)'.
-[-CodeLayout::ProhibitParensWithBuiltins]
+[CodeLayout::ProhibitParensWithBuiltins]
 # set_themes                         = core cosmetic pbp
 # add_themes                         =
 # severity                           = 1
@@ -237,7 +237,7 @@ severity = 1
 
 
 # Must run code through perltidy.
-[-CodeLayout::RequireTidyCode]
+[CodeLayout::RequireTidyCode]
 # set_themes                         = core cosmetic pbp
 # add_themes                         =
 # severity                           = 1
@@ -264,7 +264,7 @@ severity = 1
 
 
 # Don't write long "if-elsif-elsif-elsif-elsif...else" chains.
-[-ControlStructures::ProhibitCascadingIfElse]
+[ControlStructures::ProhibitCascadingIfElse]
 # set_themes                         = complexity core maintenance pbp
 # add_themes                         =
 # severity                           = 3
@@ -318,7 +318,7 @@ severity = 1
 
 
 # Write `if($condition){ do_something() }' instead of `do_something() if $condition'.
-[-ControlStructures::ProhibitPostfixControls]
+[ControlStructures::ProhibitPostfixControls]
 # set_themes                         = core cosmetic pbp
 # add_themes                         =
 # severity                           = 2
@@ -333,7 +333,7 @@ severity = 1
 
 
 # Write `if(! $condition)' instead of `unless($condition)'.
-[-ControlStructures::ProhibitUnlessBlocks]
+[ControlStructures::ProhibitUnlessBlocks]
 # set_themes                         = core cosmetic pbp
 # add_themes                         =
 # severity                           = 2
@@ -509,7 +509,7 @@ lib_sections = SYNOPSIS | DESCRIPTION
 
 
 # Write `print {$FH} $foo, $bar;' instead of `print $FH $foo, $bar;'.
-[-InputOutput::RequireBracedFileHandleWithPrint]
+[InputOutput::RequireBracedFileHandleWithPrint]
 # set_themes                         = core cosmetic pbp
 # add_themes                         =
 # severity                           = 1
@@ -704,7 +704,7 @@ exclude_functions = say print
 
 
 # Give every module a `$VERSION' number.
-[-Modules::RequireVersionVar]
+[Modules::RequireVersionVar]
 # set_themes                         = core pbp readability
 # add_themes                         =
 # severity                           = 2
@@ -893,7 +893,7 @@ exclude_functions = say print
 
 
 # Always use the `/s' modifier with regular expressions.
-[-RegularExpressions::RequireDotMatchAnything]
+[RegularExpressions::RequireDotMatchAnything]
 # set_themes                         = core cosmetic pbp
 # add_themes                         =
 # severity                           = 2
@@ -901,7 +901,7 @@ exclude_functions = say print
 
 
 # Always use the `/x' modifier with regular expressions.
-[-RegularExpressions::RequireExtendedFormatting]
+[RegularExpressions::RequireExtendedFormatting]
 # set_themes                         = core maintenance pbp
 # add_themes                         =
 # severity                           = 3
@@ -916,7 +916,7 @@ exclude_functions = say print
 
 
 # Always use the `/m' modifier with regular expressions.
-[-RegularExpressions::RequireLineBoundaryMatching]
+[RegularExpressions::RequireLineBoundaryMatching]
 # set_themes                         = core cosmetic pbp
 # add_themes                         =
 # severity                           = 2
@@ -940,7 +940,7 @@ exclude_functions = say print
 
 
 # Minimize complexity by factoring code into smaller subroutines.
-[-Subroutines::ProhibitExcessComplexity]
+[Subroutines::ProhibitExcessComplexity]
 # set_themes                         = complexity core maintenance
 # add_themes                         =
 # severity                           = 3
@@ -1034,7 +1034,7 @@ exclude_functions = say print
 
 
 # Always unpack `@_' first.
-[-Subroutines::RequireArgUnpacking]
+[Subroutines::RequireArgUnpacking]
 # set_themes                         = core maintenance pbp
 # add_themes                         =
 # severity                           = 4
@@ -1160,7 +1160,7 @@ exclude_functions = say print
 
 
 # Don't `use constant FOO => 15'.
-[-ValuesAndExpressions::ProhibitConstantPragma]
+[ValuesAndExpressions::ProhibitConstantPragma]
 # set_themes                         = bugs core pbp
 # add_themes                         =
 # severity                           = 4
@@ -1168,7 +1168,7 @@ exclude_functions = say print
 
 
 # Write `q{}' instead of `'''.
-[-ValuesAndExpressions::ProhibitEmptyQuotes]
+[ValuesAndExpressions::ProhibitEmptyQuotes]
 # set_themes                         = core cosmetic pbp
 # add_themes                         =
 # severity                           = 2
@@ -1311,7 +1311,7 @@ exclude_functions = say print
 
 
 # Require $VERSION to be a constant rather than a computed value.
-[-ValuesAndExpressions::RequireConstantVersion]
+[ValuesAndExpressions::RequireConstantVersion]
 # set_themes                         = core maintenance
 # add_themes                         =
 # severity                           = 2
@@ -1393,17 +1393,17 @@ exclude_functions = say print
 
 
 # Eliminate globals declared with `our' or `use vars'.
-[-Variables::ProhibitPackageVars]
+[Variables::ProhibitPackageVars]
 # set_themes                         = core maintenance pbp
 # add_themes                         =
 # severity                           = 3
 # maximum_violations_per_document    = no_limit
 
 # The base set of packages to allow variables for.
-# packages = Data::Dumper File::Find FindBin Log::Log4perl
+packages = Data::Dumper File::Find FindBin Log::Log4perl
 
 # The set of packages to allow variables for, in addition to those given in "packages".
-# add_packages =
+add_packages = JSON
 
 
 # Use double colon (::) to separate package name components instead of single quotes (').
@@ -1415,7 +1415,7 @@ exclude_functions = say print
 
 
 # Write `$EVAL_ERROR' instead of `$@'.
-[-Variables::ProhibitPunctuationVars]
+[Variables::ProhibitPunctuationVars]
 # set_themes                         = core cosmetic pbp
 # add_themes                         =
 # severity                           = 2
