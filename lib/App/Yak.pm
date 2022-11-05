@@ -21,6 +21,7 @@ use Readonly;
 use Carp; # croak
 use Clone 'clone';
 use LWP::UserAgent;
+use Try::Tiny;
 
 use Env qw($HOME $YAK_SUCCESS_COLOR $YAK_FAILURE_COLOR $YAK_SKIP_COLOR $YAK_IGNORE_COLOR);
 use base qw(Class::Accessor);
@@ -494,15 +495,16 @@ sub read_config {
     my $config_file = $self->config_src;
 
     if ($config_file and (not -e $config_file or not -f _ or not -r _)) {
-        croak "Specified configuration file: $config_file, does not exist, is not a file or cannot be read";
+        carp "Specified configuration file: $config_file, does not exist, is not a file or cannot be read, attempting with defalt configuration file\n";
     }
     $config_file = $config_file?$config_file:$self->default_config_file();
 
-    if ($config_file and not -e $config_file or not -f _ or not -r _) {
-        croak "Specified configuration file: $config_file, does not exist, is not a file or cannot be read";
-    }
-
-    $config = YAML::Tiny->read($config_file);
+    try {
+        $config = YAML::Tiny->read($config_file);
+    } catch {
+        carp "Configuration file: $config_file, does not exist, is not a file or cannot be read\n";
+        $config = YAML::Tiny->new();
+    };
 
     $self->debug($self->_has_config('debug', $config,));
     $self->verbose($self->_has_config('verbose', $config));

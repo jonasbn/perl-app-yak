@@ -20,6 +20,7 @@ requires 'Clone';                 # Not core
 requires 'version';               # Core since 5.9.0
 requires 'LWP::UserAgent';        # Not core
 requires 'LWP::Protocol::https';  # Not core
+requires 'Try::Tiny';             # Not core
 
 on 'test' => sub {
     requires 'Test2::V0';                   # Not core
