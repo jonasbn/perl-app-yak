@@ -198,7 +198,7 @@ severity = 1
 
 
 # Write `open $handle, $path' instead of `open($handle, $path)'.
-[CodeLayout::ProhibitParensWithBuiltins]
+[-CodeLayout::ProhibitParensWithBuiltins]
 # set_themes                         = core cosmetic pbp
 # add_themes                         =
 # severity                           = 1
@@ -237,7 +237,7 @@ severity = 1
 
 
 # Must run code through perltidy.
-[CodeLayout::RequireTidyCode]
+[-CodeLayout::RequireTidyCode]
 # set_themes                         = core cosmetic pbp
 # add_themes                         =
 # severity                           = 1
@@ -264,7 +264,7 @@ severity = 1
 
 
 # Don't write long "if-elsif-elsif-elsif-elsif...else" chains.
-[ControlStructures::ProhibitCascadingIfElse]
+[-ControlStructures::ProhibitCascadingIfElse]
 # set_themes                         = complexity core maintenance pbp
 # add_themes                         =
 # severity                           = 3
@@ -318,7 +318,7 @@ severity = 1
 
 
 # Write `if($condition){ do_something() }' instead of `do_something() if $condition'.
-[ControlStructures::ProhibitPostfixControls]
+[-ControlStructures::ProhibitPostfixControls]
 # set_themes                         = core cosmetic pbp
 # add_themes                         =
 # severity                           = 2
@@ -333,7 +333,7 @@ severity = 1
 
 
 # Write `if(! $condition)' instead of `unless($condition)'.
-[ControlStructures::ProhibitUnlessBlocks]
+[-ControlStructures::ProhibitUnlessBlocks]
 # set_themes                         = core cosmetic pbp
 # add_themes                         =
 # severity                           = 2
@@ -405,7 +405,7 @@ stop_words_file = /Users/jonasbn/develop/github-jonasbn/perl-app-yak/.wordlist.t
 # maximum_violations_per_document    = no_limit
 
 # The sections to require for modules (separated by qr/\s* [|] \s*/xms).
-# lib_sections =
+lib_sections = SYNOPSIS | DESCRIPTION
 
 # The sections to require for programs (separated by qr/\s* [|] \s*/xms).
 # script_sections =
@@ -509,7 +509,7 @@ stop_words_file = /Users/jonasbn/develop/github-jonasbn/perl-app-yak/.wordlist.t
 
 
 # Write `print {$FH} $foo, $bar;' instead of `print $FH $foo, $bar;'.
-[InputOutput::RequireBracedFileHandleWithPrint]
+[-InputOutput::RequireBracedFileHandleWithPrint]
 # set_themes                         = core cosmetic pbp
 # add_themes                         =
 # severity                           = 1
@@ -558,10 +558,10 @@ stop_words_file = /Users/jonasbn/develop/github-jonasbn/perl-app-yak/.wordlist.t
 # maximum_violations_per_document    = no_limit
 
 # The set of functions to require checking the return value of.
-# functions = open close print say
+functions = open close
 
 # The set of functions to not require checking the return value of.
-# exclude_functions =
+exclude_functions = say print
 
 # Modules which export autodie.
 # autodie_modules = autodie
@@ -893,7 +893,7 @@ stop_words_file = /Users/jonasbn/develop/github-jonasbn/perl-app-yak/.wordlist.t
 
 
 # Always use the `/s' modifier with regular expressions.
-[RegularExpressions::RequireDotMatchAnything]
+[-RegularExpressions::RequireDotMatchAnything]
 # set_themes                         = core cosmetic pbp
 # add_themes                         =
 # severity                           = 2
@@ -901,7 +901,7 @@ stop_words_file = /Users/jonasbn/develop/github-jonasbn/perl-app-yak/.wordlist.t
 
 
 # Always use the `/x' modifier with regular expressions.
-[RegularExpressions::RequireExtendedFormatting]
+[-RegularExpressions::RequireExtendedFormatting]
 # set_themes                         = core maintenance pbp
 # add_themes                         =
 # severity                           = 3
@@ -916,7 +916,7 @@ stop_words_file = /Users/jonasbn/develop/github-jonasbn/perl-app-yak/.wordlist.t
 
 
 # Always use the `/m' modifier with regular expressions.
-[RegularExpressions::RequireLineBoundaryMatching]
+[-RegularExpressions::RequireLineBoundaryMatching]
 # set_themes                         = core cosmetic pbp
 # add_themes                         =
 # severity                           = 2
@@ -940,7 +940,7 @@ stop_words_file = /Users/jonasbn/develop/github-jonasbn/perl-app-yak/.wordlist.t
 
 
 # Minimize complexity by factoring code into smaller subroutines.
-[Subroutines::ProhibitExcessComplexity]
+[-Subroutines::ProhibitExcessComplexity]
 # set_themes                         = complexity core maintenance
 # add_themes                         =
 # severity                           = 3
@@ -1168,7 +1168,7 @@ stop_words_file = /Users/jonasbn/develop/github-jonasbn/perl-app-yak/.wordlist.t
 
 
 # Write `q{}' instead of `'''.
-[ValuesAndExpressions::ProhibitEmptyQuotes]
+[-ValuesAndExpressions::ProhibitEmptyQuotes]
 # set_themes                         = core cosmetic pbp
 # add_themes                         =
 # severity                           = 2
@@ -1311,7 +1311,7 @@ stop_words_file = /Users/jonasbn/develop/github-jonasbn/perl-app-yak/.wordlist.t
 
 
 # Require $VERSION to be a constant rather than a computed value.
-[ValuesAndExpressions::RequireConstantVersion]
+[-ValuesAndExpressions::RequireConstantVersion]
 # set_themes                         = core maintenance
 # add_themes                         =
 # severity                           = 2

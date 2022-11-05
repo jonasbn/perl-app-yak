@@ -31,7 +31,7 @@ Readonly::Scalar my $SUCCESS => 0;
 Readonly::Scalar my $FAILURE => 1;
 Readonly::Scalar my $OK  => 1;
 
-use version; our $VERSION = version->declare("v1.0.0");
+use version; our $VERSION = version->declare('v1.0.0');
 # HACK: I need to address these, I do not like the scoping
 my $yak;
 my $matcher;
@@ -641,6 +641,7 @@ sub _has_config {
     }
 }
 
+## no critic (ValuesAndExpressions::RequireInterpolationOfMetachars)
 sub print_help {
     my $self = shift;
 
@@ -666,6 +667,7 @@ sub print_help {
 
     return $SUCCESS;
 }
+## critic (ValuesAndExpressions::RequireInterpolationOfMetachars)
 
 sub print_about {
     my ($self, $flags, $config) = @_;
@@ -698,7 +700,7 @@ sub print_about {
     }
 
     say '';
-    say "Using data source located at: ".$self->checksums_src if $self->checksums_src;
+    say 'Using data source located at: '.$self->checksums_src if $self->checksums_src;
     say '';
     say 'Invoked with:';
     say '--debug'                             if $flags->{debug};

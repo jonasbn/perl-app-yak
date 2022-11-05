@@ -2,7 +2,7 @@
 ![Spellcheck Action](https://github.com/jonasbn/perl-app-yak/workflows/Spellcheck%20Action/badge.svg)
 ![Markdownlint Action](https://github.com/jonasbn/perl-app-yak/workflows/Markdownlint%20Action/badge.svg)
 
-The **yak** command line utility is still WIP and to be regarded as _alpha_ software, most features are working but it not ready for first official release
+The **yak** command line utility is still WIP and to be regarded as *alpha* software, most features are working but it not ready for first official release
 
 ---
 
