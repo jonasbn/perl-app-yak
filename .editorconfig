@@ -44,3 +44,8 @@ insert_final_newline = false
 
 [bad_yaksumfile.json]
 insert_final_newline = false
+
+[*.code-workspace]
+indent_style = tab
+indent_size = 4
+insert_final_newline = false
