@@ -46,3 +46,9 @@ jobs:
           tags: |
             jonasbn/yak:latest
             ghcr.io/jonasbn/perl-app-yak:latest
+      - name: Docker Hub Description
+        uses: peter-evans/dockerhub-description@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          repository: jonasbn/perl-app-yak
