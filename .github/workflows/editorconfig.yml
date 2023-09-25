@@ -7,5 +7,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - uses: editorconfig-checker/action-editorconfig-checker@v1
+    - uses: editorconfig-checker/action-editorconfig-checker@v2
       name: Testing using editorconfig-checker
