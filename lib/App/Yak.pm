@@ -38,6 +38,7 @@ my $yak;
 my $matcher;
 my $directory_stack = Data::Stack->new();
 my $files;
+my $failures = 0;
 
 App::Yak->mk_accessors(qw(
     default_config_file
@@ -125,16 +126,22 @@ sub process {
         $rv = $FAILURE;
     }
 
+    if ($failures) {
+        $rv++;
+    }
+
     return $rv;
 }
 
 sub _process {
+    my $rv = $SUCCESS;
+
     $matcher->($_)
     && $yak->print_ignore($File::Find::name)
     && ($File::Find::prune = $TRUE)
     || $yak->subprocess($_);
 
-    return $SUCCESS;
+    return $rv;
 }
 
 sub _preprocess {
@@ -223,7 +230,17 @@ sub subprocess {
         $self->print_skip($File::Find::name);
     }
 
+    if ($rv == $FAILURE) {
+        return _increment_failures();
+    }
+
     return $rv;
+}
+
+sub _increment_failures {
+    $failures++;
+
+    return $OK;
 }
 
 sub print_match_success {
@@ -294,7 +311,7 @@ sub print_presence_failure {
 sub print_match_failure {
     my ($self, $filename) = @_;
 
-    $self->print_failure($filename . ' not matching');
+    $self->print_failure($filename . ' checksum not matching');
 
     return $OK;
 }
