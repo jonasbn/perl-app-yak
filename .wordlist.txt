@@ -42,3 +42,4 @@ UserAgent
 CLI
 noemoji
 subprocess
+dependabot
