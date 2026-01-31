@@ -16,29 +16,29 @@ jobs:
     steps:
       -
         name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@8e8c483c0d05e4aa9b3dafb9ca3ce621c44f1df3 # v6.0.1
       -
         name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@c7c5346c3c12ffc67b9a20b31e65969c1e0d0392 # v3.7.0
       -
         name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@8d2750c92d1db1c5787fb567c83e4b8c74c85c0c # v3.12.0
       -
         name: Login to DockerHub
-        uses: docker/login-action@v3
+        uses: docker/login-action@c94ce9f8ba0b6c9a92c7aa5a8ba3d50d35f0f2b9 # v3.7.0
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
         name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@c94ce9f8ba0b6c9a92c7aa5a8ba3d50d35f0f2b9 # v3.7.0
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.CR_PAT }}
       -
         name: Build and push
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@2634353e1004f2d0d356dc3deee25d91a5e8ae69 # v6.18.0
         with:
           context: .
           file: ./Dockerfile
@@ -47,7 +47,7 @@ jobs:
             jonasbn/yak:latest
             ghcr.io/jonasbn/perl-app-yak:latest
       - name: Docker Hub Description
-        uses: peter-evans/dockerhub-description@v4
+        uses: peter-evans/dockerhub-description@1b9a80ca0ef32b87b3ea0e7f1fa3db50bd52d520 # v5.0.0
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}

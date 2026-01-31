@@ -6,6 +6,6 @@ jobs:
     name: Spellcheck
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - uses: rojopolis/spellcheck-github-actions@0.42.0
+    - uses: actions/checkout@8e8c483c0d05e4aa9b3dafb9ca3ce621c44f1df3 # v6.0.1
+    - uses: rojopolis/spellcheck-github-actions@0bf4b2f9ef04c5d0fe1ee973c06d7c8e07db05c7 # 0.58.0
       name: Spellcheck
