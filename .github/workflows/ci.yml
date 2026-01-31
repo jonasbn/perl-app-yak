@@ -14,8 +14,8 @@ jobs:
     steps:
     # REF: https://help.github.com/en/actions/configuring-and-managing-workflows/configuring-a-workflow#using-the-checkout-action
     - name: "Checkout repository"
-      uses: actions/checkout@8e8c483c0d05e4aa9b3dafb9ca3ce621c44f1df3 # v6.0.1
+      uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
     - name: "Installing dependencies and testing all using dzil"
-      uses: jonasbn/github-action-perl-dist-zilla@af6fe9780b14b13e9c83e6076e6e3d7bc1063ae9 # 0.5.5
+      uses: jonasbn/github-action-perl-dist-zilla@fea791c6197b8fa3f83420be200613050ae11235 # 0.5.5
       with:
           dzil-arguments: 'test --all'
