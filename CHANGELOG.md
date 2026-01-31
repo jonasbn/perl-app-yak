@@ -1,6 +1,10 @@
 # CHANGELOG for `yak`
 
-## 0.22.0 2021-11-30 Maintenance release
+## 0.23.0 2025-01-28 Maintenance release, update not required
+
+- Bumping base image to Perl 5.40.1, See PR [#122](https://github.com/jonasbn/perl-app-yak/pull/122) from @dependabot
+
+## 0.22.0 2021-11-30 Maintenance release, update recommended
 
 - Added [LWP::Protocol::https](https://metacpan.org/pod/LWP::Protocol::https) so the client support HTTPS
 
