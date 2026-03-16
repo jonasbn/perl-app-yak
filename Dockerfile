@@ -1,6 +1,6 @@
 # REF: https://docs.docker.com/engine/reference/builder/
 # REF: https://hub.docker.com/_/perl
-FROM perl:5.42.1-bullseye
+FROM perl:5.42.1-trixie
 
 # We point to the original repository for the image
 LABEL org.opencontainers.image.source https://github.com/jonasbn/perl-app-yak
