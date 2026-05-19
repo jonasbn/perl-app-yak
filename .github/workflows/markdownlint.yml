@@ -1,5 +1,8 @@
 name: Markdownlint Action
-on: push
+on:
+  push:
+    paths:
+      - "**/*.md"
 
 jobs:
   build:
