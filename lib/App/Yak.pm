@@ -1150,41 +1150,81 @@ If you want to utilize the supported environment variables (see L</ENVIRONMENT>)
 
 =head1 API
 
+=head2 new
+
+Constructor; creates and returns a new C<App::Yak> object with default settings: color and emoji output enabled; verbose, debug, and silent mode disabled.
+
 =head2 noemoji
+
+Accessor for the C<noemoji> flag. When set to true, disables emoji output by resetting all emoji strings to blank.
 
 =head2 print_about
 
+Prints information about the current configuration and invocation: version, checksums source, config file, and active flags.
+
 =head2 print_failure
+
+Prints a colorized failure message for a file that did not match its expected checksum or presence assertion.
 
 =head2 print_help
 
+Prints the help message listing all available command-line options.
+
 =head2 print_ignore
+
+Prints a colorized message for a path that was excluded by a C<.yakignore> rule.
 
 =head2 print_skip
 
+Prints a colorized message for a file found on disk that has no entry in the checksums registry.
+
 =head2 print_success
+
+Prints a colorized success output message.
 
 =head2 print_version
 
+Prints the version of the C<yak> tool.
+
 =head2 process
+
+Walks the current directory tree, calling C<subprocess> on each file. Returns 0 on success or a positive integer equal to the number of failures.
 
 =head2 read_checksums
 
+Reads the checksum registry from a file or URL. Supports C<--nochecksums>, C<--checksums>, or the default location C<$HOME/.config/yak/checksums.json>.
+
 =head2 read_config
+
+Reads the YAML configuration file. Command-line flags passed in override values from the config file.
 
 =head2 read_environment
 
+Reads C<$YAK_*_COLOR> environment variables and applies any color overrides they specify.
+
 =head2 subprocess
+
+Checks a single file against its entry in the checksum registry. Handles SHA256 checksums, C<file://> references, C<http(s)://> URLs, and boolean presence/absence assertions.
 
 =head2 print_match_failure
 
+Prints a failure message indicating that a file's checksum did not match the expected value.
+
 =head2 print_match_success
+
+Prints a success message indicating that a file's checksum matched the expected value.
 
 =head2 print_no_presence_success
 
+Prints a success message indicating that an expected-absent file was not found.
+
 =head2 print_presence_failure
 
+Prints a failure message indicating that an expected-present file was not found.
+
 =head2 print_presence_success
+
+Prints a success message indicating that an expected-present file was found.
 
 =head1 REQUIREMENTS AND DEPENDENCIES
 

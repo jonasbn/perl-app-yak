@@ -212,7 +212,7 @@ C<yak> takes the following command line arguments:
 
 =item * C<--verbose>, enables more verbose output, can be configured see L</CONFIGURATION>
 
-=item * C<--silent>, disables output and you have to rely on the return value see L</RETURN VALUES> below.
+=item * C<--silent>, disables output and you have to rely on the return value see L</EXIT STATUS> below.
 
 =item * C<--debug>, enables debug output. can be configured see L</CONFIGURATION>
 
@@ -284,7 +284,7 @@ The order of precedence is as follows for CLI color control:
 
 =item 1. Environment (this section), C<$CLICOLOR_FORCE>
 
-=item 2. Command line arguments, C<--nocolor> and C<--color> in that order, see L</INVOCATION>
+=item 2. Command line arguments, C<--nocolor> and C<--color> in that order, see L</USAGE>
 
 =item 3. Environment (this section), C<$CLICOLOR>
 
@@ -300,7 +300,7 @@ The order of precedence is as follows for color control:
 
 =over
 
-=item 1. Command line arguments, C<--nocolor> and C<--color> in that order, see L</INVOCATION>
+=item 1. Command line arguments, C<--nocolor> and C<--color> in that order, see L</USAGE>
 
 =item 2. Environment (this section), C<$YAK_*_COLOR>
 
