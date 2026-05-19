@@ -26,6 +26,10 @@
           {
             "type": "command",
             "command": "bash .claude/hooks/block-snapshot.sh"
+          },
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/block-readme.sh"
           }
         ]
       }

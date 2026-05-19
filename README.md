@@ -274,41 +274,81 @@ If you want to utilize the supported environment variables (see ["ENVIRONMENT"](
 
 # API
 
+## new
+
+Constructor; creates and returns a new `App::Yak` object with default settings: color and emoji output enabled; verbose, debug, and silent mode disabled.
+
 ## noemoji
+
+Accessor for the `noemoji` flag. When set to true, disables emoji output by resetting all emoji strings to blank.
 
 ## print\_about
 
+Prints information about the current configuration and invocation: version, checksums source, config file, and active flags.
+
 ## print\_failure
+
+Prints a colorized failure message for a file that did not match its expected checksum or presence assertion.
 
 ## print\_help
 
+Prints the help message listing all available command-line options.
+
 ## print\_ignore
+
+Prints a colorized message for a path that was excluded by a `.yakignore` rule.
 
 ## print\_skip
 
+Prints a colorized message for a file found on disk that has no entry in the checksums registry.
+
 ## print\_success
+
+Prints a colorized success output message.
 
 ## print\_version
 
+Prints the version of the `yak` tool.
+
 ## process
+
+Walks the current directory tree, calling `subprocess` on each file. Returns 0 on success or a positive integer equal to the number of failures.
 
 ## read\_checksums
 
+Reads the checksum registry from a file or URL. Supports `--nochecksums`, `--checksums`, or the default location `$HOME/.config/yak/checksums.json`.
+
 ## read\_config
+
+Reads the YAML configuration file. Command-line flags passed in override values from the config file.
 
 ## read\_environment
 
+Reads `$YAK_*_COLOR` environment variables and applies any color overrides they specify.
+
 ## subprocess
+
+Checks a single file against its entry in the checksum registry. Handles SHA256 checksums, `file://` references, `http(s)://` URLs, and boolean presence/absence assertions.
 
 ## print\_match\_failure
 
+Prints a failure message indicating that a file's checksum did not match the expected value.
+
 ## print\_match\_success
+
+Prints a success message indicating that a file's checksum matched the expected value.
 
 ## print\_no\_presence\_success
 
+Prints a success message indicating that an expected-absent file was not found.
+
 ## print\_presence\_failure
 
+Prints a failure message indicating that an expected-present file was not found.
+
 ## print\_presence\_success
+
+Prints a success message indicating that an expected-present file was found.
 
 # REQUIREMENTS AND DEPENDENCIES
 
