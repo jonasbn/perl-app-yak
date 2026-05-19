@@ -1,0 +1,34 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/perl-syntax-check.sh"
+          },
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/podchecker.sh"
+          },
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/perlcritic-check.sh"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/block-snapshot.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
