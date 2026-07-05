@@ -22,7 +22,9 @@ WORKDIR /usr/src/app
 # cpanfile.snapshot, this might change in the future if a snapshot file
 # created on macOS makes sense on a Linux based image
 COPY cpanfile .
-RUN cpanm --installdeps .
+# --notest: skip module tests during install; LWP::Protocol::https tests make
+# live HTTPS connections that are unavailable inside a Docker build context
+RUN cpanm --notest --installdeps .
 
 # Installing yak
 COPY . /usr/src/app
