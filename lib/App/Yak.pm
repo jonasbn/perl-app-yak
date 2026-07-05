@@ -201,15 +201,20 @@ sub subprocess {
         } elsif ($assertion =~ m/http/i) {
             my $content = $self->_read_checksum_url($assertion);
             $checksum = sha256_hex($content);
-        } elsif ($assertion eq $JSON::true and -f $file) {
-            $self->print_presence_success($File::Find::name);
-        } elsif ($assertion eq $JSON::false and -f $file) {
-            $self->print_no_presence_success($File::Find::name);
-
-        } elsif ($assertion eq $JSON::false and -f $file) {
-            $self->print_presence_failure($File::Find::name);
-            $rv = $FAILURE;
-
+        } elsif (ref($assertion) && $assertion) {
+            if (-f $file) {
+                $self->print_presence_success($File::Find::name);
+            } else {
+                $self->print_presence_failure($File::Find::name);
+                $rv = $FAILURE;
+            }
+        } elsif (ref($assertion) && !$assertion) {
+            if (-f $file) {
+                $self->print_presence_failure($File::Find::name);
+                $rv = $FAILURE;
+            } else {
+                $self->print_no_presence_success($File::Find::name);
+            }
         } else {
             $checksum = $assertion;
         }

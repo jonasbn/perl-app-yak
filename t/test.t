@@ -38,7 +38,7 @@ if ($CONTINUOUS_INTEGRATION and $CONTINUOUS_INTEGRATION eq 'true') {
     script_stdout_like qr{./CODE_OF_CONDUCT.md}, 'We cherry-pick from the output';
 
     script_runs(['script/yak', '--noconfig'], { exit => 0 }, '"yak --noconfig" run');
-    script_stdout_like qr{./CODE_OF_CONDUCT.md succeeded}, 'We cherry-pick from the output';
+    script_stdout_like qr{./CODE_OF_CONDUCT.md matches}, 'We cherry-pick from the output';
 
     script_runs(['script/yak', '--config', 'examples/config.yml'], '"yak --config examples/config.yml" run');
 
@@ -46,25 +46,25 @@ if ($CONTINUOUS_INTEGRATION and $CONTINUOUS_INTEGRATION eq 'true') {
     script_stdout_is '', 'We run in silence so no output';
 
     script_runs(['script/yak', '--nochecksums'], '"yak --nochecksums" run');
-    script_stdout_like qr{./CODE_OF_CONDUCT.md failed}, 'We cherry-pick from the output';
+    script_stdout_like qr{./CODE_OF_CONDUCT.md present}, 'We cherry-pick from the output';
 
     script_runs(['script/yak', '--checksums', 'examples/checksums.json'], '"yak --checksums examples/checksums.json" run');
-    script_stdout_like qr{./CODE_OF_CONDUCT.md succeeded}, 'We cherry-pick from the output';
+    script_stdout_like qr{./CODE_OF_CONDUCT.md matches}, 'We cherry-pick from the output';
 
     script_runs(['script/yak', '--checksums', 'https://gist.githubusercontent.com/jonasbn/dc331774eb67d067981902cadd3955ba/raw/b41de645c599be51e40a27e856333eeea261c12b/yaksums.json'], '"yak --checksums https://gist.githubusercontent.com/jonasbn/dc331774eb67d067981902cadd3955ba/raw/b41de645c599be51e40a27e856333eeea261c12b/yaksums.json" run');
-    script_stdout_like qr{./CODE_OF_CONDUCT.md succeeded}, 'We cherry-pick from the output';
+    script_stdout_like qr{./CODE_OF_CONDUCT.md matches}, 'We cherry-pick from the output';
 
     script_runs(['script/yak', '--checksums', 'examples/checksums.json', '--color'], '"yak --color --checksums examples/checksums.json" run');
-    script_stdout_like qr{./CODE_OF_CONDUCT.md succeeded}, 'We cherry-pick from the output';
+    script_stdout_like qr{./CODE_OF_CONDUCT.md matches}, 'We cherry-pick from the output';
 
     script_runs(['script/yak', '--checksums', 'examples/checksums.json', '--nocolor'], '"yak --nocolor --checksums examples/checksums.json" run');
-    script_stdout_like qr{./CODE_OF_CONDUCT.md succeeded}, 'We cherry-pick from the output';
+    script_stdout_like qr{./CODE_OF_CONDUCT.md matches}, 'We cherry-pick from the output';
 
     script_runs(['script/yak', '--checksums', 'examples/checksums.json', '--emoji'], '"yak --emoji --checksums examples/checksums.json" run');
-    script_stdout_like qr{./CODE_OF_CONDUCT.md succeeded}, 'We cherry-pick from the output';
+    script_stdout_like qr{./CODE_OF_CONDUCT.md matches}, 'We cherry-pick from the output';
 
     script_runs(['script/yak', '--checksums', 'examples/checksums.json', '--noemoji'], '"yak --noemoji --checksums examples/checksums.json" run');
-    script_stdout_like qr{./CODE_OF_CONDUCT.md succeeded}, 'We cherry-pick from the output';
+    script_stdout_like qr{./CODE_OF_CONDUCT.md matches}, 'We cherry-pick from the output';
 }
 
 done_testing();
