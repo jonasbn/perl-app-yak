@@ -122,8 +122,13 @@ sub process {
     find({ wanted => \&_process, preprocess => \&_preprocess, postprocess => \&_postprocess }, qw(.));
 
     foreach my $not_found_file ( keys %{$files} ) {
-        $self->print_failure($not_found_file);
-        $rv = $FAILURE;
+        my $assertion = $self->checksums->{$not_found_file};
+        if (ref($assertion) && !$assertion) {
+            $self->print_no_presence_success($not_found_file);
+        } else {
+            $self->print_failure($not_found_file);
+            $rv = $FAILURE;
+        }
     }
 
     if ($failures) {

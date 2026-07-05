@@ -65,6 +65,22 @@ if ($CONTINUOUS_INTEGRATION and $CONTINUOUS_INTEGRATION eq 'true') {
 
     script_runs(['script/yak', '--checksums', 'examples/checksums.json', '--noemoji'], '"yak --noemoji --checksums examples/checksums.json" run');
     script_stdout_like qr{./CODE_OF_CONDUCT.md matches}, 'We cherry-pick from the output';
+
+    # false assertion: file IS present → should fail and report "present"
+    script_runs(
+        ['script/yak', '--noconfig', '--noemoji', '--nocolor', '--checksums', 'examples/checksums_false_present.json'],
+        { exit => 1 },
+        '"yak" exits 1 when false-asserted file exists'
+    );
+    script_stdout_like qr{CODE_OF_CONDUCT\.md present}, 'false assertion on present file emits "present" failure';
+
+    # false assertion: file IS absent → should succeed and report "not present"
+    script_runs(
+        ['script/yak', '--noconfig', '--noemoji', '--nocolor', '--checksums', 'examples/checksums_false_absent.json'],
+        { exit => 0 },
+        '"yak" exits 0 when false-asserted file is absent'
+    );
+    script_stdout_like qr{nonexistent-sentinel-yak-test\.xyz not present}, 'false assertion on absent file emits "not present" success';
 }
 
 done_testing();
