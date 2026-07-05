@@ -61,3 +61,6 @@ md
 ai
 claude
 Accessor
+GHCR
+perlbrew
+DockerHub
