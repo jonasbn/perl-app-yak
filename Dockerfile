@@ -5,10 +5,14 @@ FROM perl:5.42.2-bullseye
 # We point to the original repository for the image
 LABEL org.opencontainers.image.source https://github.com/jonasbn/perl-app-yak
 
-# We need C compiler and related tools
+# libssl-dev: required to compile Net::SSLeay (pulled in by LWP::Protocol::https)
+# ca-certificates: needed for TLS certificate verification at runtime
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update -y \
-    && apt-get install -y --no-install-recommends
+    && apt-get install -y --no-install-recommends \
+        libssl-dev \
+        ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
 
 # This is our yak work directory, we do not want to mix this
 # with our staging area
