@@ -35,6 +35,9 @@ carton exec perl -Ilib t/test.t
 
 # Single test file:
 carton exec prove -lv t/test.t
+
+# Integration tests (need ~/.config/yak/files/ populated and network access):
+INTEGRATION_TEST=true carton exec prove -lv t/test.t
 ```
 
 ### Lint (Perl::Critic)
@@ -88,7 +91,7 @@ The entire library is a single module: `lib/App/Yak.pm`. The CLI entry point is 
 
 ## Code Style
 
-- Perl 5.10+ (`use v5.10`, `say`)
+- Perl 5.12+ (`use v5.12`, `say`) — minimum raised from 5.10 to align with transitive deps (Mixin::Linewise, Software::License)
 - All constants via `Readonly::Scalar`
 - `$TRUE`/`$FALSE`/`$SUCCESS`/`$FAILURE`/`$OK` constants instead of bare `0`/`1`
 - POD lives after `__END__`; all public methods must have POD entries (enforced by `PodCoverageTests`)
@@ -97,7 +100,7 @@ The entire library is a single module: `lib/App/Yak.pm`. The CLI entry point is 
 
 ## CI
 
-GitHub Actions (`.github/workflows/ci.yml`) runs `dzil test --all` on push. The workflow sets `CONTINUOUS_INTEGRATION=true`, which causes `t/test.t` to run a reduced test set (no interactive assumptions about local config files).
+GitHub Actions (`.github/workflows/ci.yml`) runs `dzil test --all` on push. The workflow sets `CONTINUOUS_INTEGRATION=true`, which causes `t/test.t` to run a reduced smoke set of informational commands only (`--about`, `--version`, `--help`). Tests that scan files or verify checksums must NOT go in the CI block: `dzil test` runs from a temporary BUILD directory where SHA256s and `.yaksums.json` may differ from the source tree.
 
 ## Docker Publishing
 
