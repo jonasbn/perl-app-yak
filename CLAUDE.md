@@ -8,12 +8,20 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Commands
 
-### Install dependencies
+### Dependency management
+
+Two separate systems manage dependencies:
+
+- **Dist::Zilla** (`dzil`) is installed via perlbrew and available system-wide — it is not managed by carton and not listed in `cpanfile`.
+- **Application dependencies** are managed via carton, declared in `cpanfile`/`cpanfile.snapshot`, and installed into `local/`.
 
 ```sh
 carton install          # installs to local/ using cpanfile.snapshot
 # or
 cpanm --installdeps .
+
+# After editing cpanfile, sync the snapshot:
+carton install
 ```
 
 ### Run tests
@@ -41,7 +49,7 @@ perlcritic --profile t/perlcritic.rc lib/App/Yak.pm script/yak
 carton exec perl -Ilib script/yak --about --noconfig --checksums examples/checksums.json
 ```
 
-### Build distribution
+### Build distribution (requires Dist::Zilla via perlbrew)
 
 ```sh
 dzil build
@@ -90,3 +98,7 @@ The entire library is a single module: `lib/App/Yak.pm`. The CLI entry point is 
 ## CI
 
 GitHub Actions (`.github/workflows/ci.yml`) runs `dzil test --all` on push. The workflow sets `CONTINUOUS_INTEGRATION=true`, which causes `t/test.t` to run a reduced test set (no interactive assumptions about local config files).
+
+## Docker Publishing
+
+`.github/workflows/publish.yml` publishes Docker images to both DockerHub (`jonasbn/yak:latest`) and GHCR (`ghcr.io/jonasbn/perl-app-yak:latest`) on push to master and on a 28-day schedule. GHCR login uses `GITHUB_TOKEN` (with `permissions: packages: write` on the job); DockerHub uses `DOCKERHUB_USERNAME`/`DOCKERHUB_TOKEN` secrets.

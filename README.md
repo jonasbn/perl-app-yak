@@ -120,6 +120,8 @@ Note that `--about` return as success with out processing any data apart from re
 - `$YAK_FAILURE_COLOR`, setting color for failure messages, used when colors are enabled
 - `$YAK_SKIP_COLOR`, setting color for skip messages, used when colors are enabled
 - `$YAK_IGNORE_COLOR`, setting color for ignore messages, used when colors are enabled
+- `$CONTINUOUS_INTEGRATION`, when set to `true` the test suite (`t/test.t`) runs a reduced smoke set that is fully self-contained — no `$HOME` configuration directory is required. GitHub Actions sets this automatically.
+- `$INTEGRATION_TEST`, when set to `true` the test suite runs additional tests that reach outside the repository: `file://` checksum references (requiring `~/.config/yak/files/`), external URL checksums (requiring network access), and invocations that rely on the default `~/.config/yak/config.yml` and `checksums.json`. Off by default.
 
 ## CLI Color Control
 
@@ -338,6 +340,10 @@ Prints a failure message indicating that a file's checksum did not match the exp
 
 Prints a success message indicating that a file's checksum matched the expected value.
 
+## print\_no\_presence\_failure
+
+Prints a failure message indicating that an expected-absent file was found (unexpectedly present).
+
 ## print\_no\_presence\_success
 
 Prints a success message indicating that an expected-absent file was not found.
@@ -352,7 +358,7 @@ Prints a success message indicating that an expected-present file was found.
 
 # REQUIREMENTS AND DEPENDENCIES
 
-`yak` is specified to a minimum requirement of Perl 5.10, based on an analysis made using [Perl::MinimumVersion](https://metacpan.org/pod/Perl%3A%3AMinimumVersion), implementation syntax requires Perl 5.8.0, so `yak` _could be made to work_ for 5.8.0.
+`yak` requires Perl 5.12 or later. The minimum was raised from 5.10 to 5.12 to align with transitive dependency requirements (`Mixin::Linewise` and `Software::License`).
 
 - [Clone](https://metacpan.org/pod/Clone)
 - [Crypt::Digest::SHA256](https://metacpan.org/pod/CryptX)
@@ -372,7 +378,7 @@ Prints a success message indicating that an expected-present file was found.
 
 # LIMITATIONS
 
-- `yak` is specified to a minimum requirement of Perl 5.10, based on an analysis made using [Perl::MinimumVersion](https://metacpan.org/pod/Perl%3A%3AMinimumVersion), implementation syntax requires Perl 5.8.0, so `yak` _could be made to work_ for 5.8.0.
+- `yak` requires Perl 5.12 or later. The minimum was raised from 5.10 to 5.12 to align with transitive dependency requirements (`Mixin::Linewise` and `Software::License`).
 - Running under Docker is limited to using only checksums specified in a local <.yaksums.json> and configuration has to be specified using command line arguments not a file
 - The use of a local: `.yaksums.json` is limited to checksums and cannot calculate based on files, since files are located in an unmounted directory
 - The use of YAML implementation is based on [YAML::Tiny](https://metacpan.org/pod/YAML::Tiny) and is therefor limited to this more simple implementation, which was however deemed sufficient for **Yak**.
@@ -393,6 +399,25 @@ and follow [the pull request guidelines](https://github.com/jonasbn/yak/blob/mas
 The GitHub repository of **perl-app-yak** was renamed from **yak**. This broke the continuous integration setup with Travis CI. Therefore this has been disabled for now and instead an experimental CI based on GitHub Actions is used.
 
 - [https://github.com/jonasbn/github-action-perl-dist-zilla](https://github.com/jonasbn/github-action-perl-dist-zilla)
+
+## TEST SUITE
+
+The test suite (`t/test.t`) is structured around three modes controlled by environment variables:
+
+- **Default** (no flags) — all tests are self-contained and pass without any `$HOME` setup. Run with:
+
+        carton exec prove -lv t/test.t
+
+- **CI mode** (`CONTINUOUS_INTEGRATION=true`) — a reduced smoke set, also fully self-contained. Set automatically by GitHub Actions.
+- **Integration mode** (`INTEGRATION_TEST=true`) — enables tests that reach outside the repository: `file://` checksum references, external URL checksums, and default-config invocations. Requires `~/.config/yak/files/` to be populated and network access. Run with:
+
+        INTEGRATION_TEST=true carton exec prove -lv t/test.t
+
+Test fixtures live under `examples/`:
+
+- `examples/checksums_local.json` — SHA256-only entries for files in this repository; used by all self-contained tests.
+- `examples/checksums.json` — includes `file://` references; used only under `$INTEGRATION_TEST`.
+- `examples/checksums_false_present.json` and `examples/checksums_false_absent.json` — fixtures for testing boolean presence/absence assertions.
 
 # MOTIVATION
 

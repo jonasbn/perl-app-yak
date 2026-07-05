@@ -4,7 +4,7 @@ package App::Yak;
 
 use strict;
 use warnings;
-use v5.10;  # say
+use v5.12;  # say, strict by default
             # stacked file tests, REF: https://perldoc.perl.org/functions/-X
 use utf8;
 use YAML::Tiny;
@@ -122,8 +122,13 @@ sub process {
     find({ wanted => \&_process, preprocess => \&_preprocess, postprocess => \&_postprocess }, qw(.));
 
     foreach my $not_found_file ( keys %{$files} ) {
-        $self->print_failure($not_found_file);
-        $rv = $FAILURE;
+        my $assertion = $self->checksums->{$not_found_file};
+        if (ref($assertion) && !$assertion) {
+            $self->print_no_presence_success($not_found_file);
+        } else {
+            $self->print_failure($not_found_file);
+            $rv = $FAILURE;
+        }
     }
 
     if ($failures) {
@@ -201,15 +206,20 @@ sub subprocess {
         } elsif ($assertion =~ m/http/i) {
             my $content = $self->_read_checksum_url($assertion);
             $checksum = sha256_hex($content);
-        } elsif ($assertion eq $JSON::true and -f $file) {
-            $self->print_presence_success($File::Find::name);
-        } elsif ($assertion eq $JSON::false and -f $file) {
-            $self->print_no_presence_success($File::Find::name);
-
-        } elsif ($assertion eq $JSON::false and -f $file) {
-            $self->print_presence_failure($File::Find::name);
-            $rv = $FAILURE;
-
+        } elsif (ref($assertion) && $assertion) {
+            if (-f $file) {
+                $self->print_presence_success($File::Find::name);
+            } else {
+                $self->print_presence_failure($File::Find::name);
+                $rv = $FAILURE;
+            }
+        } elsif (ref($assertion) && !$assertion) {
+            if (-f $file) {
+                $self->print_no_presence_failure($File::Find::name);
+                $rv = $FAILURE;
+            } else {
+                $self->print_no_presence_success($File::Find::name);
+            }
         } else {
             $checksum = $assertion;
         }
@@ -296,6 +306,14 @@ sub print_skip {
             say $self->skip_emoji, "$filename skipped";
         }
     }
+
+    return $OK;
+}
+
+sub print_no_presence_failure {
+    my ($self, $filename) = @_;
+
+    $self->print_failure($filename . ' present');
 
     return $OK;
 }
@@ -934,6 +952,10 @@ C<yak> supports the following environment variables:
 
 =item * C<$YAK_IGNORE_COLOR>, setting color for ignore messages, used when colors are enabled
 
+=item * C<$CONTINUOUS_INTEGRATION>, when set to C<true> the test suite (C<t/test.t>) runs a reduced smoke set that is fully self-contained — no C<$HOME> configuration directory is required. GitHub Actions sets this automatically.
+
+=item * C<$INTEGRATION_TEST>, when set to C<true> the test suite runs additional tests that reach outside the repository: C<file://> checksum references (requiring C<~/.config/yak/files/>), external URL checksums (requiring network access), and invocations that rely on the default C<~/.config/yak/config.yml> and C<checksums.json>. Off by default.
+
 =back
 
 =head2 CLI Color Control
@@ -1214,6 +1236,10 @@ Prints a failure message indicating that a file's checksum did not match the exp
 
 Prints a success message indicating that a file's checksum matched the expected value.
 
+=head2 print_no_presence_failure
+
+Prints a failure message indicating that an expected-absent file was found (unexpectedly present).
+
 =head2 print_no_presence_success
 
 Prints a success message indicating that an expected-absent file was not found.
@@ -1228,7 +1254,7 @@ Prints a success message indicating that an expected-present file was found.
 
 =head1 REQUIREMENTS AND DEPENDENCIES
 
-C<yak> is specified to a minimum requirement of Perl 5.10, based on an analysis made using L<Perl::MinimumVersion>, implementation syntax requires Perl 5.8.0, so C<yak> I<could be made to work> for 5.8.0.
+C<yak> requires Perl 5.12 or later. The minimum was raised from 5.10 to 5.12 to align with transitive dependency requirements (C<Mixin::Linewise> and C<Software::License>).
 
 =over
 
@@ -1268,7 +1294,7 @@ C<yak> is specified to a minimum requirement of Perl 5.10, based on an analysis 
 
 =over
 
-=item * C<yak> is specified to a minimum requirement of Perl 5.10, based on an analysis made using L<Perl::MinimumVersion>, implementation syntax requires Perl 5.8.0, so C<yak> I<could be made to work> for 5.8.0.
+=item * C<yak> requires Perl 5.12 or later. The minimum was raised from 5.10 to 5.12 to align with transitive dependency requirements (C<Mixin::Linewise> and C<Software::License>).
 
 =item * Running under Docker is limited to using only checksums specified in a local <.yaksums.json> and configuration has to be specified using command line arguments not a file
 
@@ -1298,6 +1324,36 @@ The GitHub repository of B<perl-app-yak> was renamed from B<yak>. This broke the
 =over
 
 =item * L<https://github.com/jonasbn/github-action-perl-dist-zilla>
+
+=back
+
+=head2 TEST SUITE
+
+The test suite (C<t/test.t>) is structured around three modes controlled by environment variables:
+
+=over
+
+=item * B<Default> (no flags) — all tests are self-contained and pass without any C<$HOME> setup. Run with:
+
+    carton exec prove -lv t/test.t
+
+=item * B<CI mode> (C<CONTINUOUS_INTEGRATION=true>) — a reduced smoke set, also fully self-contained. Set automatically by GitHub Actions.
+
+=item * B<Integration mode> (C<INTEGRATION_TEST=true>) — enables tests that reach outside the repository: C<file://> checksum references, external URL checksums, and default-config invocations. Requires C<~/.config/yak/files/> to be populated and network access. Run with:
+
+    INTEGRATION_TEST=true carton exec prove -lv t/test.t
+
+=back
+
+Test fixtures live under C<examples/>:
+
+=over
+
+=item * C<examples/checksums_local.json> — SHA256-only entries for files in this repository; used by all self-contained tests.
+
+=item * C<examples/checksums.json> — includes C<file://> references; used only under C<$INTEGRATION_TEST>.
+
+=item * C<examples/checksums_false_present.json> and C<examples/checksums_false_absent.json> — fixtures for testing boolean presence/absence assertions.
 
 =back
 
