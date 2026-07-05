@@ -952,6 +952,10 @@ C<yak> supports the following environment variables:
 
 =item * C<$YAK_IGNORE_COLOR>, setting color for ignore messages, used when colors are enabled
 
+=item * C<$CONTINUOUS_INTEGRATION>, when set to C<true> the test suite (C<t/test.t>) runs a reduced smoke set that is fully self-contained — no C<$HOME> configuration directory is required. GitHub Actions sets this automatically.
+
+=item * C<$INTEGRATION_TEST>, when set to C<true> the test suite runs additional tests that reach outside the repository: C<file://> checksum references (requiring C<~/.config/yak/files/>), external URL checksums (requiring network access), and invocations that rely on the default C<~/.config/yak/config.yml> and C<checksums.json>. Off by default.
+
 =back
 
 =head2 CLI Color Control
@@ -1320,6 +1324,36 @@ The GitHub repository of B<perl-app-yak> was renamed from B<yak>. This broke the
 =over
 
 =item * L<https://github.com/jonasbn/github-action-perl-dist-zilla>
+
+=back
+
+=head2 TEST SUITE
+
+The test suite (C<t/test.t>) is structured around three modes controlled by environment variables:
+
+=over
+
+=item * B<Default> (no flags) — all tests are self-contained and pass without any C<$HOME> setup. Run with:
+
+    carton exec prove -lv t/test.t
+
+=item * B<CI mode> (C<CONTINUOUS_INTEGRATION=true>) — a reduced smoke set, also fully self-contained. Set automatically by GitHub Actions.
+
+=item * B<Integration mode> (C<INTEGRATION_TEST=true>) — enables tests that reach outside the repository: C<file://> checksum references, external URL checksums, and default-config invocations. Requires C<~/.config/yak/files/> to be populated and network access. Run with:
+
+    INTEGRATION_TEST=true carton exec prove -lv t/test.t
+
+=back
+
+Test fixtures live under C<examples/>:
+
+=over
+
+=item * C<examples/checksums_local.json> — SHA256-only entries for files in this repository; used by all self-contained tests.
+
+=item * C<examples/checksums.json> — includes C<file://> references; used only under C<$INTEGRATION_TEST>.
+
+=item * C<examples/checksums_false_present.json> and C<examples/checksums_false_absent.json> — fixtures for testing boolean presence/absence assertions.
 
 =back
 
