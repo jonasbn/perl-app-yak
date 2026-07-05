@@ -1,4 +1,4 @@
-requires 'perl', '5.010';
+requires 'perl', '5.012';
 requires 'JSON';                  # Not core
 requires 'CryptX';                # Not core, provides Crypt::Digest::SHA256
 requires 'Env';                   # Core since Perl 5

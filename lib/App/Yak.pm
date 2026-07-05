@@ -4,7 +4,7 @@ package App::Yak;
 
 use strict;
 use warnings;
-use v5.10;  # say
+use v5.12;  # say, strict by default
             # stacked file tests, REF: https://perldoc.perl.org/functions/-X
 use utf8;
 use YAML::Tiny;
@@ -210,7 +210,7 @@ sub subprocess {
             }
         } elsif (ref($assertion) && !$assertion) {
             if (-f $file) {
-                $self->print_presence_failure($File::Find::name);
+                $self->print_no_presence_failure($File::Find::name);
                 $rv = $FAILURE;
             } else {
                 $self->print_no_presence_success($File::Find::name);
@@ -301,6 +301,14 @@ sub print_skip {
             say $self->skip_emoji, "$filename skipped";
         }
     }
+
+    return $OK;
+}
+
+sub print_no_presence_failure {
+    my ($self, $filename) = @_;
+
+    $self->print_failure($filename . ' present');
 
     return $OK;
 }
@@ -1219,6 +1227,10 @@ Prints a failure message indicating that a file's checksum did not match the exp
 
 Prints a success message indicating that a file's checksum matched the expected value.
 
+=head2 print_no_presence_failure
+
+Prints a failure message indicating that an expected-absent file was found (unexpectedly present).
+
 =head2 print_no_presence_success
 
 Prints a success message indicating that an expected-absent file was not found.
@@ -1233,7 +1245,7 @@ Prints a success message indicating that an expected-present file was found.
 
 =head1 REQUIREMENTS AND DEPENDENCIES
 
-C<yak> is specified to a minimum requirement of Perl 5.10, based on an analysis made using L<Perl::MinimumVersion>, implementation syntax requires Perl 5.8.0, so C<yak> I<could be made to work> for 5.8.0.
+C<yak> requires Perl 5.12 or later. The minimum was raised from 5.10 to 5.12 to align with transitive dependency requirements (C<Mixin::Linewise> and C<Software::License>).
 
 =over
 
@@ -1273,7 +1285,7 @@ C<yak> is specified to a minimum requirement of Perl 5.10, based on an analysis 
 
 =over
 
-=item * C<yak> is specified to a minimum requirement of Perl 5.10, based on an analysis made using L<Perl::MinimumVersion>, implementation syntax requires Perl 5.8.0, so C<yak> I<could be made to work> for 5.8.0.
+=item * C<yak> requires Perl 5.12 or later. The minimum was raised from 5.10 to 5.12 to align with transitive dependency requirements (C<Mixin::Linewise> and C<Software::License>).
 
 =item * Running under Docker is limited to using only checksums specified in a local <.yaksums.json> and configuration has to be specified using command line arguments not a file
 
