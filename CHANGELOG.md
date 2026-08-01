@@ -1,5 +1,14 @@
 # CHANGELOG for `yak`
 
+## 0.24.0 2026-08-01 Maintenance release, update recommended for Docker users
+
+- Pinned and modernized the Docker base image to `perl:5.44.0-slim-trixie`, referenced via `ARG BASE_IMAGE` and pinned by digest, matching the pattern from [jonasbn/ebirah](https://github.com/jonasbn/ebirah). Closes [#123](https://github.com/jonasbn/perl-app-yak/issues/123). See PR [#175](https://github.com/jonasbn/perl-app-yak/pull/175)
+- Fixed boolean assertion logic for `true`/`false` checksum values in `subprocess`, with new test coverage. See PR [#165](https://github.com/jonasbn/perl-app-yak/pull/165)
+- Test suite is now self-contained; network/integration tests are gated behind `INTEGRATION_TEST`, and CI runs an informational-only smoke set
+- Fixed the Docker build (added `libssl-dev`/`ca-certificates`, skip live-HTTPS module tests during dependency install) and corrected exit code handling in container runs
+- Pinned GitHub Actions to commit SHAs; routine dependabot maintenance for `actions/checkout`, `docker/*`, spellcheck, editorconfig-checker, and markdown-cli actions
+- Added Claude Code project configuration (`CLAUDE.md`, agents, hooks, skills)
+
 ## 0.23.0 2025-01-28 Maintenance release, update not required
 
 - Bumping base image to Perl 5.40.1, See PR [#122](https://github.com/jonasbn/perl-app-yak/pull/122) from @dependabot
