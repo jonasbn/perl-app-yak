@@ -102,6 +102,8 @@ The entire library is a single module: `lib/App/Yak.pm`. The CLI entry point is 
 
 GitHub Actions (`.github/workflows/ci.yml`) runs `dzil test --all` on push. The workflow sets `CONTINUOUS_INTEGRATION=true`, which causes `t/test.t` to run a reduced smoke set of informational commands only (`--about`, `--version`, `--help`). Tests that scan files or verify checksums must NOT go in the CI block: `dzil test` runs from a temporary BUILD directory where SHA256s and `.yaksums.json` may differ from the source tree.
 
+Auxiliary lint workflows also run on push: `editorconfig.yml`, `markdownlint.yml`, `spellcheck.yml`. `editorconfig.yml` pins the checker CLI explicitly (`with: version: vX.Y.Z`) because `action-editorconfig-checker` otherwise fetches `latest` at runtime — keep the pin; an upstream release-asset rename broke the unpinned setup once.
+
 ## Docker Publishing
 
 `.github/workflows/publish.yml` publishes Docker images to both DockerHub (`jonasbn/yak:latest`) and GHCR (`ghcr.io/jonasbn/perl-app-yak:latest`) on push to master and on a 28-day schedule. GHCR login uses `GITHUB_TOKEN` (with `permissions: packages: write` on the job); DockerHub uses `DOCKERHUB_USERNAME`/`DOCKERHUB_TOKEN` secrets.
