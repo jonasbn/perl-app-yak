@@ -3,6 +3,9 @@ on:
   push:
     paths:
       - "**/*.md"
+      - ".markdownlint.json"
+      - ".markdownlintignore"
+      - ".github/workflows/markdownlint.yml"
 
 jobs:
   build:
