@@ -64,3 +64,10 @@ Accessor
 GHCR
 perlbrew
 DockerHub
+deps
+Linewise
+Mixin
+editorconfig
+ebirah
+SHAs
+cli
