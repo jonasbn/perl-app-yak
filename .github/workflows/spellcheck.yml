@@ -3,6 +3,9 @@ on:
   push:
     paths:
       - "**/*.md"
+      - ".spellcheck.yml"
+      - ".wordlist.txt"
+      - ".github/workflows/spellcheck.yml"
 
 jobs:
   build:
