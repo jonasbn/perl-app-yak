@@ -7,6 +7,9 @@ on:
 env:
   CONTINUOUS_INTEGRATION: true
 
+permissions:
+  contents: read
+
 jobs:
   build:
     name: Continuous Integration
@@ -15,6 +18,8 @@ jobs:
     # REF: https://help.github.com/en/actions/configuring-and-managing-workflows/configuring-a-workflow#using-the-checkout-action
     - name: "Checkout repository"
       uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      with:
+        persist-credentials: false
     - name: "Installing dependencies and testing all using dzil"
       uses: jonasbn/github-action-perl-dist-zilla@fea791c6197b8fa3f83420be200613050ae11235 # 0.5.5
       with:
